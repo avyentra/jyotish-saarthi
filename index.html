@@ -181,6 +181,7 @@
         <p class="muted" style="font-size:14px" data-i18n="loginSub"></p>
         <input id="loginEmail" type="email" data-i18n-ph="emailPh" style="margin-top:8px" />
         <button class="btn ghost" id="loginBtn" style="margin-top:12px" data-i18n="loginBtn"></button>
+        <button class="btn" id="googleBtn" style="margin-top:10px" data-i18n="googleBtn"></button>
         <p id="loginInfo" class="note"></p>
       </div>
     </main>
@@ -271,7 +272,7 @@ const L = {
     lblTime: 'Birth time (optional)', timeUnknown: "I don't know the time", am: 'AM (morning)', pm: 'PM (evening/night)',
     lblTz: 'Time zone (UTC)', start: 'Start', saveNote: 'Your details are saved only on your phone.',
     loginTitle: 'Log in (by email)', loginSub: 'To see your details on another phone too.', emailPh: 'Your email',
-    loginBtn: 'Send login link', loginSetup: 'Login setup is pending.', loginSent: 'Login link sent to your email.',
+    loginBtn: 'Send login link', googleBtn: 'Continue with Google', loginSetup: 'Login setup is pending.', loginSent: 'Login link sent to your email.',
     loginNeedEmail: 'Please enter your email.', loginFail: 'Could not send email: ',
     langTitle: 'Language', langSuggest: 'Would you like to see the app in {0}?', yes: 'Yes', no: 'No',
     periodToday: 'Today', periodWeek: 'This week', periodYear: 'This year',
@@ -310,7 +311,7 @@ const L = {
     lblTime: 'जन्म का समय (वैकल्पिक)', timeUnknown: 'समय पता नहीं है', am: 'AM (सुबह)', pm: 'PM (शाम/रात)',
     lblTz: 'समय क्षेत्र (UTC)', start: 'शुरू करें', saveNote: 'आपकी जानकारी केवल आपके फ़ोन में सेव होती है।',
     loginTitle: 'लॉगिन (ईमेल से)', loginSub: 'दूसरे फ़ोन पर भी अपनी जानकारी पाने के लिए।', emailPh: 'आपका ईमेल',
-    loginBtn: 'लॉगिन लिंक भेजें', loginSetup: 'लॉगिन सेटअप अभी बाकी है।', loginSent: 'ईमेल पर लॉगिन लिंक भेजा गया है।',
+    loginBtn: 'लॉगिन लिंक भेजें', googleBtn: 'Google से लॉगिन करें', loginSetup: 'लॉगिन सेटअप अभी बाकी है।', loginSent: 'ईमेल पर लॉगिन लिंक भेजा गया है।',
     loginNeedEmail: 'ईमेल लिखें', loginFail: 'ईमेल नहीं भेजा जा सका: ',
     langTitle: 'भाषा', langSuggest: 'क्या आप ऐप {0} में देखना चाहते हैं?', yes: 'हाँ', no: 'नहीं',
     periodToday: 'आज', periodWeek: 'इस हफ़्ते', periodYear: 'इस साल',
@@ -349,7 +350,7 @@ const L = {
     lblTime: 'ਜਨਮ ਦਾ ਸਮਾਂ (ਵਿਕਲਪਿਕ)', timeUnknown: 'ਸਮਾਂ ਪਤਾ ਨਹੀਂ ਹੈ', am: 'AM (ਸਵੇਰ)', pm: 'PM (ਸ਼ਾਮ/ਰਾਤ)',
     lblTz: 'ਸਮਾਂ ਖੇਤਰ (UTC)', start: 'ਸ਼ੁਰੂ ਕਰੋ', saveNote: 'ਤੁਹਾਡੀ ਜਾਣਕਾਰੀ ਸਿਰਫ਼ ਤੁਹਾਡੇ ਫ਼ੋਨ ਵਿੱਚ ਸੇਵ ਹੁੰਦੀ ਹੈ।',
     loginTitle: 'ਲੌਗਇਨ (ਈਮੇਲ ਨਾਲ)', loginSub: 'ਦੂਜੇ ਫ਼ੋਨ ਤੇ ਵੀ ਆਪਣੀ ਜਾਣਕਾਰੀ ਲੈਣ ਲਈ।', emailPh: 'ਤੁਹਾਡੀ ਈਮੇਲ',
-    loginBtn: 'ਲੌਗਇਨ ਲਿੰਕ ਭੇਜੋ', loginSetup: 'ਲੌਗਇਨ ਸੈੱਟਅੱਪ ਅਜੇ ਬਾਕੀ ਹੈ।', loginSent: 'ਈਮੇਲ ਤੇ ਲੌਗਇਨ ਲਿੰਕ ਭੇਜਿਆ ਗਿਆ ਹੈ।',
+    loginBtn: 'ਲੌਗਇਨ ਲਿੰਕ ਭੇਜੋ', googleBtn: 'Google ਨਾਲ ਲੌਗਇਨ ਕਰੋ', loginSetup: 'ਲੌਗਇਨ ਸੈੱਟਅੱਪ ਅਜੇ ਬਾਕੀ ਹੈ।', loginSent: 'ਈਮੇਲ ਤੇ ਲੌਗਇਨ ਲਿੰਕ ਭੇਜਿਆ ਗਿਆ ਹੈ।',
     loginNeedEmail: 'ਕਿਰਪਾ ਕਰਕੇ ਈਮੇਲ ਲਿਖੋ', loginFail: 'ਈਮੇਲ ਨਹੀਂ ਭੇਜੀ ਜਾ ਸਕੀ: ',
     langTitle: 'ਭਾਸ਼ਾ', langSuggest: 'ਕੀ ਤੁਸੀਂ ਐਪ ਨੂੰ {0} ਵਿੱਚ ਦੇਖਣਾ ਚਾਹੁੰਦੇ ਹੋ?', yes: 'ਹਾਂ', no: 'ਨਹੀਂ',
     periodToday: 'ਅੱਜ', periodWeek: 'ਇਸ ਹਫ਼ਤੇ', periodYear: 'ਇਸ ਸਾਲ',
@@ -1350,6 +1351,11 @@ if (profile && profile.lang) lang = profile.lang;
 fillTimeSelects();
 initPlaceSearch();
 initLogin();
+$('googleBtn').addEventListener('click', async () => {
+  if (!sb) return;
+  const { error } = await sb.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: location.href.split('#')[0] } });
+  if (error) $('loginInfo').textContent = t('loginFail') + error.message;
+});
 applyStaticTranslations();
 setTimeout(() => {
   $('splash').classList.add('gone');
