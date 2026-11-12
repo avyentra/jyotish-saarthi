@@ -29,9 +29,10 @@
   @keyframes pop { from { transform: scale(.6); opacity: 0; } to { transform: scale(1); opacity: 1; } }
   .tag { margin-top: 18px; color: var(--muted); font-size: 14px; letter-spacing: .5px; }
 
-  .top { display: flex; align-items: center; justify-content: space-between; padding: 18px 20px 8px; }
+  .top { display: flex; align-items: center; justify-content: space-between; padding: 18px 20px 16px; background: linear-gradient(120deg, #7c3aed, #14b8a6); color: #fff; border-radius: 0 0 28px 28px; }
   .avatar { width: 42px; height: 42px; border-radius: 50%; background: linear-gradient(135deg, #a78bfa, #14b8a6); display: flex; align-items: center; justify-content: center; font-weight: 700; color: #fff; font-size: 17px; }
-  .top h1 { font-size: 17px; font-weight: 600; margin: 0; }
+  .top h1 { font-size: 17px; font-weight: 600; margin: 0; color: #fff; }
+  .top .circle-btn { background: rgba(255,255,255,.22); color: #fff; }
   .circle-btn { width: 42px; height: 42px; border-radius: 50%; background: var(--card); border: 0; color: var(--ink); display: flex; align-items: center; justify-content: center; }
   .circle-btn svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 1.8; }
   .page-title { font-size: 28px; font-weight: 700; text-align: center; margin: 14px 0 4px; }
@@ -138,7 +139,7 @@
   .qgrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 6px; }
   .qtile { background: var(--card); border: 0; border-radius: 18px; padding: 12px 4px; color: var(--ink); font-size: 12px; display: flex; flex-direction: column; align-items: center; gap: 8px; }
   .qicon { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; color: #fff; }
-  .tara { display: flex; align-items: center; gap: 14px; background: linear-gradient(120deg, #f0572a 0%, #7c3aed 60%, #f7c948 100%); border-radius: 22px; padding: 16px 18px; margin: 4px 0 14px; cursor: pointer; color: #fff; }
+  .tara { display: flex; align-items: center; gap: 14px; background: linear-gradient(120deg, #7c3aed 0%, #14b8a6 100%); border-radius: 22px; padding: 16px 18px; margin: 4px 0 14px; cursor: pointer; color: #fff; }
   .tara .ticon { width: 56px; height: 56px; border-radius: 50%; background: #fff; color: #f0572a; display: flex; align-items: center; justify-content: center; font-size: 26px; flex: 0 0 auto; }
   .tara .tbadges { display: flex; gap: 6px; margin-bottom: 6px; }
   .tara .tbadges span { font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 999px; }
@@ -151,21 +152,31 @@
   .hsign { background: var(--card); border: 1px solid transparent; border-radius: 16px; padding: 10px 2px; color: var(--ink); font-size: 11px; display: flex; flex-direction: column; align-items: center; gap: 4px; }
   .hsign span:first-child { font-size: 22px; }
   .hsign.on { border-color: var(--accent); background: #ede7ff; }
-  .hcard { display: flex; gap: 14px; align-items: center; background: linear-gradient(120deg, #7c3aed, #14b8a6); border-radius: 22px; padding: 16px; margin-bottom: 14px; }
-  .hbig { width: 64px; height: 64px; border-radius: 50%; background: linear-gradient(135deg, #7c3aed, #f7c948); display: flex; align-items: center; justify-content: center; font-size: 30px; flex: 0 0 auto; }
+  .hbig { width: 64px; height: 64px; border-radius: 50%; background: linear-gradient(135deg, #7c3aed, #14b8a6); display: flex; align-items: center; justify-content: center; font-size: 30px; flex: 0 0 auto; }
   .hrow2 { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
   .htag { background: #f7c948; color: #5a3a00; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 999px; }
   .hmeta { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 10px; font-size: 12px; color: #1e1b2e; margin-top: 8px; }
   .hdaily { display: flex; gap: 14px; align-items: center; background: linear-gradient(120deg, #7c3aed, #14b8a6); color: #fff; border-radius: 22px; padding: 16px; margin-bottom: 14px; }
   .hdaily .muted, .hdaily .hmeta { color: #f3efff; }
   .hdaily .htag { background: #fde047; color: #4a3300; }
+  .backbar { display: flex; align-items: center; gap: 10px; padding: 12px 16px; background: linear-gradient(120deg, #7c3aed, #14b8a6); color: #fff; }
+  .backbtn { width: 40px; height: 40px; border-radius: 50%; border: 0; background: rgba(255,255,255,.22); color: #fff; font-size: 20px; flex: 0 0 auto; }
+  #backTitle { font-weight: 700; font-size: 16px; }
+  .svc { display: flex; align-items: center; gap: 12px; width: 100%; text-align: left; background: var(--card); border: 0; border-radius: 20px; padding: 14px; margin-bottom: 10px; color: var(--ink); }
+  .svcicon { font-size: 26px; width: 48px; height: 48px; border-radius: 14px; background: var(--card2); display: flex; align-items: center; justify-content: center; flex: 0 0 auto; }
+  .svcicon.big { width: 84px; height: 84px; font-size: 44px; margin: 0 auto 12px; border-radius: 26px; }
+  .svcbody { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+  .svcbody b { font-size: 15px; }
+  .svcbody small { color: var(--muted); font-size: 13px; margin-top: 3px; line-height: 1.4; }
+  .svcarrow { font-size: 22px; color: var(--accent); }
+  .svcdetail { text-align: center; padding: 10px 0 4px; }
   .hicon { width: 44px; height: 44px; border-radius: 50%; background: var(--card2); display: flex; align-items: center; justify-content: center; font-size: 20px; flex: 0 0 auto; }
   .ktabs { display: flex; gap: 22px; overflow-x: auto; border-bottom: 1px solid rgba(255,255,255,.12); margin: 4px -16px 14px; padding: 0 16px; }
   .ktabs button { background: none; border: 0; color: inherit; opacity: .6; padding: 10px 0; font-weight: 700; font-size: 14px; border-bottom: 3px solid transparent; white-space: nowrap; }
   .ktabs button.on { opacity: 1; border-color: #7c3aed; }
   .kpills { display: flex; gap: 8px; overflow-x: auto; margin: 0 0 12px; }
   .kpills button { border: 0; border-radius: 999px; padding: 7px 14px; background: var(--card); color: inherit; white-space: nowrap; font-size: 13px; }
-  .kpills button.on { background: #f7c948; color: #3a2a00; font-weight: 700; }
+  .kpills button.on { background: #7c3aed; color: #fff; font-weight: 700; }
   .krow { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; margin: 6px 0 10px; }
   .kchart { padding: 14px; }
   .ksouth { display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(4, 1fr); aspect-ratio: 1; border: 1.6px solid #7c3aed; max-width: 320px; margin: 0 auto; }
@@ -282,6 +293,7 @@
 
     <main>
       <div id="langBanner"></div>
+      <div id="backBar" class="backbar hidden"><button class="backbtn" id="backBtn" aria-label="back">←</button><span id="backTitle"></span></div>
       <div id="pg-home"></div>
       <div id="pg-chart" class="hidden"></div>
       <div id="pg-transits" class="hidden"></div>
@@ -289,6 +301,8 @@
       <div id="pg-horo" class="hidden"></div>
       <div id="pg-match" class="hidden"></div>
       <div id="pg-astro" class="hidden"></div>
+      <div id="pg-remedies" class="hidden"></div>
+      <div id="pg-service" class="hidden"></div>
 
       <div id="pg-chat" class="hidden">
         <div class="page-title" style="font-size:24px" data-i18n="chatTitle"></div>
@@ -330,6 +344,9 @@
       <button data-pg="transits" aria-label="transits">
         <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
       </button>
+      <button data-pg="remedies" aria-label="remedies">
+        <svg viewBox="0 0 24 24"><path d="M6 3h12l4 6-10 12L2 9z"/></svg>
+      </button>
       <button data-pg="listen" aria-label="listen">
         <svg viewBox="0 0 24 24"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="3" y="14" width="4" height="6" rx="1.5"/><rect x="17" y="14" width="4" height="6" rx="1.5"/></svg>
       </button>
@@ -365,7 +382,7 @@ const L = {
     seeAll: 'See all', askAi: 'What should I do today?', learn: 'Learn', templeToday: "Today's temple",
     funNote: 'For entertainment and cultural information only.',
     lblLord: 'Ruling planet', lblColor: 'Lucky color', lblDay: 'Lucky day', lblNak: 'Nakshatra', lblPada: 'Pada',
-    chartTitle: 'Your birth chart', ajOpen: 'Astrologer portal', ajNavTitle: 'Astrologer', ajTitle: 'Join AstroTara', ajSub: 'Create your astrologer account with Gmail.', ajName: 'Full name', ajNamePh: 'Your name', ajGmail: 'Gmail ID', ajContinue: 'Continue', ajHaveAcc: 'Already have an account? Login', ajWelcome: 'Welcome back', ajLoginSub: 'Login with your Gmail to continue your astrology practice.', ajGoogle: 'Continue with Google', ajNew: 'New astrologer? Sign up', ajCustomers: 'Customers called', ajSearch: 'Search customers', ajEmpty: 'No call history yet. Calls will appear here once the call service is connected.', ajLeave: 'Leave astrologer portal', ajInvalid: 'Please enter your name and a valid Gmail ID.', ajNoLogin: 'Login is not available right now.', kdTabBasic: 'Basic', kdTabCharts: 'Charts', kdSubLagna: 'Lagna', kdSubChandra: 'Chandra', kdSubSurya: 'Surya', kdChartWord: 'Chart', kdNorth: 'North Indian', kdSouth: 'South Indian', kdPlanetsTitle: 'Planets', kdSignMode: 'Sign', kdNakMode: 'Nakshatra', kdPlanet: 'Planet', kdSign: 'Sign', kdLord: 'Sign lord', kdDeg: 'Degree', kdHouse: 'House', kdNak: 'Nakshatra', kdPada: 'Pada', pAs: 'Ascendant', pSu: 'Sun', pMo: 'Moon', kdComing: 'Navamsa, KP and Dasha charts can be added later.', matchTitle: 'Matching', matchSub: 'Enter partner details for a 36-guna Ashtakoot match.', matchNeedTime: 'Matching needs your date and time of birth. Add them in your profile.', mfName: 'Partner name', mNamePh: 'Full name', mfDob: 'Partner date of birth', mfTime: 'Partner time of birth (IST)', mfPlace: 'Partner birth place', mPlacePh: 'e.g. Mumbai', mSwapLabel: 'I am the girl', mCalc: 'Get matching result', mNeedAll: 'Please fill name, date and time.', mBasic: 'Basic comparison', mBoy: 'Boy', mGirl: 'Girl', mcName: 'Name', mcDate: 'Date', mcTime: 'Time', mcPlace: 'Place', mcLat: 'Latitude', mcLon: 'Longitude', mGuna: 'Ashtakoot Guna Matching', mCategory: 'Category', mMax: 'Max', mObtained: 'Obtained', mResult: 'Result', mTotal: 'Total score', mMatch: 'Match', mPartial: 'Partial', mLowTag: 'Low', mGreat: 'Excellent match', mGood: 'Good match', mLow: 'Low match. Talk to an expert before deciding.', mEdit: 'Check another match', mNote: 'Calculated from sidereal Moon positions (Lahiri). Some guna tables are simplified, so results may differ slightly from traditional software.', mVarna: 'Varna', mVashya: 'Vashya', mTara: 'Tara', mYoni: 'Yoni', mMaitri: 'Graha Maitri', mGana: 'Gana', mBhakoot: 'Bhakoot', mNadi: 'Nadi', chartSub: 'Sun (orange) and Moon (white) positions are shown on the wheel.',
+    chartTitle: 'Your birth chart', logout: 'Log out', logoutConfirm: 'Do you want to log out? Your saved profile on this phone will be removed.', remTitle: 'Remedies & Services', remSub: 'Puja, vastu and consultation services.', remSearch: 'Search services...', remPopular: 'Services', remNote: 'Booking is not open yet. Service details are for information only.', svcStatus: 'Booking', svcSoon: 'Coming soon', svcNote: 'This app shows information only. Booking will be added later.', ajOpen: 'Astrologer portal', ajNavTitle: 'Astrologer', ajTitle: 'Join AstroTara', ajSub: 'Create your astrologer account with Gmail.', ajName: 'Full name', ajNamePh: 'Your name', ajGmail: 'Gmail ID', ajContinue: 'Continue', ajHaveAcc: 'Already have an account? Login', ajWelcome: 'Welcome back', ajLoginSub: 'Login with your Gmail to continue your astrology practice.', ajGoogle: 'Continue with Google', ajNew: 'New astrologer? Sign up', ajCustomers: 'Customers called', ajSearch: 'Search customers', ajEmpty: 'No call history yet. Calls will appear here once the call service is connected.', ajLeave: 'Leave astrologer portal', ajInvalid: 'Please enter your name and a valid Gmail ID.', ajNoLogin: 'Login is not available right now.', kdTabBasic: 'Basic', kdTabCharts: 'Charts', kdSubLagna: 'Lagna', kdSubChandra: 'Chandra', kdSubSurya: 'Surya', kdChartWord: 'Chart', kdNorth: 'North Indian', kdSouth: 'South Indian', kdPlanetsTitle: 'Planets', kdSignMode: 'Sign', kdNakMode: 'Nakshatra', kdPlanet: 'Planet', kdSign: 'Sign', kdLord: 'Sign lord', kdDeg: 'Degree', kdHouse: 'House', kdNak: 'Nakshatra', kdPada: 'Pada', pAs: 'Ascendant', pSu: 'Sun', pMo: 'Moon', kdComing: 'Navamsa, KP and Dasha charts can be added later.', matchTitle: 'Matching', matchSub: 'Enter partner details for a 36-guna Ashtakoot match.', matchNeedTime: 'Matching needs your date and time of birth. Add them in your profile.', mfName: 'Partner name', mNamePh: 'Full name', mfDob: 'Partner date of birth', mfTime: 'Partner time of birth (IST)', mfPlace: 'Partner birth place', mPlacePh: 'e.g. Mumbai', mSwapLabel: 'I am the girl', mCalc: 'Get matching result', mNeedAll: 'Please fill name, date and time.', mBasic: 'Basic comparison', mBoy: 'Boy', mGirl: 'Girl', mcName: 'Name', mcDate: 'Date', mcTime: 'Time', mcPlace: 'Place', mcLat: 'Latitude', mcLon: 'Longitude', mGuna: 'Ashtakoot Guna Matching', mCategory: 'Category', mMax: 'Max', mObtained: 'Obtained', mResult: 'Result', mTotal: 'Total score', mMatch: 'Match', mPartial: 'Partial', mLowTag: 'Low', mGreat: 'Excellent match', mGood: 'Good match', mLow: 'Low match. Talk to an expert before deciding.', mEdit: 'Check another match', mNote: 'Calculated from sidereal Moon positions (Lahiri). Some guna tables are simplified, so results may differ slightly from traditional software.', mVarna: 'Varna', mVashya: 'Vashya', mTara: 'Tara', mYoni: 'Yoni', mMaitri: 'Graha Maitri', mGana: 'Gana', mBhakoot: 'Bhakoot', mNadi: 'Nadi', chartSub: 'Sun (orange) and Moon (white) positions are shown on the wheel.',
     chartNameOnly: 'Rashi from name', chartNeedTime: 'Add your date and time of birth for the full chart.',
     completeness: 'Profile completeness', sunIn: 'Sun in {0}', moonRashi: 'Moon sign', mulank: 'Mulank',
     lagna: 'Rising sign (Lagna) {0}', lagnaNeed: 'Lagna needs birth time and a valid place.',
@@ -1144,7 +1161,7 @@ function wheelSvg(size, markers = []) {
 }
 
 /* ============ पेज और नेविगेशन ============ */
-const PAGES = ['home', 'chart', 'transits', 'listen', 'horo', 'match', 'astro', 'chat', 'profile'];
+const PAGES = ['home', 'chart', 'transits', 'listen', 'horo', 'match', 'astro', 'remedies', 'service', 'chat', 'profile'];
 let currentPage = 'home';
 let period = 'today';
 
@@ -1152,16 +1169,37 @@ function showScreen(id) {
   ['scrAuth', 'scrApp'].forEach(s => $(s).classList.toggle('on', s === id));
 }
 
-function showPg(name) {
+const TAB_PAGES = ['home', 'chart', 'transits', 'remedies', 'listen'];
+const navStack = [];
+let curService = null;
+function serviceTitle() {
+  const sv = SERVICES.find(x => x.id === curService);
+  return sv ? sv.name : '';
+}
+function showPg(name, fromBack = false) {
+  if (!fromBack && name !== currentPage) {
+    navStack.push(currentPage);
+    try { history.pushState({ pg: name }, ''); } catch (e) {}
+  }
   currentPage = name;
   PAGES.forEach(p => $('pg-' + p).classList.toggle('hidden', p !== name));
   document.querySelectorAll('nav button').forEach(b => b.classList.toggle('on', b.dataset.pg === name));
   $('chatBar').classList.toggle('hidden', name !== 'chat');
-  const titles = { chart: t('chartTitle'), transits: t('transitTitle'), listen: t('listenTitle'), horo: t('horoTitle'), match: t('matchTitle'), astro: t('ajNavTitle'), chat: t('chatTitle'), profile: t('profileTitle') };
+  const titles = { chart: t('chartTitle'), transits: t('transitTitle'), listen: t('listenTitle'), horo: t('horoTitle'), match: t('matchTitle'), astro: t('ajNavTitle'), remedies: t('remTitle'), service: serviceTitle(), chat: t('chatTitle'), profile: t('profileTitle') };
   $('hGreet').textContent = titles[name] ? titles[name] : (profile ? (lang === 'pa' ? `ਸਤਿ ਸ੍ਰੀ ਅਕਾਲ, ${profile.name}` : lang === 'hi' ? `नमस्ते, ${profile.name}` : `Hello, ${profile.name}`) : '');
+  $('backBar').classList.toggle('hidden', TAB_PAGES.includes(name));
+  $('backTitle').textContent = titles[name] || '';
   renderPage(name);
   window.scrollTo(0, 0);
 }
+function goBack() {
+  const prev = navStack.pop() || 'home';
+  showPg(prev, true);
+}
+$('backBtn').addEventListener('click', () => {
+  if (navStack.length) history.back(); else showPg('home', true);
+});
+window.addEventListener('popstate', () => { if (profile) goBack(); });
 
 function renderPage(name) {
   if (!profile) return;
@@ -1172,6 +1210,8 @@ function renderPage(name) {
   if (name === 'horo') renderHoro();
   if (name === 'match') renderMatch();
   if (name === 'astro') renderAstro();
+  if (name === 'remedies') renderRemedies();
+  if (name === 'service') renderService();
   if (name === 'profile') renderProfile();
   renderLangBanner();
 }
@@ -1682,7 +1722,54 @@ function renderProfile() {
      <div class="row"><b>${t('pDob')}</b><span>${d ? `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}` : t('dash')}</span></div>
      <div class="row"><b>${t('pPlace')}</b><span>${esc(profile.place || t('dash'))}</span></div>
      <div class="row"><b>${t('pTime')}</b><span>${tm}</span></div>
-     <button class="btn" data-astro-open="1" style="margin-top:14px">${t('ajOpen')}</button>`;
+     <button class="btn" data-astro-open="1" style="margin-top:14px">${t('ajOpen')}</button>
+     <button class="btn" data-logout="1" style="margin-top:10px;background:#fff;color:#7c3aed;border:1px solid #7c3aed">${t('logout')}</button>`;
+}
+
+/* ============ सेवाएँ और उपाय (Remedies / Services) ============ */
+const SERVICES = [
+  { id: 'puja', name: 'Puja Services', desc: 'Home or temple puja arranged by experienced pandits.', icon: '🪔' },
+  { id: 'vastu', name: 'Vastu Consultation', desc: 'Direction and layout guidance for your home or office.', icon: '🏠' },
+  { id: 'gems', name: 'Gemstones', desc: 'Gemstone guidance based on your chart. Consult an expert before wearing any stone.', icon: '💎' },
+  { id: 'consult', name: 'Astrologer Consultation', desc: 'One-to-one session with an astrologer.', icon: '🔮' },
+];
+function renderRemedies() {
+  $('pg-remedies').innerHTML = `
+   <div class="page-title" style="font-size:24px;margin-top:6px">${t('remTitle')}</div>
+   <div class="page-sub">${t('remSub')}</div>
+   <div class="qsearch"><input id="remSearch" type="search" placeholder="${esc(t('remSearch'))}" /></div>
+   <div class="section-h"><span>${t('remPopular')}</span></div>
+   ${SERVICES.map(s => `<button class="svc" data-svc="${s.id}"><span class="svcicon">${s.icon}</span><span class="svcbody"><b>${esc(s.name)}</b><small>${esc(s.desc)}</small></span><span class="svcarrow">›</span></button>`).join('')}
+   <p class="note">${t('remNote')}</p>`;
+}
+function renderService() {
+  const sv = SERVICES.find(x => x.id === curService);
+  if (!sv) { $('pg-service').innerHTML = ''; return; }
+  $('pg-service').innerHTML = `
+   <div class="svcdetail">
+     <div class="svcicon big">${sv.icon}</div>
+     <div class="page-title" style="font-size:24px">${esc(sv.name)}</div>
+     <p class="muted" style="text-align:center">${esc(sv.desc)}</p>
+   </div>
+   <div class="card"><div class="row"><b>${t('svcStatus')}</b><span>${t('svcSoon')}</span></div></div>
+   <p class="note">${t('svcNote')}</p>`;
+}
+$('pg-remedies').addEventListener('click', e => {
+  if (!profile) return;
+  const b = e.target.closest('[data-svc]');
+  if (b) { curService = b.dataset.svc; showPg('service'); }
+});
+$('pg-remedies').addEventListener('input', e => {
+  if (e.target.id !== 'remSearch') return;
+  const q = e.target.value.trim().toLowerCase();
+  $('pg-remedies').querySelectorAll('[data-svc]').forEach(b => b.classList.toggle('hidden', !b.textContent.toLowerCase().includes(q)));
+});
+
+async function doLogout() {
+  if (!confirm(t('logoutConfirm'))) return;
+  try { if (sb) await sb.auth.signOut(); } catch (e) {}
+  clearProfile();
+  location.reload();
 }
 
 /* ============ Astrologer portal (Gmail आधारित) ============ */
@@ -1744,7 +1831,8 @@ $('pg-astro').addEventListener('click', async e => {
   }
 });
 $('pg-profile').addEventListener('click', e => {
-  if (e.target.closest('[data-astro-open]')) { astroView = null; showPg('astro'); }
+  if (e.target.closest('[data-astro-open]')) { astroView = null; showPg('astro'); return; }
+  if (e.target.closest('[data-logout]')) doLogout();
 });
 
 /* ============ शुरुआत ============ */
