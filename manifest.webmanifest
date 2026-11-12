@@ -1,0 +1,16 @@
+{
+  "name": "ज्योतिष सारथी",
+  "short_name": "ज्योतिष",
+  "description": "मुफ़्त ज्योतिष, अंक ज्योतिष और उपाय",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f8f9fa",
+  "theme_color": "#e8590c",
+  "lang": "hi",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "icon.svg", "sizes": "512x512", "type": "image/svg+xml", "purpose": "maskable" }
+  ]
+}

@@ -1,0 +1,1360 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#141414" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-title" content="Jyotish Saarthi" />
+<meta name="description" content="Free astrology, birth chart, transits and remedies — no payment needed." />
+<title>Jyotish Saarthi</title>
+<link rel="manifest" href="manifest.webmanifest" />
+<link rel="icon" href="icon.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="icon.svg" />
+<style>
+  :root {
+    --bg: #141414; --card: #1d1d1f; --card2: #262628; --ink: #f5f5f7; --muted: #8e8e93;
+    --accent: #f08a4b; --line: #2c2c2e;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--ink); font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans Devanagari", "Noto Sans Gurmukhi", sans-serif; -webkit-tap-highlight-color: transparent; }
+  .app { max-width: 480px; margin: 0 auto; min-height: 100%; position: relative; padding-bottom: 120px; }
+  .screen { display: none; }
+  .screen.on { display: block; }
+  .hidden { display: none !important; }
+
+  #splash { position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background: var(--bg); z-index: 50; transition: opacity .4s; }
+  #splash.gone { opacity: 0; pointer-events: none; }
+  .logo { width: 104px; height: 104px; background: #fff; border-radius: 28px; display: flex; align-items: center; justify-content: center; animation: pop .9s ease-out; }
+  @keyframes pop { from { transform: scale(.6); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  .tag { margin-top: 18px; color: var(--muted); font-size: 14px; letter-spacing: .5px; }
+
+  .top { display: flex; align-items: center; justify-content: space-between; padding: 18px 20px 8px; }
+  .avatar { width: 42px; height: 42px; border-radius: 50%; background: linear-gradient(135deg, #f7a36a, #e0703a); display: flex; align-items: center; justify-content: center; font-weight: 700; color: #fff; font-size: 17px; }
+  .top h1 { font-size: 17px; font-weight: 600; margin: 0; }
+  .circle-btn { width: 42px; height: 42px; border-radius: 50%; background: var(--card); border: 0; color: var(--ink); display: flex; align-items: center; justify-content: center; }
+  .circle-btn svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 1.8; }
+  .page-title { font-size: 28px; font-weight: 700; text-align: center; margin: 14px 0 4px; }
+  .page-sub { color: var(--muted); font-size: 14px; text-align: center; line-height: 1.5; padding: 0 12px; margin-bottom: 16px; }
+  main { padding: 6px 20px 20px; }
+
+  .card { background: var(--card); border-radius: 22px; padding: 18px; margin-bottom: 14px; }
+  .section-h { display: flex; justify-content: space-between; align-items: center; margin: 22px 0 12px; font-size: 17px; font-weight: 600; }
+  .section-h a { color: var(--accent); font-size: 14px; font-weight: 500; text-decoration: none; }
+  .orange { color: var(--accent); }
+  .muted { color: var(--muted); }
+  .note { font-size: 12px; color: var(--muted); line-height: 1.5; padding: 6px 2px 14px; }
+  p { margin: 6px 0; line-height: 1.6; font-size: 15px; }
+  .row { display: flex; justify-content: space-between; gap: 10px; padding: 9px 0; font-size: 15px; border-bottom: 1px solid var(--line); }
+  .row:last-child { border-bottom: 0; }
+  .row b { color: var(--muted); font-weight: 500; }
+
+  .seg { display: flex; background: var(--card); border-radius: 999px; padding: 5px; margin-bottom: 16px; }
+  .seg button { flex: 1; border: 0; background: transparent; color: var(--ink); padding: 11px 6px; border-radius: 999px; font-size: 14px; font-weight: 500; }
+  .seg button.on { background: var(--accent); color: #fff; font-weight: 600; }
+
+  .hscroll { display: flex; gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 6px; scrollbar-width: none; }
+  .hscroll::-webkit-scrollbar { display: none; }
+  .hcard { flex: 0 0 82%; scroll-snap-align: start; border-radius: 26px; padding: 20px; min-height: 230px; position: relative; overflow: hidden; background: radial-gradient(circle at 80% 20%, rgba(240,138,75,.55), transparent 55%), linear-gradient(160deg, #2a2a2d, #1b1b1d); border: 1px solid var(--line); }
+  .hcard .kicker { color: var(--accent); font-size: 14px; font-weight: 500; }
+  .hcard h3 { font-size: 21px; line-height: 1.3; margin: 10px 0 14px; font-weight: 700; }
+  .hcard .meta { color: var(--muted); font-size: 13px; }
+  .hcard .orb { position: absolute; right: -40px; top: -30px; width: 170px; height: 170px; border-radius: 50%; border: 1.5px solid rgba(240,138,75,.5); box-shadow: inset 0 0 40px rgba(240,138,75,.25); }
+  .hcard .orb::after { content: ''; position: absolute; inset: 26px; border-radius: 50%; border: 1px dashed rgba(240,138,75,.45); }
+
+  .rings { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px; }
+  .rcard { background: var(--card); border-radius: 22px; padding: 16px 8px; display: flex; flex-direction: column; align-items: center; }
+
+  .btn { width: 100%; border: 0; border-radius: 999px; background: var(--accent); color: #fff; padding: 16px; font-size: 16px; font-weight: 600; }
+  .btn:disabled { opacity: .5; }
+  .btn.ghost { background: transparent; border: 1px solid var(--accent); color: var(--accent); }
+  .btn.small { width: auto; padding: 9px 18px; font-size: 14px; }
+  .arrow-btn { width: 38px; height: 38px; border-radius: 50%; background: var(--accent); border: 0; color: #fff; display: flex; align-items: center; justify-content: center; flex: 0 0 auto; }
+  .arrow-btn svg { width: 18px; height: 18px; stroke: #fff; fill: none; stroke-width: 2.2; }
+
+  .item { background: var(--card); border-radius: 22px; padding: 18px; margin-bottom: 12px; display: flex; gap: 14px; align-items: center; }
+  .item .body { flex: 1; min-width: 0; }
+  .item h4 { margin: 0 0 6px; font-size: 17px; font-weight: 600; }
+  .item p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.5; }
+  .learn-body { margin-top: 10px; color: #e5e5ea; font-size: 14px; line-height: 1.6; }
+
+  .planet { width: 86px; height: 86px; border-radius: 50%; flex: 0 0 auto; box-shadow: inset -10px -10px 22px rgba(0,0,0,.45), 0 0 24px rgba(240,138,75,.15); }
+  .planet-moon { background: radial-gradient(circle at 35% 35%, #f0f0f4, #9a9aa3 55%, #3a3a40); }
+  .planet-jupiter { background: repeating-linear-gradient(170deg, #f4b48d 0 9px, #d9826a 9px 15px, #f7d2b4 15px 22px); }
+  .planet-mars { background: radial-gradient(circle at 32% 30%, #ffb393, #d9542c 60%, #6e1f10); }
+
+  .pbar { height: 8px; background: var(--line); border-radius: 999px; overflow: hidden; margin-top: 8px; }
+  .pbar > i { display: block; height: 100%; background: var(--accent); border-radius: 999px; transition: width .4s; }
+  .prow { display: flex; justify-content: space-between; font-size: 15px; font-weight: 600; }
+  .wheel { display: flex; justify-content: center; padding: 6px 0 14px; }
+
+  label { display: block; font-size: 13px; color: var(--muted); margin: 14px 0 6px; }
+  input, select { width: 100%; font-size: 16px; padding: 14px 16px; border: 1px solid var(--line); border-radius: 16px; background: var(--card2); color: var(--ink); }
+  input::placeholder { color: #6e6e76; }
+  .timerow { display: flex; gap: 8px; }
+  .timerow select { flex: 1; padding: 14px 8px; }
+  .inline { display: flex; align-items: center; gap: 8px; margin: 8px 0; color: var(--ink); font-size: 15px; }
+  .inline input { width: auto; }
+  .placewrap { position: relative; }
+  .sugg { position: absolute; left: 0; right: 0; top: 100%; z-index: 30; margin-top: 6px; background: var(--card2); border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,.6); max-height: 260px; overflow-y: auto; }
+  .sugg-item { padding: 13px 16px; border-bottom: 1px solid var(--line); cursor: pointer; }
+  .sugg-item:last-child { border-bottom: 0; }
+  .sugg-item:hover, .sugg-item:active { background: #303034; }
+
+  .banner { background: var(--card2); border-radius: 20px; padding: 16px; margin-bottom: 14px; border: 1px solid var(--accent); }
+  .banner p { margin: 0 0 12px; font-size: 14px; }
+  .banner .btns { display: flex; gap: 8px; }
+  .banner .btns button { flex: 1; }
+
+  .msg { padding: 11px 14px; border-radius: 18px; margin: 6px 0; max-width: 85%; font-size: 15px; line-height: 1.5; white-space: pre-wrap; }
+  .msg.me { background: var(--accent); color: #fff; margin-left: auto; }
+  .msg.ai { background: var(--card2); }
+  .chatbar { position: fixed; bottom: 96px; left: 50%; transform: translateX(-50%); width: calc(100% - 40px); max-width: 440px; display: flex; gap: 8px; }
+  .chatbar input { flex: 1; border-radius: 999px; }
+  .chatbar button { border: 0; border-radius: 999px; background: var(--accent); color: #fff; padding: 0 20px; font-weight: 600; }
+
+  nav { position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%); width: calc(100% - 40px); max-width: 440px; background: #1d1d1f; border-radius: 999px; display: flex; padding: 8px; box-shadow: 0 12px 30px rgba(0,0,0,.5); z-index: 30; }
+  nav button { flex: 1; height: 54px; border: 0; background: transparent; color: var(--ink); border-radius: 999px; display: flex; align-items: center; justify-content: center; }
+  nav button svg { width: 24px; height: 24px; stroke: currentColor; fill: none; stroke-width: 1.8; }
+  nav button.on { background: var(--accent); color: #fff; }
+
+  .install { position: fixed; left: 16px; right: 16px; bottom: 96px; max-width: 448px; margin: 0 auto; background: var(--card2); border-radius: 18px; padding: 14px 16px; display: flex; align-items: center; gap: 10px; font-size: 14px; z-index: 40; }
+  .install button { margin-left: auto; background: var(--accent); color: #fff; border: 0; border-radius: 999px; padding: 9px 16px; font-weight: 600; }
+  .install .x { background: none; color: var(--muted); padding: 4px 8px; }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div id="splash">
+    <div class="logo">
+      <svg width="60" height="60" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="27" fill="#f08a4b"/><circle cx="41" cy="32" r="19" fill="#ffffff"/></svg>
+    </div>
+    <div class="tag">Jyotish Saarthi</div>
+  </div>
+
+  <!-- Login / Signup -->
+  <section id="scrAuth" class="screen">
+    <main style="padding-top:30px">
+      <div class="page-title" data-i18n="welcomeTitle"></div>
+      <div class="page-sub" data-i18n="welcomeSub"></div>
+      <div class="seg" data-langseg>
+        <button data-setlang="en">English</button>
+        <button data-setlang="hi">हिंदी</button>
+        <button data-setlang="pa">ਪੰਜਾਬੀ</button>
+      </div>
+      <div class="card">
+        <label for="name" data-i18n="lblName"></label>
+        <input id="name" autocomplete="name" placeholder="RAHUL SHARMA" />
+        <label for="dob" data-i18n="lblDob"></label>
+        <input id="dob" type="date" min="1900-01-01" />
+        <label for="place" data-i18n="lblPlace"></label>
+        <div class="placewrap">
+          <input id="place" autocomplete="off" data-i18n-ph="placePh" />
+          <div id="placeList" class="sugg hidden"></div>
+        </div>
+        <label data-i18n="lblTime"></label>
+        <label class="inline"><input type="checkbox" id="timeUnknown" /> <span data-i18n="timeUnknown"></span></label>
+        <div class="timerow">
+          <select id="hh" aria-label="hour"></select>
+          <select id="mm" aria-label="minute"></select>
+          <select id="ap" aria-label="AM/PM">
+            <option value="AM" data-i18n="am"></option>
+            <option value="PM" data-i18n="pm"></option>
+          </select>
+        </div>
+        <label for="tz" data-i18n="lblTz"></label>
+        <select id="tz">
+          <option value="5.5" selected>India (IST, UTC+5:30)</option>
+          <option value="4">UAE/Gulf (UTC+4)</option>
+          <option value="0">UK/Africa (UTC+0)</option>
+          <option value="-5">US East (UTC-5)</option>
+          <option value="-8">US West (UTC-8)</option>
+          <option value="8">Singapore/China (UTC+8)</option>
+          <option value="9">Japan (UTC+9)</option>
+        </select>
+        <button class="btn" id="saveBtn" style="margin-top:18px" data-i18n="start"></button>
+        <p class="note" data-i18n="saveNote"></p>
+      </div>
+      <div class="card">
+        <div style="font-weight:600;margin-bottom:6px" data-i18n="loginTitle"></div>
+        <p class="muted" style="font-size:14px" data-i18n="loginSub"></p>
+        <input id="loginEmail" type="email" data-i18n-ph="emailPh" style="margin-top:8px" />
+        <button class="btn ghost" id="loginBtn" style="margin-top:12px" data-i18n="loginBtn"></button>
+        <p id="loginInfo" class="note"></p>
+      </div>
+    </main>
+  </section>
+
+  <!-- Main app -->
+  <section id="scrApp" class="screen">
+    <div class="top">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div class="avatar" id="avatar">?</div>
+        <h1 id="hGreet"></h1>
+      </div>
+      <button class="circle-btn" id="btnProfile" aria-label="profile">
+        <svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+
+    <main>
+      <div id="langBanner"></div>
+      <div id="pg-home"></div>
+      <div id="pg-chart" class="hidden"></div>
+      <div id="pg-transits" class="hidden"></div>
+      <div id="pg-listen" class="hidden"></div>
+
+      <div id="pg-chat" class="hidden">
+        <div class="page-title" style="font-size:24px" data-i18n="chatTitle"></div>
+        <div class="page-sub" data-i18n="chatSub"></div>
+        <div id="msgs"></div>
+        <p class="note" style="text-align:center" data-i18n="chatDisclaimer"></p>
+        <div style="height:80px"></div>
+      </div>
+
+      <div id="pg-profile" class="hidden">
+        <div class="page-title" style="font-size:24px" data-i18n="profileTitle"></div>
+        <div class="card" id="profCard" style="margin-top:14px"></div>
+        <div class="card">
+          <div style="font-weight:600;margin-bottom:10px" data-i18n="langTitle"></div>
+          <div class="seg" data-langseg>
+            <button data-setlang="en">English</button>
+            <button data-setlang="hi">हिंदी</button>
+            <button data-setlang="pa">ਪੰਜਾਬੀ</button>
+          </div>
+        </div>
+        <button class="btn ghost" id="resetBtn" data-i18n="reset"></button>
+        <p class="note" data-i18n="disclaimer"></p>
+      </div>
+    </main>
+
+    <div class="chatbar hidden" id="chatBar">
+      <input id="chatIn" type="text" data-i18n-ph="chatPh" />
+      <button id="chatSend" data-i18n="send"></button>
+    </div>
+
+    <nav id="tabbar">
+      <button data-pg="home" class="on" aria-label="home">
+        <svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>
+      </button>
+      <button data-pg="chart" aria-label="chart">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.5"/><path d="M12 3v4M12 17v4M3 12h4M17 12h4"/></svg>
+      </button>
+      <button data-pg="transits" aria-label="transits">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+      </button>
+      <button data-pg="listen" aria-label="listen">
+        <svg viewBox="0 0 24 24"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="3" y="14" width="4" height="6" rx="1.5"/><rect x="17" y="14" width="4" height="6" rx="1.5"/></svg>
+      </button>
+    </nav>
+  </section>
+
+  <div class="install hidden" id="installBox">
+    <span data-i18n="install"></span>
+    <button id="installBtn" data-i18n="installBtn"></button>
+    <button class="x" id="installX">✕</button>
+  </div>
+</div>
+
+<script src="js/astro.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+/* ============================================================
+   भाषा (i18n): English (डिफ़ॉल्ट), हिंदी, ਪੰਜਾਬੀ (गुरमुखी)
+   ============================================================ */
+const L = {
+  en: {
+    welcomeTitle: 'Welcome', welcomeSub: 'Fill in your details, or log in with email.',
+    lblName: 'Full name (in English letters, e.g. RAHUL)', lblDob: 'Date of birth (optional)',
+    lblPlace: 'Birth place (city, state, country)', placePh: 'e.g. Abohar, Ludhiana',
+    lblTime: 'Birth time (optional)', timeUnknown: "I don't know the time", am: 'AM (morning)', pm: 'PM (evening/night)',
+    lblTz: 'Time zone (UTC)', start: 'Start', saveNote: 'Your details are saved only on your phone.',
+    loginTitle: 'Log in (by email)', loginSub: 'To see your details on another phone too.', emailPh: 'Your email',
+    loginBtn: 'Send login link', loginSetup: 'Login setup is pending.', loginSent: 'Login link sent to your email.',
+    loginNeedEmail: 'Please enter your email.', loginFail: 'Could not send email: ',
+    langTitle: 'Language', langSuggest: 'Would you like to see the app in {0}?', yes: 'Yes', no: 'No',
+    periodToday: 'Today', periodWeek: 'This week', periodYear: 'This year',
+    yourDay: 'Your {0}', general: 'General', career: 'Career', love: 'Love', friendship: 'Friendship', work: 'Work',
+    seeAll: 'See all', askAi: 'What should I do today?', learn: 'Learn', templeToday: "Today's temple",
+    funNote: 'For entertainment and cultural information only.',
+    lblLord: 'Ruling planet', lblColor: 'Lucky color', lblDay: 'Lucky day', lblNak: 'Nakshatra', lblPada: 'Pada',
+    chartTitle: 'Your birth chart', chartSub: 'Sun (orange) and Moon (white) positions are shown on the wheel.',
+    chartNameOnly: 'Rashi from name', chartNeedTime: 'Add your date and time of birth for the full chart.',
+    completeness: 'Profile completeness', sunIn: 'Sun in {0}', moonRashi: 'Moon sign', mulank: 'Mulank',
+    lagna: 'Rising sign (Lagna) {0}', lagnaNeed: 'Lagna needs birth time and a valid place.',
+    understand: 'Understand', chartNote: 'Calculations are based on astronomical formulas; small differences from traditional almanacs are possible.',
+    transitTitle: 'Transits', transitSub: 'Moon is in {0} today, in house {1} from your Moon sign.',
+    transitNeed: 'Add your date and time of birth to see today\'s moon transit for your sign.',
+    areaGood: 'Favorable time. You can move forward in matters of {0}.', areaCaution: 'Be careful. Avoid haste in matters of {0}.',
+    areaNormal: 'A normal period. Move forward slowly in matters of {0}.',
+    transitNote: 'This is general guidance based only on the Moon.',
+    listenTitle: 'Sleep stories', listenSub: 'Gentle imaginative journeys to the planets. Listen slowly.',
+    speak: 'Play', stop: 'Stop', speakNote: 'Voice uses your phone\'s text-to-speech.', noVoice: 'This browser has no voice support.',
+    chatTitle: 'Ask AI', chatSub: 'Type your question, e.g. "When is a good time to change my job?"',
+    chatPh: 'Type a question...', send: 'Send', chatDisclaimer: 'Your sign and birth details are sent to the AI service when you ask.',
+    chatWait: 'Thinking...', chatFail: 'Could not get an answer right now. Please try again later.',
+    chatNotReady: 'AI chat will be available soon. Your reading, numbers and remedies are fully visible in the tabs above.',
+    profileTitle: 'Profile', reset: 'Change profile / reset', resetConfirm: 'Delete this profile and enter new details?',
+    pName: 'Name', pDob: 'Date of birth', pPlace: 'Birth place', pTime: 'Birth time', notKnown: 'Not known',
+    disclaimer: 'For health, legal or financial decisions, consult the right expert.',
+    install: 'Add the app to your phone', installBtn: 'Add', alertName: 'Please enter your name',
+    alertTime: 'Choose the birth time, or tick "I don\'t know the time"', saving: 'Preparing chart...', saved: 'Start',
+    dash: '-', rashiLabel: 'Rashi', nameNote: 'Add your date and time of birth to see the moon sign, nakshatra and lagna.',
+    noRashi: 'Could not find a rashi from the name.'
+  },
+  hi: {
+    welcomeTitle: 'स्वागत है', welcomeSub: 'अपनी जानकारी भरें, या ईमेल से लॉगिन करें।',
+    lblName: 'पूरा नाम (अंग्रेज़ी में, जैसे RAHUL)', lblDob: 'जन्म तिथि (वैकल्पिक)',
+    lblPlace: 'जन्म स्थान (शहर, राज्य, देश)', placePh: 'जैसे: Abohar, Ludhiana',
+    lblTime: 'जन्म का समय (वैकल्पिक)', timeUnknown: 'समय पता नहीं है', am: 'AM (सुबह)', pm: 'PM (शाम/रात)',
+    lblTz: 'समय क्षेत्र (UTC)', start: 'शुरू करें', saveNote: 'आपकी जानकारी केवल आपके फ़ोन में सेव होती है।',
+    loginTitle: 'लॉगिन (ईमेल से)', loginSub: 'दूसरे फ़ोन पर भी अपनी जानकारी पाने के लिए।', emailPh: 'आपका ईमेल',
+    loginBtn: 'लॉगिन लिंक भेजें', loginSetup: 'लॉगिन सेटअप अभी बाकी है।', loginSent: 'ईमेल पर लॉगिन लिंक भेजा गया है।',
+    loginNeedEmail: 'ईमेल लिखें', loginFail: 'ईमेल नहीं भेजा जा सका: ',
+    langTitle: 'भाषा', langSuggest: 'क्या आप ऐप {0} में देखना चाहते हैं?', yes: 'हाँ', no: 'नहीं',
+    periodToday: 'आज', periodWeek: 'इस हफ़्ते', periodYear: 'इस साल',
+    yourDay: 'आपका {0}', general: 'सामान्य दिन', career: 'करियर', love: 'प्रेम', friendship: 'दोस्ती', work: 'काम',
+    seeAll: 'सब देखें', askAi: 'आज क्या करें?', learn: 'सीखें', templeToday: 'आज का मंदिर',
+    funNote: 'यह मनोरंजन और सांस्कृतिक जानकारी के लिए है।',
+    lblLord: 'स्वामी ग्रह', lblColor: 'शुभ रंग', lblDay: 'शुभ दिन', lblNak: 'नक्षत्र', lblPada: 'चरण',
+    chartTitle: 'आपकी कुंडली', chartSub: 'सूर्य (नारंगी) और चंद्र (सफ़ेद) की स्थिति इस वृत्त पर दिखाई गई है।',
+    chartNameOnly: 'नाम से राशि', chartNeedTime: 'पूरी कुंडली के लिए जन्म तिथि और समय डालें।',
+    completeness: 'कुंडली की पूर्णता', sunIn: 'सूर्य {0} में', moonRashi: 'चंद्र राशि', mulank: 'मूलांक',
+    lagna: 'लग्न {0}', lagnaNeed: 'लग्न के लिए जन्म समय और सही स्थान चाहिए।',
+    understand: 'समझें', chartNote: 'सटीक गणना खगोलीय सूत्रों पर आधारित है; पारंपरिक पंचांग से छोटे अंतर हो सकते हैं।',
+    transitTitle: 'ट्रांज़िट', transitSub: 'आज चंद्रमा {0} में है, जो आपकी चंद्र राशि से {1}वें भाव में है।',
+    transitNeed: 'आज का चंद्र-ट्रांज़िट देखने के लिए जन्म तिथि और समय डालें।',
+    areaGood: 'अनुकूल समय है। {0} से जुड़े कामों में आगे बढ़ सकते हैं।', areaCaution: 'सावधानी रखें। {0} के मामलों में जल्दबाज़ी से बचें।',
+    areaNormal: 'सामान्य समय है। {0} के मामलों में धीरे-धीरे आगे बढ़ें।',
+    transitNote: 'यह संकेत केवल चंद्रमा पर आधारित सामान्य मार्गदर्शन है।',
+    listenTitle: 'Sleep stories', listenSub: 'ग्रहों की कल्पनात्मक यात्राएँ, धीरे-धीरे सुनें।',
+    speak: 'सुनें', stop: 'रोकें', speakNote: 'आवाज़ आपके फ़ोन की Hindi आवाज़ से चलती है।', noVoice: 'इस ब्राउज़र में आवाज़ सुविधा उपलब्ध नहीं है।',
+    chatTitle: 'AI से पूछें', chatSub: 'अपना सवाल लिखें, जैसे "मेरे लिए नौकरी बदलने का समय कब ठीक रहेगा?"',
+    chatPh: 'सवाल लिखें...', send: 'भेजें', chatDisclaimer: 'सवाल भेजते समय राशि और जन्म विवरण AI सेवा को भेजे जाते हैं।',
+    chatWait: 'सोच रहा हूँ...', chatFail: 'अभी जवाब नहीं मिल पाया, थोड़ी देर बाद कोशिश करें।',
+    chatNotReady: 'AI चैट सुविधा जल्द उपलब्ध होगी। आपके राशिफल, अंक और उपाय ऊपर के टैब में पूरी तरह दिख रहे हैं।',
+    profileTitle: 'प्रोफ़ाइल', reset: 'प्रोफ़ाइल बदलें / रीसेट करें', resetConfirm: 'क्या आप प्रोफ़ाइल हटाकर नई जानकारी डालना चाहते हैं?',
+    pName: 'नाम', pDob: 'जन्म तिथि', pPlace: 'जन्म स्थान', pTime: 'जन्म समय', notKnown: 'पता नहीं',
+    disclaimer: 'स्वास्थ्य, कानूनी या आर्थिक निर्णयों के लिए संबंधित विशेषज्ञ से सलाह लें।',
+    install: 'ऐप को फ़ोन में जोड़ें', installBtn: 'जोड़ें', alertName: 'कृपया नाम लिखें',
+    alertTime: 'जन्म का समय चुनें, या "समय पता नहीं है" पर टिक करें', saving: 'कुंडली बन रही है...', saved: 'शुरू करें',
+    dash: '-', rashiLabel: 'राशि', nameNote: 'चंद्र राशि, नक्षत्र और लग्न देखने के लिए जन्म तिथि और समय डालें।',
+    noRashi: 'नाम से राशि नहीं निकल सकी।'
+  },
+  pa: {
+    welcomeTitle: 'ਜੀ ਆਇਆਂ ਨੂੰ', welcomeSub: 'ਆਪਣੀ ਜਾਣਕਾਰੀ ਭਰੋ, ਜਾਂ ਈਮੇਲ ਨਾਲ ਲੌਗਇਨ ਕਰੋ।',
+    lblName: 'ਪੂਰਾ ਨਾਮ (ਅੰਗਰੇਜ਼ੀ ਅੱਖਰਾਂ ਵਿੱਚ, ਜਿਵੇਂ RAHUL)', lblDob: 'ਜਨਮ ਮਿਤੀ (ਵਿਕਲਪਿਕ)',
+    lblPlace: 'ਜਨਮ ਸਥਾਨ (ਸ਼ਹਿਰ, ਰਾਜ, ਦੇਸ਼)', placePh: 'ਜਿਵੇਂ: Abohar, Ludhiana',
+    lblTime: 'ਜਨਮ ਦਾ ਸਮਾਂ (ਵਿਕਲਪਿਕ)', timeUnknown: 'ਸਮਾਂ ਪਤਾ ਨਹੀਂ ਹੈ', am: 'AM (ਸਵੇਰ)', pm: 'PM (ਸ਼ਾਮ/ਰਾਤ)',
+    lblTz: 'ਸਮਾਂ ਖੇਤਰ (UTC)', start: 'ਸ਼ੁਰੂ ਕਰੋ', saveNote: 'ਤੁਹਾਡੀ ਜਾਣਕਾਰੀ ਸਿਰਫ਼ ਤੁਹਾਡੇ ਫ਼ੋਨ ਵਿੱਚ ਸੇਵ ਹੁੰਦੀ ਹੈ।',
+    loginTitle: 'ਲੌਗਇਨ (ਈਮੇਲ ਨਾਲ)', loginSub: 'ਦੂਜੇ ਫ਼ੋਨ ਤੇ ਵੀ ਆਪਣੀ ਜਾਣਕਾਰੀ ਲੈਣ ਲਈ।', emailPh: 'ਤੁਹਾਡੀ ਈਮੇਲ',
+    loginBtn: 'ਲੌਗਇਨ ਲਿੰਕ ਭੇਜੋ', loginSetup: 'ਲੌਗਇਨ ਸੈੱਟਅੱਪ ਅਜੇ ਬਾਕੀ ਹੈ।', loginSent: 'ਈਮੇਲ ਤੇ ਲੌਗਇਨ ਲਿੰਕ ਭੇਜਿਆ ਗਿਆ ਹੈ।',
+    loginNeedEmail: 'ਕਿਰਪਾ ਕਰਕੇ ਈਮੇਲ ਲਿਖੋ', loginFail: 'ਈਮੇਲ ਨਹੀਂ ਭੇਜੀ ਜਾ ਸਕੀ: ',
+    langTitle: 'ਭਾਸ਼ਾ', langSuggest: 'ਕੀ ਤੁਸੀਂ ਐਪ ਨੂੰ {0} ਵਿੱਚ ਦੇਖਣਾ ਚਾਹੁੰਦੇ ਹੋ?', yes: 'ਹਾਂ', no: 'ਨਹੀਂ',
+    periodToday: 'ਅੱਜ', periodWeek: 'ਇਸ ਹਫ਼ਤੇ', periodYear: 'ਇਸ ਸਾਲ',
+    yourDay: 'ਤੁਹਾਡਾ {0}', general: 'ਆਮ ਦਿਨ', career: 'ਕਰੀਅਰ', love: 'ਪਿਆਰ', friendship: 'ਦੋਸਤੀ', work: 'ਕੰਮ',
+    seeAll: 'ਸਭ ਦੇਖੋ', askAi: 'ਅੱਜ ਕੀ ਕਰਾਂ?', learn: 'ਸਿੱਖੋ', templeToday: 'ਅੱਜ ਦਾ ਮੰਦਰ',
+    funNote: 'ਇਹ ਮਨੋਰੰਜਨ ਅਤੇ ਸੱਭਿਆਚਾਰਕ ਜਾਣਕਾਰੀ ਲਈ ਹੈ।',
+    lblLord: 'ਸਵਾਮੀ ਗ੍ਰਹਿ', lblColor: 'ਸ਼ੁਭ ਰੰਗ', lblDay: 'ਸ਼ੁਭ ਦਿਨ', lblNak: 'ਨਕਸ਼ਤਰ', lblPada: 'ਚਰਨ',
+    chartTitle: 'ਤੁਹਾਡੀ ਕੁੰਡਲੀ', chartSub: 'ਸੂਰਜ (ਸੰਤਰੀ) ਅਤੇ ਚੰਦਰਮਾ (ਚਿੱਟਾ) ਦੀ ਸਥਿਤੀ ਇਸ ਚੱਕਰ ਤੇ ਦਿਖਾਈ ਗਈ ਹੈ।',
+    chartNameOnly: 'ਨਾਮ ਤੋਂ ਰਾਸ਼ੀ', chartNeedTime: 'ਪੂਰੀ ਕੁੰਡਲੀ ਲਈ ਜਨਮ ਮਿਤੀ ਅਤੇ ਸਮਾਂ ਭਰੋ।',
+    completeness: 'ਕੁੰਡਲੀ ਦੀ ਪੂਰਤੀ', sunIn: 'ਸੂਰਜ {0} ਵਿੱਚ', moonRashi: 'ਚੰਦਰ ਰਾਸ਼ੀ', mulank: 'ਮੂਲਾਂਕ',
+    lagna: 'ਲੱਗਨ {0}', lagnaNeed: 'ਲੱਗਨ ਲਈ ਜਨਮ ਸਮਾਂ ਅਤੇ ਸਹੀ ਸਥਾਨ ਚਾਹੀਦਾ ਹੈ।',
+    understand: 'ਸਮਝੋ', chartNote: 'ਗਣਨਾ ਖਗੋਲੀ ਫ਼ਾਰਮੂਲਿਆਂ ਤੇ ਅਧਾਰਤ ਹੈ; ਪਰੰਪਰਾਗਤ ਪੰਚਾਂਗ ਨਾਲ ਛੋਟੇ ਫ਼ਰਕ ਹੋ ਸਕਦੇ ਹਨ।',
+    transitTitle: 'ਟ੍ਰਾਂਜ਼ਿਟ', transitSub: 'ਅੱਜ ਚੰਦਰਮਾ {0} ਵਿੱਚ ਹੈ, ਜੋ ਤੁਹਾਡੀ ਚੰਦਰ ਰਾਸ਼ੀ ਤੋਂ {1}ਵੇਂ ਭਾਵ ਵਿੱਚ ਹੈ।',
+    transitNeed: 'ਅੱਜ ਦਾ ਚੰਦਰ ਟ੍ਰਾਂਜ਼ਿਟ ਦੇਖਣ ਲਈ ਜਨਮ ਮਿਤੀ ਅਤੇ ਸਮਾਂ ਭਰੋ।',
+    areaGood: 'ਅਨੁਕੂਲ ਸਮਾਂ ਹੈ। {0} ਨਾਲ ਜੁੜੇ ਕੰਮਾਂ ਵਿੱਚ ਅੱਗੇ ਵਧ ਸਕਦੇ ਹੋ।', areaCaution: 'ਸਾਵਧਾਨ ਰਹੋ। {0} ਦੇ ਮਾਮਲਿਆਂ ਵਿੱਚ ਜਲਦਬਾਜ਼ੀ ਤੋਂ ਬਚੋ।',
+    areaNormal: 'ਆਮ ਸਮਾਂ ਹੈ। {0} ਦੇ ਮਾਮਲਿਆਂ ਵਿੱਚ ਹੌਲੀ-ਹੌਲੀ ਅੱਗੇ ਵਧੋ।',
+    transitNote: 'ਇਹ ਸੰਕੇਤ ਸਿਰਫ਼ ਚੰਦਰਮਾ ਤੇ ਅਧਾਰਤ ਆਮ ਮਾਰਗਦਰਸ਼ਨ ਹੈ।',
+    listenTitle: 'Sleep stories', listenSub: 'ਗ੍ਰਹਾਂ ਦੀਆਂ ਕਲਪਨਾਤਮਕ ਯਾਤਰਾਵਾਂ, ਹੌਲੀ-ਹੌਲੀ ਸੁਣੋ।',
+    speak: 'ਸੁਣੋ', stop: 'ਰੋਕੋ', speakNote: 'ਆਵਾਜ਼ ਤੁਹਾਡੇ ਫ਼ੋਨ ਦੀ ਪੰਜਾਬੀ ਆਵਾਜ਼ ਨਾਲ ਚੱਲਦੀ ਹੈ।', noVoice: 'ਇਸ ਬ੍ਰਾਊਜ਼ਰ ਵਿੱਚ ਆਵਾਜ਼ ਦੀ ਸਹੂਲਤ ਨਹੀਂ ਹੈ।',
+    chatTitle: 'AI ਤੋਂ ਪੁੱਛੋ', chatSub: 'ਆਪਣਾ ਸਵਾਲ ਲਿਖੋ, ਜਿਵੇਂ "ਮੇਰੇ ਲਈ ਨੌਕਰੀ ਬਦਲਣ ਦਾ ਸਹੀ ਸਮਾਂ ਕਦੋਂ ਹੈ?"',
+    chatPh: 'ਸਵਾਲ ਲਿਖੋ...', send: 'ਭੇਜੋ', chatDisclaimer: 'ਸਵਾਲ ਭੇਜਣ ਸਮੇਂ ਰਾਸ਼ੀ ਅਤੇ ਜਨਮ ਵੇਰਵੇ AI ਸੇਵਾ ਨੂੰ ਭੇਜੇ ਜਾਂਦੇ ਹਨ।',
+    chatWait: 'ਸੋਚ ਰਿਹਾ ਹਾਂ...', chatFail: 'ਹੁਣ ਜਵਾਬ ਨਹੀਂ ਮਿਲ ਸਕਿਆ, ਥੋੜ੍ਹੀ ਦੇਰ ਬਾਅਦ ਕੋਸ਼ਿਸ਼ ਕਰੋ।',
+    chatNotReady: 'AI ਚੈਟ ਜਲਦੀ ਉਪਲਬਧ ਹੋਵੇਗੀ। ਤੁਹਾਡਾ ਰਾਸ਼ੀਫਲ, ਅੰਕ ਅਤੇ ਉਪਾਅ ਉੱਪਰ ਦੇ ਟੈਬਾਂ ਵਿੱਚ ਪੂਰੀ ਤਰ੍ਹਾਂ ਦਿਖਦੇ ਹਨ।',
+    profileTitle: 'ਪ੍ਰੋਫ਼ਾਈਲ', reset: 'ਪ੍ਰੋਫ਼ਾਈਲ ਬਦਲੋ / ਰੀਸੈੱਟ ਕਰੋ', resetConfirm: 'ਕੀ ਤੁਸੀਂ ਪ੍ਰੋਫ਼ਾਈਲ ਮਿਟਾ ਕੇ ਨਵੀਂ ਜਾਣਕਾਰੀ ਭਰਨਾ ਚਾਹੁੰਦੇ ਹੋ?',
+    pName: 'ਨਾਮ', pDob: 'ਜਨਮ ਮਿਤੀ', pPlace: 'ਜਨਮ ਸਥਾਨ', pTime: 'ਜਨਮ ਸਮਾਂ', notKnown: 'ਪਤਾ ਨਹੀਂ',
+    disclaimer: 'ਸਿਹਤ, ਕਾਨੂੰਨੀ ਜਾਂ ਵਿੱਤੀ ਫ਼ੈਸਲਿਆਂ ਲਈ ਸੰਬੰਧਤ ਮਾਹਿਰ ਨਾਲ ਸਲਾਹ ਲਓ।',
+    install: 'ਐਪ ਨੂੰ ਫ਼ੋਨ ਵਿੱਚ ਜੋੜੋ', installBtn: 'ਜੋੜੋ', alertName: 'ਕਿਰਪਾ ਕਰਕੇ ਨਾਮ ਲਿਖੋ',
+    alertTime: 'ਜਨਮ ਦਾ ਸਮਾਂ ਚੁਣੋ, ਜਾਂ "ਸਮਾਂ ਪਤਾ ਨਹੀਂ ਹੈ" ਤੇ ਟਿੱਕ ਕਰੋ', saving: 'ਕੁੰਡਲੀ ਬਣ ਰਹੀ ਹੈ...', saved: 'ਸ਼ੁਰੂ ਕਰੋ',
+    dash: '-', rashiLabel: 'ਰਾਸ਼ੀ', nameNote: 'ਚੰਦਰ ਰਾਸ਼ੀ, ਨਕਸ਼ਤਰ ਅਤੇ ਲੱਗਨ ਦੇਖਣ ਲਈ ਜਨਮ ਮਿਤੀ ਅਤੇ ਸਮਾਂ ਭਰੋ।',
+    noRashi: 'ਨਾਮ ਤੋਂ ਰਾਸ਼ੀ ਨਹੀਂ ਲੱਭ ਸਕੀ।'
+  }
+};
+
+/* ---- ਬਹੁ-ਭਾਸ਼ਾਈ ਸਮੱਗਰੀ (ਰਾਸ਼ੀ, ਗ੍ਰਹਿ, ਦਿਨ, ਰੰਗ, ਲਿਖਤ) ---- */
+const CONTENT = {
+  en: {
+    rashi: ['Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scorpio','Sagittarius','Capricorn','Aquarius','Pisces'],
+    planet: { 'सूर्य':'Sun','चंद्र':'Moon','मंगल':'Mars','बुध':'Mercury','गुरु':'Jupiter','शुक्र':'Venus','शनि':'Saturn','राहु':'Rahu','केतु':'Ketu' },
+    color: { 'लाल':'Red','हरा':'Green','सफ़ेद':'White','नारंगी':'Orange','गुलाबी':'Pink','पीला':'Yellow','नीला':'Blue' },
+    weekdays: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
+    areas: ['Work','Friendship','Love'],
+    nak: ['Ashwini','Bharani','Krittika','Rohini','Mrigashira','Ardra','Punarvasu','Pushya','Ashlesha','Magha','Purva Phalguni','Uttara Phalguni','Hasta','Chitra','Swati','Vishakha','Anuradha','Jyeshtha','Mula','Purva Ashadha','Uttara Ashadha','Shravana','Dhanishta','Shatabhisha','Purva Bhadrapada','Uttara Bhadrapada','Revati'],
+    sun: [
+      'You are seen as brave, action-oriented and naturally leading.',
+      'Patience, stability and a love of comfort are your known traits.',
+      'Curiosity, communication skills and many interests define you.',
+      'Emotion, family bonds and sensitivity are your key strengths.',
+      'Confidence, generosity and a natural ability to lead are yours.',
+      'Analysis, order and a spirit of service are your hallmarks.',
+      'Balance, a sense of beauty and a wish for harmony define you.',
+      'Depth, determination and the ability to keep things private.',
+      'Optimism, a quest for knowledge and independent thinking.',
+      'Discipline, ambition and steady patience to reach goals.',
+      'Originality, humane thinking and an openness to new ideas.',
+      'Compassion, imagination and a spiritual inclination.'
+    ],
+    lagna: [
+      'Your first impression is energetic and direct.',
+      'Your first impression is calm, reliable and easygoing.',
+      'You come across as quick-witted and friendly.',
+      'Your first impression is gentle and caring.',
+      'Your presence appears strong and confident.',
+      'You look neat, well-organised and polished.',
+      'Your image appears attractive, graceful and balanced.',
+      'Your first impression is serious and magnetic.',
+      'You look open-minded and cheerful.',
+      'Your image looks serious, mature and responsible.',
+      'You look unique and independent.',
+      'Your image looks soft, dreamy and kind-hearted.'
+    ],
+    traits: [
+      'Leadership, confidence and independent thinking define you.',
+      'Sensitivity, cooperation and diplomacy are your strengths.',
+      'Creativity, communication and optimism are your qualities.',
+      'Hard work, order and patience are your foundations.',
+      'A changeable nature, intelligence and love of travel mark you.',
+      'Family, aesthetic sense and responsibility are at your core.',
+      'Reflection, depth and a spiritual interest set you apart.',
+      'Ambition, discipline and organising ability are with you.',
+      'Compassion, courage and a giving nature are central to you.'
+    ],
+    pool: {
+      'General day': ['A balanced day. Be patient with your plans.','New ideas will come to mind; writing them down will help.','A busy stretch, but relief comes by evening.','Advice from experienced people may prove useful.'],
+      'Career': ['A chance to finish an old task at work may come up.','Signs of new responsibility; accept it after careful thought.','Keep in step with colleagues; teamwork will pay off.','Read financial or legal papers carefully today.'],
+      'Love & family': ['Time with family will bring joy.','A good time to share your heart with someone close.','Avoid pointless arguments; choose your words carefully.','A meeting or old chat with friends will be pleasant.'],
+      'Health': ['Drink enough water and eat on time.','A short walk or light exercise will boost your energy.','Get proper sleep; do not ignore tiredness.','For any health concern, consult a doctor.'],
+      'Money': ['Watch your spending and avoid unnecessary buys.','A good time to plan savings.','Do not rush big investment decisions.','New income ideas may be worth exploring.']
+    },
+    learn: [
+      { t: 'What is transit?', b: 'When the current positions of planets are compared with your birth chart, it is called transit. Here, general signs are shown based on the Moon.' },
+      { t: 'What is Lagna?', b: 'The sign rising on the eastern horizon at birth is called Lagna. It shows the first impression of your personality.' },
+      { t: 'What is Nakshatra?', b: 'The sky is divided into 27 parts, each called a nakshatra. The nakshatra the Moon was in at birth is taken as your birth nakshatra.' }
+    ],
+    listen: [
+      { title: 'Journey to Moon', sub: 'The Moon rules the mind. Imagine sitting under moonlight on a calm night. Breathe slowly and let the mind settle. Meditating on Mondays is considered helpful for steadiness.' },
+      { title: 'Journey to Jupiter', sub: 'Jupiter is the planet of wisdom and expansion. Imagine being in an old library where every book teaches something. Respect a teacher and make a resolve to learn something new.' },
+      { title: 'Journey to Mars', sub: 'Mars is the planet of energy and courage. Imagine a long walk in the first morning sun. Direct your energy well, reduce anger, and put your effort into the right work.' }
+    ],
+    temples: ['Shiva temple — offer water or bel leaves.','Hanuman temple — visit and recite Hanuman Chalisa.','Ganesh temple — offer durva grass.','Vishnu or Sai temple — offer yellow prasad.','Lakshmi or Durga temple — light a lamp.','Shani temple or peepal tree — offer mustard or sesame oil.','Offer water to the Sun God.'],
+    habits: ['Sit quietly for a few minutes in the morning.','Take blessings from parents and elders.','Help those in need as much as you can.','In anger or dispute, pause and take a deep breath.','Before sleep, write down one good thing from your day.'],
+    weekdayHi: ['सोमवार','मंगलवार','बुधवार','गुरुवार','शुक्रवार','शनिवार','रविवार']
+  },
+  hi: null, // नीचे भरा जाएगा (हिंदी डेटा मौजूदा स्थिरांक से)
+  pa: {
+    rashi: ['ਮੇਸ਼','ਬ੍ਰਿਸ਼ਭ','ਮਿਥੁਨ','ਕਰਕ','ਸਿੰਘ','ਕੰਨਿਆ','ਤੁਲਾ','ਬ੍ਰਿਸ਼ਚਕ','ਧਨੁ','ਮਕਰ','ਕੁੰਭ','ਮੀਨ'],
+    planet: { 'सूर्य':'ਸੂਰਜ','चंद्र':'ਚੰਦਰਮਾ','मंगल':'ਮੰਗਲ','बुध':'ਬੁਧ','गुरु':'ਗੁਰੂ','शुक्र':'ਸ਼ੁਕਰ','शनि':'ਸ਼ਨੀ','राहु':'ਰਾਹੂ','केतु':'ਕੇਤੂ' },
+    color: { 'लाल':'ਲਾਲ','हरा':'ਹਰਾ','सफ़ेद':'ਚਿੱਟਾ','नारंगी':'ਸੰਤਰੀ','गुलाबी':'ਗੁਲਾਬੀ','पीला':'ਪੀਲਾ','नीला':'ਨੀਲਾ' },
+    weekdays: ['ਸੋਮਵਾਰ','ਮੰਗਲਵਾਰ','ਬੁੱਧਵਾਰ','ਵੀਰਵਾਰ','ਸ਼ੁੱਕਰਵਾਰ','ਸ਼ਨੀਵਾਰ','ਐਤਵਾਰ'],
+    areas: ['ਕੰਮ','ਦੋਸਤੀ','ਪਿਆਰ'],
+    nak: ['ਅਸ਼ਵਿਨੀ','ਭਰਨੀ','ਕ੍ਰਿਤਿਕਾ','ਰੋਹਿਣੀ','ਮ੍ਰਿਗਸ਼ੀਰਸ਼ਾ','ਆਰਦਰਾ','ਪੁਨਰਵਸੂ','ਪੁਸ਼ਯ','ਆਸ਼ਲੇਸ਼ਾ','ਮਘਾ','ਪੂਰਵ ਫ਼ਾਲਗੁਨੀ','ਉੱਤਰ ਫ਼ਾਲਗੁਨੀ','ਹਸਤ','ਚਿੱਤਰਾ','ਸਵਾਤੀ','ਵਿਸ਼ਾਖਾ','ਅਨੁਰਾਧਾ','ਜੇਸ਼ਠਾ','ਮੂਲ','ਪੂਰਵਾਸ਼ਾੜ੍ਹਾ','ਉੱਤਰਾਸ਼ਾੜ੍ਹਾ','ਸ਼ਰਵਣ','ਧਨਿਸ਼ਠਾ','ਸ਼ਤਭਿਸ਼ਾ','ਪੂਰਵ ਭਾਦਰਪਦ','ਉੱਤਰ ਭਾਦਰਪਦ','ਰੇਵਤੀ'],
+    sun: [
+      'ਤੁਸੀਂ ਬਹਾਦਰ, ਕਦਮ ਚੁੱਕਣ ਵਾਲੇ ਅਤੇ ਕੁਦਰਤੀ ਤੌਰ ਤੇ ਅਗਵਾਈ ਕਰਨ ਵਾਲੇ ਮੰਨੇ ਜਾਂਦੇ ਹੋ।',
+      'ਸਬਰ, ਸਥਿਰਤਾ ਅਤੇ ਆਰਾਮ ਦੀ ਚਾਹ ਤੁਹਾਡੀ ਪਛਾਣ ਹੈ।',
+      'ਜਗਿਆਸਾ, ਗੱਲਬਾਤ ਦੀ ਕਲਾ ਅਤੇ ਕਈ ਰੁਚੀਆਂ ਤੁਹਾਡੇ ਗੁਣ ਹਨ।',
+      'ਭਾਵਨਾ, ਪਰਿਵਾਰਕ ਲਗਾਵ ਅਤੇ ਸੰਵੇਦਨਸ਼ੀਲਤਾ ਤੁਹਾਡੀ ਤਾਕਤ ਹੈ।',
+      'ਆਤਮ-ਵਿਸ਼ਵਾਸ, ਦਿਲੀ ਉਦਾਰਤਾ ਅਤੇ ਅਗਵਾਈ ਦੀ ਕੁਦਰਤੀ ਯੋਗਤਾ ਤੁਹਾਡੀ ਹੈ।',
+      'ਵਿਸ਼ਲੇਸ਼ਣ, ਵਿਵਸਥਾ ਅਤੇ ਸੇਵਾ ਦੀ ਭਾਵਨਾ ਤੁਹਾਡੀ ਖ਼ਾਸੀਅਤ ਹੈ।',
+      'ਸੰਤੁਲਨ, ਸੁੰਦਰਤਾ ਦੀ ਸਮਝ ਅਤੇ ਸੁਮੇਲ ਦੀ ਚਾਹ ਤੁਹਾਡੀ ਪਛਾਣ ਹੈ।',
+      'ਗਹਿਰਾਈ, ਦ੍ਰਿੜਤਾ ਅਤੇ ਗੱਲਾਂ ਨੂੰ ਗੁਪਤ ਰੱਖਣ ਦੀ ਯੋਗਤਾ ਹੈ।',
+      'ਆਸ਼ਾਵਾਦ, ਗਿਆਨ ਦੀ ਖੋਜ ਅਤੇ ਆਜ਼ਾਦ ਸੋਚ ਤੁਹਾਡੇ ਗੁਣ ਹਨ।',
+      'ਅਨੁਸ਼ਾਸਨ, ਮਹਤਵਾਕਾਂਖਿਆ ਅਤੇ ਸਬਰ ਨਾਲ ਟੀਚੇ ਤੱਕ ਪਹੁੰਚਣ ਦੀ ਪ੍ਰਵਿਰਤੀ ਹੈ।',
+      'ਵੱਖਰਾਪਨ, ਮਾਨਵਤਾਵਾਦੀ ਸੋਚ ਅਤੇ ਨਵੇਂ ਵਿਚਾਰਾਂ ਵੱਲ ਝੁਕਾਅ ਹੈ।',
+      'ਹਮਦਰਦੀ, ਕਲਪਨਾ ਅਤੇ ਅਧਿਆਤਮਕ ਰੁਝਾਨ ਤੁਹਾਡੀ ਪਛਾਣ ਹੈ।'
+    ],
+    lagna: [
+      'ਤੁਹਾਡੀ ਪਹਿਲੀ ਛਾਪ ਊਰਜਾਵਾਨ ਅਤੇ ਸਿੱਧੀ ਹੁੰਦੀ ਹੈ।',
+      'ਤੁਹਾਡੀ ਪਹਿਲੀ ਛਾਪ ਸ਼ਾਂਤ, ਭਰੋਸੇਮੰਦ ਅਤੇ ਸਹਿਜ ਹੁੰਦੀ ਹੈ।',
+      'ਤੁਸੀਂ ਗੱਲਬਾਤ ਵਿੱਚ ਤੇਜ਼ ਅਤੇ ਮਿਲਣਸਾਰ ਲੱਗਦੇ ਹੋ।',
+      'ਤੁਹਾਡੀ ਪਹਿਲੀ ਛਾਪ ਨਰਮ ਅਤੇ ਦੇਖਭਾਲ ਕਰਨ ਵਾਲੀ ਹੁੰਦੀ ਹੈ।',
+      'ਤੁਹਾਡੀ ਮੌਜੂਦਗੀ ਪ੍ਰਭਾਵਸ਼ਾਲੀ ਅਤੇ ਆਤਮ-ਵਿਸ਼ਵਾਸ ਭਰੀ ਲੱਗਦੀ ਹੈ।',
+      'ਤੁਸੀਂ ਸਲੀਕੇਦਾਰ ਅਤੇ ਵਿਵਸਥਿਤ ਲੱਗਦੇ ਹੋ।',
+      'ਤੁਹਾਡੀ ਛਵੀ ਆਕਰਸ਼ਕ, ਸ਼ਿਸ਼ਟ ਅਤੇ ਸੰਤੁਲਿਤ ਲੱਗਦੀ ਹੈ।',
+      'ਤੁਹਾਡੀ ਪਹਿਲੀ ਛਾਪ ਗੰਭੀਰ ਅਤੇ ਖਿੱਚਣ ਵਾਲੀ ਮੰਨੀ ਜਾਂਦੀ ਹੈ।',
+      'ਤੁਸੀਂ ਖੁੱਲ੍ਹੇ ਵਿਚਾਰਾਂ ਅਤੇ ਖੁਸ਼ਮਿਜ਼ਾਜ ਸੁਭਾਅ ਵਾਲੇ ਲੱਗਦੇ ਹੋ।',
+      'ਤੁਹਾਡੀ ਛਵੀ ਗੰਭੀਰ, ਪਰਿਪੱਕ ਅਤੇ ਜ਼ਿੰਮੇਵਾਰ ਲੱਗਦੀ ਹੈ।',
+      'ਤੁਸੀਂ ਵੱਖਰੀ ਅਤੇ ਆਜ਼ਾਦ ਸ਼ਖ਼ਸੀਅਤ ਵਾਲੇ ਲੱਗਦੇ ਹੋ।',
+      'ਤੁਹਾਡੀ ਛਵੀ ਨਰਮ, ਸੁਪਨਿਆਂ ਵਾਲੀ ਅਤੇ ਦਿਆਲੂ ਲੱਗਦੀ ਹੈ।'
+    ],
+    traits: [
+      'ਅਗਵਾਈ, ਆਤਮ-ਵਿਸ਼ਵਾਸ ਅਤੇ ਆਜ਼ਾਦ ਸੋਚ ਤੁਹਾਡੀ ਪਛਾਣ ਹੈ।',
+      'ਸੰਵੇਦਨਸ਼ੀਲਤਾ, ਸਹਿਯੋਗ ਅਤੇ ਕੂਟਨੀਤੀ ਤੁਹਾਡੀ ਤਾਕਤ ਹੈ।',
+      'ਰਚਨਾਤਮਕਤਾ, ਗੱਲਬਾਤ ਅਤੇ ਆਸ਼ਾਵਾਦ ਤੁਹਾਡੇ ਗੁਣ ਹਨ।',
+      'ਮਿਹਨਤ, ਵਿਵਸਥਾ ਅਤੇ ਸਬਰ ਤੁਹਾਡੀ ਨੀਂਹ ਹਨ।',
+      'ਬਦਲਾਅ ਪਸੰਦ ਸੁਭਾਅ, ਬੁੱਧੀ ਅਤੇ ਯਾਤਰਾ ਦਾ ਸ਼ੌਕ ਤੁਹਾਡੀ ਖ਼ਾਸੀਅਤ ਹੈ।',
+      'ਪਰਿਵਾਰ, ਸੁੰਦਰਤਾ ਦੀ ਸਮਝ ਅਤੇ ਜ਼ਿੰਮੇਵਾਰੀ ਤੁਹਾਡੇ ਕੇਂਦਰ ਵਿੱਚ ਹਨ।',
+      'ਚਿੰਤਨ, ਡੂੰਘਾਈ ਅਤੇ ਅਧਿਆਤਮਕ ਰੁਚੀ ਤੁਹਾਨੂੰ ਵੱਖਰਾ ਬਣਾਉਂਦੀ ਹੈ।',
+      'ਮਹਤਵਾਕਾਂਖਾ, ਅਨੁਸ਼ਾਸਨ ਅਤੇ ਸੰਗਠਨ ਦੀ ਯੋਗਤਾ ਤੁਹਾਡੇ ਨਾਲ ਹੈ।',
+      'ਹਮਦਰਦੀ, ਹਿੰਮਤ ਅਤੇ ਦੇਣ ਵਾਲਾ ਸੁਭਾਅ ਤੁਹਾਡੇ ਮੂਲ ਵਿੱਚ ਹੈ।'
+    ],
+    pool: {
+      'ਆਮ ਦਿਨ': ['ਦਿਨ ਸੰਤੁਲਿਤ ਰਹੇਗਾ। ਆਪਣੀਆਂ ਯੋਜਨਾਵਾਂ ਵਿੱਚ ਸਬਰ ਰੱਖੋ।','ਨਵੇਂ ਵਿਚਾਰ ਮਨ ਵਿੱਚ ਆਉਣਗੇ, ਉਨ੍ਹਾਂ ਨੂੰ ਲਿਖ ਲੈਣਾ ਲਾਭਕਾਰੀ ਹੋਵੇਗਾ।','ਥੋੜ੍ਹੀ ਭੱਜ-ਦੌੜ ਰਹੇਗੀ, ਪਰ ਰਾਹਤ ਮਿਲੇਗੀ।','ਤਜਰਬੇਕਾਰ ਲੋਕਾਂ ਦੀ ਸਲਾਹ ਮਦਦਗਾਰ ਹੋ ਸਕਦੀ ਹੈ।'],
+      'ਕਰੀਅਰ': ['ਕੰਮ ਵਾਲੀ ਥਾਂ ਤੇ ਕਿਸੇ ਪੁਰਾਣੇ ਕੰਮ ਨੂੰ ਪੂਰਾ ਕਰਨ ਦਾ ਮੌਕਾ ਮਿਲ ਸਕਦਾ ਹੈ।','ਨਵੀਂ ਜ਼ਿੰਮੇਵਾਰੀ ਦੇ ਸੰਕੇਤ ਹਨ, ਸੋਚ-ਸਮਝ ਕੇ ਸਵੀਕਾਰ ਕਰੋ।','ਸਾਥੀਆਂ ਨਾਲ ਤਾਲਮੇਲ ਰੱਖੋ, ਟੀਮ ਵਰਕ ਨਾਲ ਫ਼ਾਇਦਾ ਹੋਵੇਗਾ।','ਵਿੱਤੀ ਜਾਂ ਕਾਨੂੰਨੀ ਕਾਗ਼ਜ਼ ਧਿਆਨ ਨਾਲ ਪੜ੍ਹੋ।'],
+      'ਪਿਆਰ ਅਤੇ ਪਰਿਵਾਰ': ['ਪਰਿਵਾਰ ਨਾਲ ਸਮਾਂ ਬਿਤਾਉਣ ਨਾਲ ਮਨ ਖੁਸ਼ ਰਹੇਗਾ।','ਕਿਸੇ ਪਿਆਰੇ ਨਾਲ ਦਿਲ ਦੀ ਗੱਲ ਕਰਨ ਦਾ ਵਧੀਆ ਸਮਾਂ ਹੈ।','ਬੇਵਜ੍ਹਾ ਬਹਿਸ ਤੋਂ ਬਚੋ, ਸ਼ਬਦ ਸੋਚ-ਸਮਝ ਕੇ ਬੋਲੋ।','ਦੋਸਤਾਂ ਨਾਲ ਮੁਲਾਕਾਤ ਜਾਂ ਪੁਰਾਣੀਆਂ ਗੱਲਾਂ ਸੁਖਦ ਰਹਿਣਗੀਆਂ।'],
+      'ਸਿਹਤ': ['ਕਾਫ਼ੀ ਪਾਣੀ ਪੀਓ ਅਤੇ ਸਮੇਂ ਸਿਰ ਖਾਓ।','ਥੋੜ੍ਹੀ ਸੈਰ ਜਾਂ ਹਲਕੀ ਕਸਰਤ ਊਰਜਾ ਵਧਾਏਗੀ।','ਨੀਂਦ ਪੂਰੀ ਲਓ, ਥਕਾਵਟ ਨੂੰ ਨਜ਼ਰਅੰਦਾਜ਼ ਨਾ ਕਰੋ।','ਕਿਸੇ ਵੀ ਸਿਹਤ ਸਮੱਸਿਆ ਵਿੱਚ ਡਾਕਟਰ ਦੀ ਸਲਾਹ ਲਓ।'],
+      'ਪੈਸਾ': ['ਖਰਚ ਤੇ ਨਜ਼ਰ ਰੱਖੋ, ਫ਼ਾਲਤੂ ਖ਼ਰੀਦਦਾਰੀ ਟਾਲੋ।','ਬੱਚਤ ਦੀ ਯੋਜਨਾ ਬਣਾਉਣ ਲਈ ਵਧੀਆ ਸਮਾਂ ਹੈ।','ਵੱਡੇ ਨਿਵੇਸ਼ ਦਾ ਫ਼ੈਸਲਾ ਜਲਦਬਾਜ਼ੀ ਵਿੱਚ ਨਾ ਲਓ।','ਕਮਾਈ ਦੇ ਨਵੇਂ ਰਸਤਿਆਂ ਤੇ ਵਿਚਾਰ ਕੀਤਾ ਜਾ ਸਕਦਾ ਹੈ।']
+    },
+    learn: [
+      { t: 'ਟ੍ਰਾਂਜ਼ਿਟ ਕੀ ਹੈ?', b: 'ਗ੍ਰਹਾਂ ਦੀ ਮੌਜੂਦਾ ਸਥਿਤੀ ਜਦੋਂ ਤੁਹਾਡੀ ਜਨਮ ਕੁੰਡਲੀ ਨਾਲ ਮਿਲਾਈ ਜਾਂਦੀ ਹੈ, ਉਸਨੂੰ ਟ੍ਰਾਂਜ਼ਿਟ ਕਹਿੰਦੇ ਹਨ। ਇੱਥੇ ਚੰਦਰਮਾ ਦੇ ਆਧਾਰ ਤੇ ਆਮ ਸੰਕੇਤ ਦਿਖਾਏ ਜਾਂਦੇ ਹਨ।' },
+      { t: 'ਲੱਗਨ ਕੀ ਹੈ?', b: 'ਜਨਮ ਦੇ ਸਮੇਂ ਪੂਰਬੀ ਦਿਸ਼ਾ ਵਿੱਚ ਚੜ੍ਹਦੀ ਰਾਸ਼ੀ ਨੂੰ ਲੱਗਨ ਕਹਿੰਦੇ ਹਨ। ਇਹ ਤੁਹਾਡੀ ਸ਼ਖ਼ਸੀਅਤ ਦੀ ਪਹਿਲੀ ਛਾਪ ਦਿਖਾਉਂਦੀ ਹੈ।' },
+      { t: 'ਨਕਸ਼ਤਰ ਕੀ ਹੈ?', b: 'ਅਸਮਾਨ ਨੂੰ 27 ਭਾਗਾਂ ਵਿੱਚ ਵੰਡਿਆ ਗਿਆ ਹੈ, ਹਰ ਭਾਗ ਨੂੰ ਨਕਸ਼ਤਰ ਕਹਿੰਦੇ ਹਨ। ਜਨਮ ਸਮੇਂ ਚੰਦਰਮਾ ਜਿਸ ਨਕਸ਼ਤਰ ਵਿੱਚ ਸੀ, ਉਹੀ ਤੁਹਾਡਾ ਜਨਮ ਨਕਸ਼ਤਰ ਮੰਨਿਆ ਜਾਂਦਾ ਹੈ।' }
+    ],
+    listen: [
+      { title: 'ਚੰਦਰ ਦੀ ਯਾਤਰਾ', sub: 'ਚੰਦਰਮਾ ਮਨ ਦਾ ਕਾਰਕ ਹੈ। ਕਲਪਨਾ ਕਰੋ ਕਿ ਤੁਸੀਂ ਸ਼ਾਂਤ ਰਾਤ ਨੂੰ ਚਾਂਦਨੀ ਹੇਠ ਬੈਠੇ ਹੋ। ਸਾਹ ਹੌਲੀ ਲਓ ਅਤੇ ਮਨ ਨੂੰ ਟਿਕਣ ਦਿਓ। ਸੋਮਵਾਰ ਨੂੰ ਧਿਆਨ ਕਰਨਾ ਮਨ ਨੂੰ ਸਥਿਰ ਰੱਖਣ ਵਿੱਚ ਸਹਾਇਕ ਮੰਨਿਆ ਜਾਂਦਾ ਹੈ।' },
+      { title: 'ਗੁਰੂ ਦੀ ਯਾਤਰਾ', sub: 'ਗੁਰੂ ਗਿਆਨ ਅਤੇ ਵਿਸਤਾਰ ਦਾ ਗ੍ਰਹਿ ਹੈ। ਕਲਪਨਾ ਕਰੋ ਕਿ ਤੁਸੀਂ ਇੱਕ ਪੁਰਾਣੀ ਲਾਇਬ੍ਰੇਰੀ ਵਿੱਚ ਹੋ, ਜਿੱਥੇ ਹਰ ਕਿਤਾਬ ਕੁਝ ਸਿਖਾਉਂਦੀ ਹੈ। ਕਿਸੇ ਅਧਿਆਪਕ ਦਾ ਸਤਿਕਾਰ ਕਰੋ ਅਤੇ ਕੁਝ ਨਵਾਂ ਸਿੱਖਣ ਦਾ ਸੰਕਲਪ ਲਓ।' },
+      { title: 'ਮੰਗਲ ਦੀ ਯਾਤਰਾ', sub: 'ਮੰਗਲ ਊਰਜਾ ਅਤੇ ਹਿੰਮਤ ਦਾ ਗ੍ਰਹਿ ਹੈ। ਕਲਪਨਾ ਕਰੋ ਕਿ ਸਵੇਰ ਦੀ ਪਹਿਲੀ ਧੁੱਪ ਵਿੱਚ ਤੁਸੀਂ ਲੰਮੀ ਸੈਰ ਤੇ ਹੋ। ਊਰਜਾ ਨੂੰ ਸਹੀ ਦਿਸ਼ਾ ਦਿਓ, ਗੁੱਸਾ ਘਟਾਓ ਅਤੇ ਮਿਹਨਤ ਸਹੀ ਕੰਮ ਵਿੱਚ ਲਗਾਓ।' }
+    ],
+    temples: ['ਸ਼ਿਵ ਮੰਦਰ — ਜਲ ਜਾਂ ਬੇਲ ਪੱਤਰ ਚੜ੍ਹਾਓ।','ਹਨੂਮਾਨ ਮੰਦਰ — ਦਰਸ਼ਨ ਕਰੋ ਅਤੇ ਹਨੂਮਾਨ ਚਾਲੀਸਾ ਪੜ੍ਹੋ।','ਗਣੇਸ਼ ਮੰਦਰ — ਦੂਰਵਾ ਚੜ੍ਹਾਓ।','ਵਿਸ਼ਣੂ ਜਾਂ ਸਾਈਂ ਮੰਦਰ — ਪੀਲਾ ਪ੍ਰਸਾਦ ਚੜ੍ਹਾਓ।','ਲਕਸ਼ਮੀ ਜਾਂ ਦੁਰਗਾ ਮੰਦਰ — ਦੀਵਾ ਜਗਾਓ।','ਸ਼ਨੀ ਮੰਦਰ ਜਾਂ ਪੀਪਲ — ਸਰ੍ਹੋਂ ਜਾਂ ਤਿਲ ਦਾ ਤੇਲ ਚੜ੍ਹਾਓ।','ਸੂਰਜ ਦੇਵਤਾ ਨੂੰ ਜਲ ਚੜ੍ਹਾਓ।'],
+    habits: ['ਸਵੇਰੇ ਕੁਝ ਮਿੰਟ ਸ਼ਾਂਤੀ ਨਾਲ ਬੈਠੋ।','ਮਾਤਾ-ਪਿਤਾ ਅਤੇ ਬਜ਼ੁਰਗਾਂ ਦਾ ਆਸ਼ੀਰਵਾਦ ਲਓ।','ਲੋੜਵੰਦ ਦੀ ਜਿੰਨੀ ਹੋ ਸਕੇ ਮਦਦ ਕਰੋ।','ਗੁੱਸੇ ਜਾਂ ਝਗੜੇ ਵੇਲੇ ਰੁਕ ਕੇ ਡੂੰਘਾ ਸਾਹ ਲਓ।','ਸੌਣ ਤੋਂ ਪਹਿਲਾਂ ਦਿਨ ਦੀ ਇੱਕ ਚੰਗੀ ਗੱਲ ਲਿਖ ਲਓ।'],
+    weekdayHi: ['ਸੋਮਵਾਰ','ਮੰਗਲਵਾਰ','ਬੁੱਧਵਾਰ','ਵੀਰਵਾਰ','ਸ਼ੁੱਕਰਵਾਰ','ਸ਼ਨੀਵਾਰ','ਐਤਵਾਰ']
+  }
+};
+
+/* ---- ਮੂਲ ਹਿੰਦੀ ਡੇਟਾ (ਤਰਕ ਲਈ, ਅਤੇ ਹਿੰਦੀ ਲਈ ਵਰਤਿਆ) ---- */
+const RASHIS = [
+  { name: 'मेष', lord: 'मंगल', color: 'लाल', day: 'मंगलवार' },
+  { name: 'वृषभ', lord: 'शुक्र', color: 'हरा', day: 'शुक्रवार' },
+  { name: 'मिथुन', lord: 'बुध', color: 'हरा', day: 'बुधवार' },
+  { name: 'कर्क', lord: 'चंद्र', color: 'सफ़ेद', day: 'सोमवार' },
+  { name: 'सिंह', lord: 'सूर्य', color: 'नारंगी', day: 'रविवार' },
+  { name: 'कन्या', lord: 'बुध', color: 'हरा', day: 'बुधवार' },
+  { name: 'तुला', lord: 'शुक्र', color: 'गुलाबी', day: 'शुक्रवार' },
+  { name: 'वृश्चिक', lord: 'मंगल', color: 'लाल', day: 'मंगलवार' },
+  { name: 'धनु', lord: 'गुरु', color: 'पीला', day: 'गुरुवार' },
+  { name: 'मकर', lord: 'शनि', color: 'नीला', day: 'शनिवार' },
+  { name: 'कुंभ', lord: 'शनि', color: 'नीला', day: 'शनिवार' },
+  { name: 'मीन', lord: 'गुरु', color: 'पीला', day: 'गुरुवार' },
+];
+const HI_DATA = {
+  rashi: RASHIS.map(r => r.name),
+  sun: [
+    'आप साहसी, पहल करने वाले और नेतृत्व के स्वभाव वाले माने जाते हैं।','धैर्य, स्थिरता और सुख-सुविधा की चाह आपकी पहचान मानी जाती है।','जिज्ञासा, संवाद-कौशल और बहु-आयामी रुचियाँ आपके गुण माने जाते हैं।','भावुकता, परिवार से जुड़ाव और संवेदनशीलता आपके प्रमुख गुण माने जाते हैं।','आत्मविश्वास, उदारता और नेतृत्व की स्वाभाविक क्षमता मानी जाती है।','विश्लेषण, व्यवस्था और सेवा-भाव आपकी विशेषता मानी जाती है।','संतुलन, सौंदर्य-बोध और सामंजस्य की चाह आपकी पहचान है।','गहराई, दृढ़ता और गोपनीयता रखने की क्षमता आपके गुण माने जाते हैं।','आशावाद, ज्ञान की खोज और स्वतंत्र विचार आपके गुण माने जाते हैं।','अनुशासन, महत्वाकांक्षा और धैर्य के साथ लक्ष्य पाने की प्रवृत्ति मानी जाती है।','मौलिकता, मानवीय सोच और नए विचारों की ओर झुकाव माना जाता है।','करुणा, कल्पनाशीलता और आध्यात्मिक रुझान आपकी पहचान है।'
+  ],
+  lagna: [
+    'आपकी पहली छाप ऊर्जावान और सीधी होती है।','आपकी पहली छाप शांत, भरोसेमंद और सहज होती है।','आप बातचीत में तेज़ और मिलनसार दिखते हैं।','आपकी पहली छाप सौम्य और देखभाल करने वाली होती है।','आपकी उपस्थिति प्रभावशाली और आत्मविश्वासी लगती है।','आप सलीकेदार और व्यवस्थित दिखते हैं।','आपकी छवि आकर्षक, शिष्ट और संतुलित लगती है।','आपकी पहली छाप गंभीर और आकर्षक मानी जाती है।','आप खुले विचारों और खुशमिज़ाज स्वभाव वाले दिखते हैं।','आपकी छवि गंभीर, परिपक्व और ज़िम्मेदार लगती है।','आप अलग और स्वतंत्र व्यक्तित्व वाले दिखते हैं।','आपकी छवि नरम, सपनों वाली और सहृदय लगती है।'
+  ],
+  traits: [
+    'नेतृत्व, आत्मविश्वास और स्वतंत्र सोच आपकी पहचान है।','संवेदनशीलता, सहयोग और कूटनीति आपकी ताकत है।','रचनात्मकता, संवाद-कौशल और आशावाद आपके गुण हैं।','परिश्रम, व्यवस्था और धैर्य आपके आधार हैं।','बदलाव-प्रिय स्वभाव, बुद्धि और यात्रा-प्रेम आपकी विशेषता है।','परिवार, सौंदर्य-बोध और जिम्मेदारी आपके केंद्र में हैं।','चिंतन, गहराई और आध्यात्मिक रुचि आपको अलग बनाती है।','महत्वाकांक्षा, अनुशासन और संगठन क्षमता आपके साथ है।','करुणा, साहस और परोपकार आपके व्यक्तित्व के मूल हैं।'
+  ],
+  pool: {
+    'सामान्य दिन': ['संतुलित रहेगा। अपनी योजनाओं में धैर्य रखें।','नए विचार मन में आएंगे, उन्हें लिख लेना लाभकारी होगा।','थोड़ी भागदौड़ रहेगी, पर राहत मिलेगी।','अनुभवी लोगों की सलाह मददगार साबित हो सकती है।'],
+    'करियर': ['कार्यस्थल पर किसी पुराने काम को पूरा करने का अवसर मिल सकता है।','नई ज़िम्मेदारी मिलने के संकेत हैं, सोच-समझकर स्वीकार करें।','सहकर्मियों के साथ तालमेल बनाए रखें, टीमवर्क से लाभ होगा।','वित्तीय या कानूनी कागज़ात ध्यान से पढ़ें।'],
+    'प्रेम व परिवार': ['परिवार के साथ समय बिताने से मन प्रसन्न रहेगा।','किसी प्रियजन से मन की बात खुलकर करने का अच्छा समय है।','बिना वजह की बहस से बचें, शब्द सोच-समझकर बोलें।','मित्रों से मुलाकात या पुरानी बातचीत सुखद रहेगी।'],
+    'स्वास्थ्य': ['पर्याप्त पानी पिएँ और समय पर भोजन करें।','थोड़ी सैर या हल्का व्यायाम ऊर्जा बढ़ाएगा।','नींद पूरी लें, थकान को नज़रअंदाज़ न करें।','किसी भी स्वास्थ्य समस्या में डॉक्टर से ही सलाह लें।'],
+    'धन': ['खर्च पर नज़र रखें, फ़ालतू खरीदारी टालें।','बचत की योजना बनाने के लिए अच्छा समय है।','बड़े निवेश का फ़ैसला जल्दबाज़ी में न लें।','आय के नए रास्तों पर विचार किया जा सकता है।']
+  },
+  learn: [
+    { t: 'ट्रांज़िट क्या है?', b: 'ग्रहों की वर्तमान स्थिति जब आपकी जन्म कुंडली से तुलना होती है, तो उसे ट्रांज़िट कहते हैं। यहाँ चंद्रमा के आधार पर सामान्य संकेत दिखते हैं।' },
+    { t: 'लग्न क्या है?', b: 'जन्म के समय पूर्वी क्षितिज पर उगती राशि को लग्न कहते हैं। यह आपके व्यक्तित्व की पहली छाप दिखाती है।' },
+    { t: 'नक्षत्र क्या है?', b: 'आकाश को 27 भागों में बाँटा गया है, हर भाग को नक्षत्र कहते हैं। जन्म के समय चंद्रमा जिस नक्षत्र में हो, वही आपका जन्म नक्षत्र माना जाता है।' }
+  ],
+  listen: [
+    { title: 'चंद्र की यात्रा', sub: 'चंद्रमा मन का कारक है। कल्पना करें कि आप शांत रात में चाँदनी के नीचे बैठे हैं। साँस धीरे लें और मन को शांत होने दें। सोमवार को ध्यान करना मन को स्थिर रखने में सहायक माना जाता है।' },
+    { title: 'गुरु की यात्रा', sub: 'गुरु ज्ञान और विस्तार का ग्रह है। सोचें कि आप एक पुराने पुस्तकालय में हैं, जहाँ हर किताब कुछ सिखाती है। किसी शिक्षक का सम्मान करें और कुछ नया सीखने का संकल्प लें।' },
+    { title: 'मंगल की यात्रा', sub: 'मंगल ऊर्जा और साहस का ग्रह है। कल्पना करें कि सुबह की पहली धूप में आप एक लंबी सैर पर हैं। ऊर्जा को सही दिशा में लगाएँ, गुस्से को कम करें और मेहनत को सही काम में लगाएँ।' }
+  ],
+  temples: ['शिव मंदिर — जल या बेलपत्र अर्पित करें।','हनुमान मंदिर — दर्शन करें और हनुमान चालीसा पढ़ें।','गणेश मंदिर — दूर्वा अर्पित करें।','विष्णु या साईं मंदिर — पीला प्रसाद चढ़ाएँ।','माँ लक्ष्मी या दुर्गा मंदिर — दीपक जलाएँ।','शनि मंदिर या पीपल वृक्ष — सरसों या तिल का तेल चढ़ाएँ।','सूर्य देव को जल अर्पित करें।'],
+  habits: ['सुबह कुछ मिनट शांति से बैठें।','माता-पिता और बुज़ुर्गों का आशीर्वाद लें।','ज़रूरतमंद की यथासंभव मदद करें।','गुस्से या विवाद के समय एक पल रुककर गहरी साँस लें।','सोने से पहले दिन की एक अच्छी बात लिख लें।'],
+  weekdays: ['सोमवार','मंगलवार','बुधवार','गुरुवार','शुक्रवार','शनिवार','रविवार'],
+  areas: ['काम','दोस्ती','प्रेम'],
+  color: { 'लाल':'लाल','हरा':'हरा','सफ़ेद':'सफ़ेद','नारंगी':'नारंगी','गुलाबी':'गुलाबी','पीला':'पीला','नीला':'नीला' },
+  planet: { 'सूर्य':'सूर्य','चंद्र':'चंद्र','मंगल':'मंगल','बुध':'बुध','गुरु':'गुरु','शुक्र':'शुक्र','शनि':'शनि','राहु':'राहु','केतु':'केतु' },
+  nak: ['अश्विनी','भरणी','कृत्तिका','रोहिणी','मृगशिरा','आर्द्रा','पुनर्वसु','पुष्य','आश्लेषा','मघा','पूर्वा फाल्गुनी','उत्तरा फाल्गुनी','हस्त','चित्रा','स्वाति','विशाखा','अनुराधा','ज्येष्ठा','मूल','पूर्वाषाढ़ा','उत्तराषाढ़ा','श्रवण','धनिष्ठा','शतभिषा','पूर्वाभाद्रपद','उत्तराभाद्रपद','रेवती']
+};
+CONTENT.hi = {
+  rashi: HI_DATA.rashi, planet: HI_DATA.planet, color: HI_DATA.color, weekdays: HI_DATA.weekdays,
+  areas: HI_DATA.areas, nak: HI_DATA.nak, sun: HI_DATA.sun, lagna: HI_DATA.lagna, traits: HI_DATA.traits,
+  pool: HI_DATA.pool, learn: HI_DATA.learn, listen: HI_DATA.listen, temples: HI_DATA.temples, habits: HI_DATA.habits,
+  weekdayHi: HI_DATA.weekdays
+};
+// अंग्रेज़ी/पंजाबी के pool के कुंजी: index के आधार पर (0..4)
+const POOL_KEYS = ['general', 'career', 'love', 'health', 'money'];
+const HI_POOL_LIST = [HI_DATA.pool['सामान्य दिन'], HI_DATA.pool['करियर'], HI_DATA.pool['प्रेम व परिवार'], HI_DATA.pool['स्वास्थ्य'], HI_DATA.pool['धन']];
+const EN_POOL_LIST = [CONTENT.en.pool['General day'], CONTENT.en.pool['Career'], CONTENT.en.pool['Love & family'], CONTENT.en.pool['Health'], CONTENT.en.pool['Money']];
+const PA_POOL_LIST = [CONTENT.pa.pool['ਆਮ ਦਿਨ'], CONTENT.pa.pool['ਕਰੀਅਰ'], CONTENT.pa.pool['ਪਿਆਰ ਅਤੇ ਪਰਿਵਾਰ'], CONTENT.pa.pool['ਸਿਹਤ'], CONTENT.pa.pool['ਪੈਸਾ']];
+const POOL_LABEL = {
+  en: ['General day', 'Career', 'Love & family', 'Health', 'Money'],
+  hi: ['सामान्य दिन', 'करियर', 'प्रेम व परिवार', 'स्वास्थ्य', 'धन'],
+  pa: ['ਆਮ ਦਿਨ', 'ਕਰੀਅਰ', 'ਪਿਆਰ ਅਤੇ ਪਰਿਵਾਰ', 'ਸਿਹਤ', 'ਪੈਸਾ']
+};
+const POOL_LIST = { en: EN_POOL_LIST, hi: HI_POOL_LIST, pa: PA_POOL_LIST };
+
+const TRANSIT_AREAS = [
+  { good: [1,2,6,10,11], caution: [8,12] },   // काम / Work / ਕੰਮ
+  { good: [3,6,10,11], caution: [8,12] },     // दोस्ती / Friendship
+  { good: [1,4,5,7,11], caution: [6,8,12] }   // प्रेम / Love
+];
+
+const TRAITS_ORDER = [1,2,3,4,5,6,7,8,9];
+const LUCKY = { 1: [1,2,9], 2: [2,7], 3: [3,6,9], 4: [1,4,5,8], 5: [5,6], 6: [4,6,9], 7: [2,7,8], 8: [5,8], 9: [3,6,9] };
+const CHALDEAN = { A:1,B:2,C:3,D:4,E:5,F:8,G:3,H:5,I:1,J:1,K:2,L:3,M:4,N:5,O:7,P:8,Q:1,R:2,S:3,T:4,U:6,V:6,W:6,X:5,Y:1,Z:7 };
+
+/* ============ i18n helpers ============ */
+let lang = 'en';
+const t = (k, ...args) => {
+  let s = (L[lang] && L[lang][k] !== undefined) ? L[lang][k] : (L.en[k] !== undefined ? L.en[k] : k);
+  args.forEach((a, i) => { s = s.replace('{' + i + '}', a); });
+  return s;
+};
+const C = () => CONTENT[lang] || CONTENT.en;
+const rashiName = i => C().rashi[i];
+const lordName = h => (C().planet[h] || h);
+const colorName = h => (C().color[h] || h);
+const weekdayName = i => C().weekdays[i];
+
+// राज्य → सुझाई गई भाषा (डिफ़ॉल्ट अंग्रेज़ी ही रहेगी; ये केवल सुझाव है)
+const STATE_LANG = {
+  'Punjab': 'pa',
+  'Haryana': 'hi', 'Delhi': 'hi', 'National Capital Territory of Delhi': 'hi', 'Uttar Pradesh': 'hi', 'Rajasthan': 'hi',
+  'Bihar': 'hi', 'Madhya Pradesh': 'hi', 'Himachal Pradesh': 'hi', 'Uttarakhand': 'hi', 'Jharkhand': 'hi', 'Chhattisgarh': 'hi', 'Chandigarh': 'pa'
+};
+function suggestedLangFor(state) { return STATE_LANG[state] || null; }
+const LANG_NAME = { en: 'English', hi: 'हिंदी', pa: 'ਪੰਜਾਬੀ' };
+
+function applyStaticTranslations() {
+  document.documentElement.lang = lang;
+  document.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = t(el.dataset.i18n); });
+  document.querySelectorAll('[data-i18n-ph]').forEach(el => { el.placeholder = t(el.dataset.i18nPh); });
+  document.querySelectorAll('[data-setlang]').forEach(b => b.classList.toggle('on', b.dataset.setlang === lang));
+  document.body.style.fontFamily = lang === 'pa' ? '"Noto Sans Gurmukhi", system-ui, sans-serif' : '';
+}
+
+/* ============================================================
+   गणनाएँ
+   ============================================================ */
+const digitSum = n => String(Math.abs(n)).split('').reduce((s, c) => s + Number(c), 0);
+const reduce1 = n => { let x = Math.abs(n); while (x > 9) x = digitSum(x); return x; };
+const mulankOf = d => reduce1(d.getDate());
+const bhagyankOf = d => reduce1(digitSum(d.getDate()) + digitSum(d.getMonth() + 1) + digitSum(d.getFullYear()));
+function nameNumber(name) {
+  let s = 0;
+  for (const ch of name.toUpperCase()) s += CHALDEAN[ch] || 0;
+  return s === 0 ? 0 : reduce1(s);
+}
+function endingScore(ending, m, b) {
+  if (ending.length < 4) return 0;
+  const reduced = reduce1(ending.split('').reduce((s, c) => s + Number(c), 0));
+  let score = 0;
+  if (reduced === m || reduced === b) score += 50;
+  const last = Number(ending[ending.length - 1]);
+  if ((LUCKY[m] || []).includes(last)) score += 25;
+  if ((LUCKY[b] || []).includes(last)) score += 25;
+  return score;
+}
+function isoWeekKey(d) {
+  const x = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+  const dayNum = x.getUTCDay() || 7;
+  x.setUTCDate(x.getUTCDate() + 4 - dayNum);
+  const y0 = new Date(Date.UTC(x.getUTCFullYear(), 0, 1));
+  return x.getUTCFullYear() * 100 + Math.ceil(((x - y0) / 86400000 + 1) / 7);
+}
+
+const NAME_RASHI_GROUPS = [
+  [0, ['chu','che','cho','la','li','lu','le','lo','a']],
+  [1, ['i','u','e','o','va','vi','vu','ve','vo']],
+  [2, ['ka','ki','ku','gh','ng','chh','ke','ko','ha']],
+  [3, ['hi','hu','he','ho','da','di','du']],
+  [4, ['ma','mi','mu','me','mo','ta','ti','tu','te']],
+  [5, ['to','pa','pi','pu','sh','tha','pe','po']],
+  [6, ['ra','ri','ru','re','ro']],
+  [7, ['na','ni','nu','ne','no','ya']],
+  [8, ['ye','yu','yo','bh','dh','pha']],
+  [9, ['bho','ja','ji','ju','je','jo','kha','ga']],
+  [10, ['gu','ge','go','sa','si','su','se','so']],
+  [11, ['de','do','cha','chi','jha']],
+];
+const NAME_RASHI = {};
+for (const [idx, prefixes] of NAME_RASHI_GROUPS) for (const p of prefixes) NAME_RASHI[p] = idx;
+function nameRashiIndex(name) {
+  const first = (name || '').trim().split(/\s+/)[0].toLowerCase().replace(/[^a-z]/g, '');
+  for (const len of [3, 2, 1]) {
+    const pre = first.slice(0, len);
+    if (pre.length === len && NAME_RASHI[pre] !== undefined) return NAME_RASHI[pre];
+  }
+  return null;
+}
+
+function rashiIdx() { return profile && profile.chart && profile.chart.moon ? profile.chart.moon.index : 0; }
+function numbersOf() {
+  if (profile && profile.dob) return { m: mulankOf(profile.dob), b: bhagyankOf(profile.dob) };
+  const n = nameNumber(profile.name) || 1;
+  return { m: n, b: n };
+}
+function periodReading(p) {
+  const now = new Date();
+  const base = p === 'today'
+    ? now.getFullYear() * 10000 + (now.getMonth() + 1) * 100 + now.getDate()
+    : p === 'week' ? isoWeekKey(now) : now.getFullYear();
+  const salt = p === 'today' ? 0 : p === 'week' ? 1 : 2;
+  const { m } = numbersOf();
+  let s = (base * 31 + rashiIdx() * 7 + m * 13 + salt * 1000003) >>> 0;
+  const rnd = () => { s = (Math.imul(s, 1103515245) + 12345) >>> 0; return s; };
+  const list = POOL_LIST[lang] || EN_POOL_LIST;
+  return POOL_KEYS.map((k, i) => ({ label: POOL_LABEL[lang] ? POOL_LABEL[lang][i] : POOL_LABEL.en[i], text: list[i][rnd() % list[i].length] }));
+}
+
+function transitInfo() {
+  const c = profile && profile.chart;
+  if (!c || !c.moon || !c.timeKnown) return null;
+  const d = Astro.daysSince2000(Date.now());
+  const ay = Astro.lahiriAyanamsa(d);
+  const tMoon = ((Astro.moonLongitude(d) - ay) % 360 + 360) % 360;
+  const tIdx = Math.floor(tMoon / 30);
+  const house = ((tIdx - c.moon.index + 12) % 12) + 1;
+  return { tMoon, tIdx, house };
+}
+function areaScore(i) {
+  const tr = transitInfo();
+  if (!tr) return 50;
+  const r = TRANSIT_AREAS[i];
+  if (r.good.includes(tr.house)) return 82;
+  if (r.caution.includes(tr.house)) return 38;
+  return 60;
+}
+function areaText(i) {
+  const tr = transitInfo();
+  const name = C().areas[i];
+  if (!tr) return t('transitNeed');
+  const r = TRANSIT_AREAS[i];
+  if (r.good.includes(tr.house)) return t('areaGood', name);
+  if (r.caution.includes(tr.house)) return t('areaCaution', name);
+  return t('areaNormal', name);
+}
+
+/* ============ कुंडली / स्थान / समय ============ */
+async function geocode(place) {
+  if (!place) return null;
+  try {
+    const url = 'https://nominatim.openstreetmap.org/search?format=json&limit=1&addressdetails=1&q=' + encodeURIComponent(place);
+    const res = await fetch(url, { headers: { 'Accept-Language': 'en' } });
+    const data = await res.json();
+    if (!data.length) return null;
+    return { lat: Number(data[0].lat), lon: Number(data[0].lon), state: (data[0].address || {}).state || null };
+  } catch { return null; }
+}
+
+async function computeChart(p) {
+  const d = p.dob;
+  const timeKnown = !!p.birthTime;
+  if (!d || !timeKnown) {
+    const idx = nameRashiIndex(p.name);
+    return {
+      nameBased: true, timeKnown: false, placeFound: false,
+      moon: idx === null ? null : { index: idx, degree: null },
+      sun: null, nakshatra: null, lagna: null,
+    };
+  }
+  const place = p.placeCoords || await geocode(p.place);
+  let c;
+  try {
+    c = Astro.chart({
+      year: d.getFullYear(), month: d.getMonth() + 1, day: d.getDate(),
+      hour: d.getHours(), minute: d.getMinutes(),
+      utcOffsetHours: p.tz ?? 5.5,
+      lat: place ? place.lat : null, lon: place ? place.lon : null,
+    });
+  } catch { return null; }
+  if (!place) c.lagna = null;
+  return { ...c, timeKnown: true, placeFound: !!place, state: place ? place.state : (p.placeState || null) };
+}
+
+/* ============ जन्म स्थान: सुझाव ============ */
+const LOCAL_PLACES = [
+  ['Abohar','Punjab'],['Ludhiana','Punjab'],['Amritsar','Punjab'],['Jalandhar','Punjab'],['Patiala','Punjab'],
+  ['Bathinda','Punjab'],['Mohali','Punjab'],['Hoshiarpur','Punjab'],['Pathankot','Punjab'],['Moga','Punjab'],
+  ['Firozpur','Punjab'],['Sangrur','Punjab'],['Barnala','Punjab'],['Kapurthala','Punjab'],['Ropar','Punjab'],
+  ['Faridkot','Punjab'],['Muktsar','Punjab'],['Fazilka','Punjab'],['Malerkotla','Punjab'],['Khanna','Punjab'],
+  ['Phagwara','Punjab'],['Batala','Punjab'],['Gurdaspur','Punjab'],['Chandigarh','Chandigarh'],
+  ['Delhi','Delhi'],['Jaipur','Rajasthan'],['Jodhpur','Rajasthan'],['Bikaner','Rajasthan'],['Mumbai','Maharashtra'],
+  ['Pune','Maharashtra'],['Nagpur','Maharashtra'],['Kolkata','West Bengal'],['Chennai','Tamil Nadu'],
+  ['Bengaluru','Karnataka'],['Hyderabad','Telangana'],['Ahmedabad','Gujarat'],['Surat','Gujarat'],
+  ['Lucknow','Uttar Pradesh'],['Kanpur','Uttar Pradesh'],['Varanasi','Uttar Pradesh'],['Agra','Uttar Pradesh'],
+  ['Meerut','Uttar Pradesh'],['Noida','Uttar Pradesh'],['Ghaziabad','Uttar Pradesh'],['Ayodhya','Uttar Pradesh'],
+  ['Shimla','Himachal Pradesh'],['Dehradun','Uttarakhand'],['Haridwar','Uttarakhand'],['Ambala','Haryana'],
+  ['Kurukshetra','Haryana'],['Panipat','Haryana'],['Rohtak','Haryana'],['Hisar','Haryana'],['Gurugram','Haryana'],
+  ['Faridabad','Haryana'],['Patna','Bihar'],['Ranchi','Jharkhand'],['Bhopal','Madhya Pradesh'],['Indore','Madhya Pradesh'],
+];
+const skeleton = s => s.toLowerCase().replace(/[^a-z]/g, '').replace(/[aeiou]/g, '').replace(/(.)\1+/g, '$1');
+let selectedCoords = null;
+let selectedState = null;
+let placeTimer = null;
+
+function localSuggestions(q) {
+  const qs = skeleton(q);
+  if (!qs) return [];
+  return LOCAL_PLACES
+    .filter(([city]) => {
+      const cs = skeleton(city);
+      return cs.startsWith(qs) || cs.includes(qs) || city.toLowerCase().startsWith(q.toLowerCase());
+    })
+    .slice(0, 6)
+    .map(([city, state]) => ({ label: `${city}, ${state}, India`, lat: null, lon: null, state }));
+}
+
+async function onlineSuggestions(q) {
+  try {
+    const url = 'https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=5&countrycodes=in&q=' + encodeURIComponent(q);
+    const res = await fetch(url, { headers: { 'Accept-Language': 'en' } });
+    const data = await res.json();
+    return data.map(r => {
+      const a = r.address || {};
+      const city = a.city || a.town || a.village || a.county || a.state_district || r.name;
+      return { label: [city, a.state, a.country].filter(Boolean).join(', '), lat: Number(r.lat), lon: Number(r.lon), state: a.state || null };
+    });
+  } catch { return []; }
+}
+
+function renderSuggestions(list) {
+  const box = $('placeList');
+  if (!list.length) { box.classList.add('hidden'); box.innerHTML = ''; return; }
+  box.innerHTML = list.map((s, i) => `<div class="sugg-item" data-i="${i}">${esc(s.label)}</div>`).join('');
+  box.classList.remove('hidden');
+  box.querySelectorAll('.sugg-item').forEach(el => el.addEventListener('pointerdown', e => {
+    e.preventDefault();
+    const s = list[Number(el.dataset.i)];
+    $('place').value = s.label;
+    selectedCoords = s.lat != null && !Number.isNaN(s.lat) ? { lat: s.lat, lon: s.lon } : null;
+    selectedState = s.state || null;
+    box.classList.add('hidden');
+  }));
+}
+
+function initPlaceSearch() {
+  $('place').addEventListener('input', () => {
+    selectedCoords = null;
+    selectedState = null;
+    const q = $('place').value.trim();
+    clearTimeout(placeTimer);
+    if (q.length < 2) { renderSuggestions([]); return; }
+    renderSuggestions(localSuggestions(q));
+    placeTimer = setTimeout(async () => {
+      const online = await onlineSuggestions(q);
+      if ($('place').value.trim() !== q) return;
+      const seen = new Set();
+      const merged = [];
+      for (const s of [...online, ...localSuggestions(q)]) {
+        const k = s.label.toLowerCase();
+        if (!seen.has(k)) { seen.add(k); merged.push(s); }
+      }
+      renderSuggestions(merged.slice(0, 8));
+    }, 400);
+  });
+  $('place').addEventListener('blur', () => setTimeout(() => $('placeList').classList.add('hidden'), 150));
+}
+
+function fillTimeSelects() {
+  $('hh').innerHTML = '<option value="">—</option>' +
+    Array.from({ length: 12 }, (_, i) => `<option value="${i + 1}">${i + 1}</option>`).join('');
+  $('mm').innerHTML = '<option value="">—</option>' +
+    Array.from({ length: 60 }, (_, i) => `<option value="${i}">${String(i).padStart(2, '0')}</option>`).join('');
+  const sync = () => { const off = $('timeUnknown').checked; ['hh', 'mm', 'ap'].forEach(id => $(id).disabled = off); };
+  $('timeUnknown').addEventListener('change', sync);
+  sync();
+}
+
+/* ============ AI चैट ============ */
+const CONFIG = { chatEndpoint: 'https://jyotish-chat.m33-jimmy.workers.dev' };
+
+function chatContext() {
+  const r = rashiOfProfile();
+  return {
+    name: profile.name, dob: profile.dob ? profile.dob.toISOString() : null,
+    place: profile.place, birthTime: profile.birthTime, language: lang,
+    rashi: r ? r.name : null,
+    mulank: numbersOf().m, bhagyank: numbersOf().b,
+  };
+}
+async function askAI(question) {
+  if (!CONFIG.chatEndpoint) return t('chatNotReady');
+  const res = await fetch(CONFIG.chatEndpoint, {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ question, context: chatContext() }),
+  });
+  if (!res.ok) throw new Error('server');
+  return (await res.json()).answer;
+}
+function addMsg(text, who) {
+  const d = document.createElement('div');
+  d.className = 'msg ' + who;
+  d.textContent = text;
+  $('msgs').appendChild(d);
+  d.scrollIntoView({ behavior: 'smooth', block: 'end' });
+  return d;
+}
+async function sendChat() {
+  const q = $('chatIn').value.trim();
+  if (!q) return;
+  $('chatIn').value = '';
+  addMsg(q, 'me');
+  const reply = addMsg(t('chatWait'), 'ai');
+  try { reply.textContent = await askAI(q); }
+  catch { reply.textContent = t('chatFail'); }
+}
+
+/* ============ लॉगिन (Supabase) ============ */
+const AUTH_CONFIG = { supabaseUrl: '', supabaseAnonKey: '' };
+let sb = null;
+
+function initLogin() {
+  if (!AUTH_CONFIG.supabaseUrl || typeof supabase === 'undefined') {
+    $('loginInfo').textContent = t('loginSetup');
+    $('loginBtn').disabled = true;
+    return;
+  }
+  sb = supabase.createClient(AUTH_CONFIG.supabaseUrl, AUTH_CONFIG.supabaseAnonKey);
+  sb.auth.onAuthStateChange((_e, session) => onSession(session));
+  $('loginBtn').addEventListener('click', async () => {
+    const email = $('loginEmail').value.trim();
+    if (!email) { $('loginInfo').textContent = t('loginNeedEmail'); return; }
+    const { error } = await sb.auth.signInWithOtp({ email, options: { emailRedirectTo: location.href.split('#')[0] } });
+    $('loginInfo').textContent = error ? t('loginFail') + error.message : t('loginSent');
+  });
+}
+async function onSession(session) {
+  if (!session || !sb) return;
+  $('loginInfo').textContent = session.user.email;
+  const { data } = await sb.from('profiles').select('data').eq('id', session.user.id).maybeSingle();
+  if (!profile && data && data.data) {
+    profile = { ...data.data, dob: data.data.dob ? new Date(data.data.dob) : null };
+    saveProfile(profile);
+    lang = profile.lang || 'en';
+    enterApp();
+  }
+}
+async function syncProfile() {
+  if (!sb || !profile) return;
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) return;
+  await sb.from('profiles').upsert({ id: session.user.id, data: { ...profile, dob: profile.dob ? profile.dob.toISOString() : null } });
+}
+
+/* ============ स्टोरेज ============ */
+const KEY = 'jyotish_profile_v1';
+let profile = null;
+function loadProfile() {
+  try {
+    const raw = localStorage.getItem(KEY);
+    if (!raw) return null;
+    const p = JSON.parse(raw);
+    return { ...p, dob: p.dob ? new Date(p.dob) : null };
+  } catch { return null; }
+}
+function saveProfile(p) {
+  localStorage.setItem(KEY, JSON.stringify({ ...p, dob: p.dob ? p.dob.toISOString() : null }));
+}
+function clearProfile() { localStorage.removeItem(KEY); }
+
+/* ============ UI helpers ============ */
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+
+function rashiOfProfile() {
+  const idx = profile && profile.chart && profile.chart.moon ? profile.chart.moon.index : null;
+  if (idx === null || idx === undefined) return null;
+  return { index: idx, name: rashiName(idx), lord: lordName(RASHIS[idx].lord), color: colorName(RASHIS[idx].color), day: weekdayName(RASHIS[idx].day ? WEEKDAY_INDEX[RASHIS[idx].day] : 0) };
+}
+const WEEKDAY_INDEX = { 'सोमवार': 0, 'मंगलवार': 1, 'बुधवार': 2, 'गुरुवार': 3, 'शुक्रवार': 4, 'शनिवार': 5, 'रविवार': 6 };
+
+function ring(pct, label) {
+  const r = 30, Cc = 2 * Math.PI * r, off = Cc * (1 - pct / 100);
+  return `<div class="rcard">
+    <svg width="78" height="78" viewBox="0 0 78 78" aria-label="${label} ${pct}%">
+      <circle cx="39" cy="39" r="${r}" stroke="#2c2c2e" stroke-width="7" fill="none"/>
+      <circle cx="39" cy="39" r="${r}" stroke="#f08a4b" stroke-width="7" fill="none" stroke-linecap="round"
+        stroke-dasharray="${Cc.toFixed(1)}" stroke-dashoffset="${off.toFixed(1)}" transform="rotate(-90 39 39)"/>
+      <text x="39" y="44" text-anchor="middle" fill="#f5f5f7" font-size="15" font-weight="700">${pct}%</text>
+    </svg>
+    <div class="muted" style="font-size:13px;margin-top:6px">${label}</div>
+  </div>`;
+}
+
+function wheelSvg(size, markers = []) {
+  const c = size / 2, R = size / 2 - 8;
+  let s = `<svg viewBox="0 0 ${size} ${size}" width="${size}" height="${size}">`;
+  s += `<circle cx="${c}" cy="${c}" r="${R}" fill="none" stroke="#f08a4b" stroke-width="1.6" opacity=".8"/>`;
+  s += `<circle cx="${c}" cy="${c}" r="${R * 0.74}" fill="none" stroke="#f08a4b" stroke-width="1" opacity=".5"/>`;
+  s += `<circle cx="${c}" cy="${c}" r="${R * 0.44}" fill="none" stroke="#f08a4b" stroke-width="1" opacity=".35"/>`;
+  for (let i = 0; i < 12; i++) {
+    const a = (i * 30 - 90) * Math.PI / 180;
+    const x1 = c + R * 0.44 * Math.cos(a), y1 = c + R * 0.44 * Math.sin(a);
+    const x2 = c + R * Math.cos(a), y2 = c + R * Math.sin(a);
+    s += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#f08a4b" stroke-width="1" opacity=".55"/>`;
+    const am = (i * 30 + 15 - 90) * Math.PI / 180;
+    const tx = c + R * 0.88 * Math.cos(am), ty = c + R * 0.88 * Math.sin(am);
+    s += `<text x="${tx}" y="${ty + 4}" text-anchor="middle" fill="#f08a4b" font-size="${size > 220 ? 11 : 9}" font-family="sans-serif">${esc(rashiName(i))}</text>`;
+  }
+  for (const m of markers) {
+    const a = (m.lon - 90) * Math.PI / 180;
+    const rr = R * (m.r || 0.6);
+    s += `<circle cx="${c + rr * Math.cos(a)}" cy="${c + rr * Math.sin(a)}" r="${m.size || 6}" fill="${m.color || '#f08a4b'}" stroke="#141414" stroke-width="1.5"/>`;
+  }
+  return s + '</svg>';
+}
+
+/* ============ पेज और नेविगेशन ============ */
+const PAGES = ['home', 'chart', 'transits', 'listen', 'chat', 'profile'];
+let currentPage = 'home';
+let period = 'today';
+
+function showScreen(id) {
+  ['scrAuth', 'scrApp'].forEach(s => $(s).classList.toggle('on', s === id));
+}
+
+function showPg(name) {
+  currentPage = name;
+  PAGES.forEach(p => $('pg-' + p).classList.toggle('hidden', p !== name));
+  document.querySelectorAll('nav button').forEach(b => b.classList.toggle('on', b.dataset.pg === name));
+  $('chatBar').classList.toggle('hidden', name !== 'chat');
+  const titles = { chart: t('chartTitle'), transits: t('transitTitle'), listen: t('listenTitle'), chat: t('chatTitle'), profile: t('profileTitle') };
+  $('hGreet').textContent = titles[name] ? titles[name] : (profile ? (lang === 'pa' ? `ਸਤਿ ਸ੍ਰੀ ਅਕਾਲ, ${profile.name}` : lang === 'hi' ? `नमस्ते, ${profile.name}` : `Hello, ${profile.name}`) : '');
+  renderPage(name);
+  window.scrollTo(0, 0);
+}
+
+function renderPage(name) {
+  if (!profile) return;
+  if (name === 'home') renderHome();
+  if (name === 'chart') renderChart();
+  if (name === 'transits') renderTransits();
+  if (name === 'listen') renderListen();
+  if (name === 'profile') renderProfile();
+  renderLangBanner();
+}
+
+function setLanguage(l) {
+  lang = l;
+  if (profile) { profile.lang = l; saveProfile(profile); syncProfile(); }
+  applyStaticTranslations();
+  if (profile) showPg(currentPage); else showScreen('scrAuth');
+}
+
+/* राज्य आधारित सुझाव: अगर उपयोगकर्ता ने भाषा नहीं चुनी और राज्य मिला है */
+function renderLangBanner() {
+  const box = $('langBanner');
+  if (!profile || profile.langAsked || !profile.state) { box.innerHTML = ''; return; }
+  const sug = suggestedLangFor(profile.state);
+  if (!sug || sug === lang) { box.innerHTML = ''; return; }
+  box.innerHTML = `<div class="banner">
+      <p>${t('langSuggest', LANG_NAME[sug])}</p>
+      <div class="btns">
+        <button class="btn small" data-bn-yes="${sug}">${t('yes')}</button>
+        <button class="btn small ghost" data-bn-no="1">${t('no')}</button>
+      </div></div>`;
+}
+
+/* ---------- होम ---------- */
+function renderHome() {
+  const r = rashiOfProfile();
+  const reading = periodReading(period);
+  const periodLabel = { today: t('periodToday'), week: t('periodWeek'), year: t('periodYear') }[period];
+  const love = areaScore(2), friend = areaScore(1), work = areaScore(0);
+  const nameNote = !r ? `<p class="muted">${t('noRashi')}</p>` : '';
+  const sideBlock = r ? `
+     <div class="card">
+       <div class="row"><b>${t('lblLord')}</b><span>${r.lord}</span></div>
+       <div class="row"><b>${t('lblColor')}</b><span>${r.color}</span></div>
+       <div class="row"><b>${t('lblDay')}</b><span>${r.day}</span></div>
+     </div>` : nameNote;
+
+  $('pg-home').innerHTML =
+    `<div class="page-title" style="font-size:24px;margin-top:6px">${r ? r.name : t('dash')}</div>
+     ${sideBlock}
+     <div class="seg">
+       <button data-period="today" class="${period === 'today' ? 'on' : ''}">${t('periodToday')}</button>
+       <button data-period="week" class="${period === 'week' ? 'on' : ''}">${t('periodWeek')}</button>
+       <button data-period="year" class="${period === 'year' ? 'on' : ''}">${t('periodYear')}</button>
+     </div>
+
+     <div class="section-h"><span>${t('yourDay', periodLabel)}</span></div>
+     <div class="hscroll">
+       ${reading.slice(0, 2).map(x => `
+       <div class="hcard">
+         <div class="orb"></div>
+         <div class="kicker">${x.label}</div>
+         <h3>${esc(x.text)}</h3>
+         <div class="meta">${periodLabel}</div>
+       </div>`).join('')}
+     </div>
+
+     <div class="section-h"><span>${t('transitTitle')}</span><a href="#" data-pg-link="transits">${t('seeAll')}</a></div>
+     <div class="rings">
+       ${ring(love, t('love'))}
+       ${ring(friend, t('friendship'))}
+       ${ring(work, t('work'))}
+     </div>
+     <button class="btn" id="openChat" style="margin-bottom:6px">${t('askAi')}</button>
+
+     <div class="section-h"><span>${t('learn')}</span></div>
+     ${C().learn.map((l, i) => `
+       <div class="item" data-learn="${i}" style="flex-direction:column;align-items:stretch">
+         <div style="display:flex;align-items:center;gap:12px">
+           <div class="body"><h4>${esc(l.t)}</h4></div>
+           <button class="arrow-btn" aria-label="open">${ICON_ARROW}</button>
+         </div>
+         <div class="learn-body hidden">${esc(l.b)}</div>
+       </div>`).join('')}
+
+     <div class="card" style="margin-top:6px"><div class="muted" style="font-size:14px">${t('templeToday')}</div><p>${C().temples[(new Date().getDay() + 6) % 7]}</p></div>
+     <p class="note">${t('funNote')}</p>`;
+}
+const ICON_ARROW = '<svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+
+/* ---------- कुंडली ---------- */
+function renderChart() {
+  const c = profile.chart;
+  if (!c || c.nameBased || !c.sun) {
+    const r = rashiOfProfile();
+    $('pg-chart').innerHTML =
+      `<div class="page-title">${t('chartTitle')}</div>
+       <div class="page-sub">${t('chartNeedTime')}</div>
+       ${r ? `<div class="card"><div class="muted" style="font-size:14px">${t('chartNameOnly')}</div><p style="font-size:18px;font-weight:600">${r.name} · ${r.lord}</p></div>` : `<p class="muted">${t('noRashi')}</p>`}
+       <div class="card"><div class="prow"><span>${t('completeness')}</span><span>${completeness()}%</span></div>
+         <div class="pbar"><i style="width:${completeness()}%"></i></div></div>`;
+    return;
+  }
+  const sunLon = c.sun.index * 30 + c.sun.degree;
+  const moonLon = c.moon.index * 30 + c.moon.degree;
+  const markers = [{ lon: sunLon, color: '#f08a4b', size: 7, r: 0.6 }, { lon: moonLon, color: '#ffffff', size: 5, r: 0.6 }];
+  const mulank = numbersOf().m;
+  const nak = C().nak[c.nakshatra.index] || c.nakshatra.name;
+
+  $('pg-chart').innerHTML =
+    `<div class="page-title">${t('chartTitle')}</div>
+     <div class="page-sub">${t('chartSub')}</div>
+     <div class="card wheel">${wheelSvg(300, markers)}</div>
+
+     <div class="card">
+       <div class="prow"><span>${t('completeness')}</span><span>${completeness()}%</span></div>
+       <div class="pbar"><i style="width:${completeness()}%"></i></div>
+     </div>
+
+     <div class="card">
+       <div class="section-h" style="margin:0 0 8px"><span>${t('sunIn', rashiName(c.sun.index))}</span></div>
+       <p>${C().sun[c.sun.index]}</p>
+       <p class="muted" style="font-size:13px">${c.sun.degree}°</p>
+     </div>
+
+     <div class="card">
+       <div class="row"><b>${t('moonRashi')}</b><span>${rashiName(c.moon.index)} (${c.moon.degree}°)</span></div>
+       <div class="row"><b>${t('lblNak')}</b><span>${nak}, ${t('lblPada')} ${c.nakshatra.pada}</span></div>
+       <div class="row"><b>${t('mulank')}</b><span>${mulank}</span></div>
+       <p style="margin-top:10px">${C().traits[mulank - 1]}</p>
+     </div>
+
+     <div class="card">
+       <div class="section-h" style="margin:0 0 8px"><span>${t('lagna', c.lagna ? rashiName(c.lagna.index) : t('dash'))}</span></div>
+       <p>${c.lagna ? C().lagna[c.lagna.index] : t('lagnaNeed')}</p>
+       ${c.lagna ? `<p class="muted" style="font-size:13px">${c.lagna.degree}°</p>` : ''}
+     </div>
+     <p class="note">${t('chartNote')}</p>`;
+}
+
+function completeness() {
+  let n = 0;
+  if (profile.name) n++;
+  if (profile.dob) n++;
+  if (profile.birthTime) n++;
+  if (profile.place) n++;
+  return Math.round((n / 4) * 100);
+}
+
+/* ---------- ट्रांज़िट ---------- */
+function renderTransits() {
+  const tr = transitInfo();
+  if (!tr) {
+    $('pg-transits').innerHTML =
+      `<div class="page-title">${t('transitTitle')}</div>
+       <div class="page-sub">${t('transitNeed')}</div>`;
+    return;
+  }
+  const c = profile.chart;
+  const markers = [
+    { lon: tr.tMoon, color: '#ffffff', size: 8, r: 0.6 },
+    { lon: c.moon.index * 30 + 15, color: '#f08a4b', size: 5, r: 0.6 },
+  ];
+  const cards = [0, 1, 2].map(i => `
+    <div class="item" style="flex-direction:column;align-items:stretch">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <h4 style="margin:0">${C().areas[i]}</h4><span class="orange" style="font-weight:700">${areaScore(i)}%</span>
+      </div>
+      <p style="margin-top:8px;color:#e5e5ea">${areaText(i)}</p>
+    </div>`).join('');
+
+  $('pg-transits').innerHTML =
+    `<div class="page-title">${t('transitTitle')}</div>
+     <div class="page-sub">${t('transitSub', rashiName(tr.tIdx), tr.house)}</div>
+     <div class="card wheel">${wheelSvg(260, markers)}</div>
+     ${cards}
+     <p class="note">${t('transitNote')}</p>`;
+}
+
+/* ---------- सुनें ---------- */
+function renderListen() {
+  const ttsOk = 'speechSynthesis' in window;
+  $('pg-listen').innerHTML =
+    `<div class="page-title">${t('listenTitle')}</div>
+     <div class="page-sub">${t('listenSub')}</div>
+     ${C().listen.map((item, i) => `
+       <div class="item">
+         <div class="body">
+           <h4>${esc(item.title)}</h4>
+           <p>${esc(item.sub)}</p>
+           <div style="margin-top:12px;display:flex;gap:8px;align-items:center">
+             <button class="arrow-btn" data-speak="${i}" aria-label="${t('speak')}" ${ttsOk ? '' : 'disabled'}>${ICON_ARROW}</button>
+             <button class="btn small ghost" data-stop="1" style="padding:7px 14px">${t('stop')}</button>
+           </div>
+         </div>
+         <div class="planet ${['planet-moon','planet-jupiter','planet-mars'][i]}"></div>
+       </div>`).join('')}
+     <p class="note">${ttsOk ? t('speakNote') : t('noVoice')}</p>`;
+}
+function speakIdx(i) {
+  if (!('speechSynthesis' in window)) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(C().listen[i].sub);
+  u.lang = lang === 'hi' ? 'hi-IN' : lang === 'pa' ? 'pa-IN' : 'en-IN';
+  u.rate = 0.9;
+  speechSynthesis.speak(u);
+}
+
+/* ---------- प्रोफ़ाइल ---------- */
+function renderProfile() {
+  const d = profile.dob;
+  const tm = profile.birthTime ? `${profile.birthTime.hh}:${profile.birthTime.mm} ${profile.birthTime.ap}` : t('notKnown');
+  $('profCard').innerHTML =
+    `<div class="row"><b>${t('pName')}</b><span>${esc(profile.name)}</span></div>
+     <div class="row"><b>${t('pDob')}</b><span>${d ? `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}` : t('dash')}</span></div>
+     <div class="row"><b>${t('pPlace')}</b><span>${esc(profile.place || t('dash'))}</span></div>
+     <div class="row"><b>${t('pTime')}</b><span>${tm}</span></div>`;
+}
+
+/* ============ शुरुआत ============ */
+function enterApp() {
+  const initial = (profile.name || '?').trim().charAt(0).toUpperCase();
+  $('avatar').textContent = initial;
+  applyStaticTranslations();
+  showScreen('scrApp');
+  showPg('home');
+}
+
+// भाषा चुनने वाला बटन (लॉगिन और प्रोफ़ाइल दोनों पर)
+document.querySelectorAll('[data-setlang]').forEach(b => b.addEventListener('click', () => setLanguage(b.dataset.setlang)));
+
+$('saveBtn').addEventListener('click', async () => {
+  const name = $('name').value.trim();
+  const dobVal = $('dob').value;
+  if (!name) { alert(t('alertName')); return; }
+
+  const [y, mo, da] = dobVal ? dobVal.split('-').map(Number) : [0, 0, 0];
+  let birthTime = null;
+  let hour24 = 0, minute = 0;
+  if (dobVal && !$('timeUnknown').checked) {
+    if (!$('hh').value || $('mm').value === '') { alert(t('alertTime')); return; }
+    hour24 = (Number($('hh').value) % 12) + ($('ap').value === 'PM' ? 12 : 0);
+    minute = Number($('mm').value);
+    birthTime = { hh: $('hh').value, mm: String(minute).padStart(2, '0'), ap: $('ap').value };
+  }
+  profile = {
+    name,
+    dob: dobVal ? new Date(y, mo - 1, da, hour24, minute) : null,
+    place: $('place').value.trim(),
+    placeCoords: selectedCoords,
+    placeState: selectedState,
+    birthTime,
+    tz: Number($('tz').value),
+    lang,
+    langAsked: false,
+  };
+  $('saveBtn').disabled = true;
+  $('saveBtn').textContent = t('saving');
+  profile.chart = await computeChart(profile);
+  if (profile.chart && profile.chart.state) profile.state = profile.chart.state;
+  else profile.state = profile.placeState || null;
+  $('saveBtn').disabled = false;
+  $('saveBtn').textContent = t('start');
+  saveProfile(profile);
+  syncProfile();
+  enterApp();
+});
+
+document.querySelectorAll('nav button').forEach(b => b.addEventListener('click', () => showPg(b.dataset.pg)));
+
+$('langBanner').addEventListener('click', e => {
+  const yes = e.target.closest('[data-bn-yes]');
+  const no = e.target.closest('[data-bn-no]');
+  if (yes) { profile.langAsked = true; saveProfile(profile); setLanguage(yes.dataset.bnYes); }
+  if (no) { profile.langAsked = true; saveProfile(profile); renderLangBanner(); }
+});
+
+$('pg-home').addEventListener('click', e => {
+  const p = e.target.closest('[data-period]');
+  if (p) { period = p.dataset.period; renderHome(); return; }
+  if (e.target.closest('#openChat')) { showPg('chat'); return; }
+  const link = e.target.closest('[data-pg-link]');
+  if (link) { e.preventDefault(); showPg(link.dataset.pgLink); return; }
+  const learn = e.target.closest('[data-learn]');
+  if (learn) learn.querySelector('.learn-body').classList.toggle('hidden');
+});
+
+$('pg-listen').addEventListener('click', e => {
+  const s = e.target.closest('[data-speak]');
+  if (s) { speakIdx(Number(s.dataset.speak)); return; }
+  if (e.target.closest('[data-stop]') && 'speechSynthesis' in window) speechSynthesis.cancel();
+});
+
+$('btnProfile').addEventListener('click', () => showPg('profile'));
+$('resetBtn').addEventListener('click', () => {
+  if (!confirm(t('resetConfirm'))) return;
+  clearProfile();
+  profile = null;
+  ['name', 'dob', 'place'].forEach(id => $(id).value = '');
+  showScreen('scrAuth');
+});
+
+$('chatSend').addEventListener('click', sendChat);
+$('chatIn').addEventListener('keydown', e => { if (e.key === 'Enter') sendChat(); });
+
+/* PWA */
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
+}
+let deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferredPrompt = e; $('installBox').classList.remove('hidden'); });
+$('installBtn').addEventListener('click', async () => {
+  if (!deferredPrompt) return;
+  deferredPrompt.prompt();
+  await deferredPrompt.userChoice;
+  deferredPrompt = null;
+  $('installBox').classList.add('hidden');
+});
+$('installX').addEventListener('click', () => $('installBox').classList.add('hidden'));
+
+/* boot */
+profile = loadProfile();
+if (profile && profile.lang) lang = profile.lang;
+fillTimeSelects();
+initPlaceSearch();
+initLogin();
+applyStaticTranslations();
+setTimeout(() => {
+  $('splash').classList.add('gone');
+  setTimeout(() => {
+    $('splash').style.display = 'none';
+    if (profile) enterApp(); else showScreen('scrAuth');
+  }, 400);
+}, 1500);
+</script>
+</body>
+</html>
