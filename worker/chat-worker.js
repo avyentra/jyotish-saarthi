@@ -3,7 +3,7 @@
 // Bindings: KV namespace "LIMITS" (variable name) → chat-limits
 const ALLOWED_ORIGIN = 'https://avyentra.github.io';
 const MODEL = 'openai/gpt-oss-20b';
-const DAILY_LIMIT = 5;
+const DAILY_LIMIT = 20;
 
 const LIMIT_MSG = {
   en: 'Today’s free questions are over. Please try again tomorrow. Your reading and numbers are still visible in the tabs.',
@@ -46,7 +46,9 @@ export default {
 
     const langName = { en: 'English', hi: 'Hindi (देवनागरी)', pa: 'Punjabi (Gurmukhi)', hg: 'Hinglish (Hindi written in English letters, Roman script)' }[lang];
     const system =
-      `You are a friendly Vedic astrology assistant. Reply in ${langName}, in simple short language. ` +
+      `You are a friendly Vedic astrology assistant. Always reply in the SAME language and script that the user used in their latest question: ` +
+      'English question → reply in English; Hinglish (Hindi written in Roman letters) → reply in Hinglish; Hindi in Devanagari → reply in Hindi; Punjabi in Gurmukhi → reply in Punjabi. ' +
+      `Only if the language is unclear, use ${langName}. Keep the reply simple and short. ` +
       'Present astrology as entertainment and cultural guidance. Do not make certain predictions. ' +
       'For health, legal or financial decisions, always suggest consulting a qualified expert.';
 

@@ -170,6 +170,7 @@
   .svcbody small { color: var(--muted); font-size: 13px; margin-top: 3px; line-height: 1.4; }
   .svcarrow { font-size: 22px; color: var(--accent); }
   .svcdetail { text-align: center; padding: 10px 0 4px; }
+  .hscroll { cursor: grab; user-select: none; -webkit-user-select: none; touch-action: pan-x; }
   .hicon { width: 44px; height: 44px; border-radius: 50%; background: var(--card2); display: flex; align-items: center; justify-content: center; font-size: 20px; flex: 0 0 auto; }
   .ktabs { display: flex; gap: 22px; overflow-x: auto; border-bottom: 1px solid rgba(255,255,255,.12); margin: 4px -16px 14px; padding: 0 16px; }
   .ktabs button { background: none; border: 0; color: inherit; opacity: .6; padding: 10px 0; font-weight: 700; font-size: 14px; border-bottom: 3px solid transparent; white-space: nowrap; }
@@ -1080,7 +1081,16 @@ async function onSession(session) {
   $('loginInfo').textContent = session.user.email;
   $('authWrap').classList.add('hidden');
   if (profile) { enterApp(); return; }
-  const { data } = await sb.from('profiles').select('data').eq('id', session.user.id).maybeSingle();
+  // profile लोड न हो (नेटवर्क/RLS गड़बड़ी या देर) तो भी फ़ॉर्म दिखे
+  let data = null;
+  try {
+    const query = sb.from('profiles').select('data').eq('id', session.user.id).maybeSingle();
+    const timeout = new Promise(res => setTimeout(() => res({ data: null }), 8000));
+    const res = await Promise.race([query, timeout]);
+    data = res && res.data ? res.data : null;
+  } catch (e) {
+    console.warn('profile load failed', e);
+  }
   if (data && data.data) {
     profile = { ...data.data, dob: data.data.dob ? new Date(data.data.dob) : null };
     saveProfile(profile);
@@ -1725,6 +1735,30 @@ function renderProfile() {
      <button class="btn" data-astro-open="1" style="margin-top:14px">${t('ajOpen')}</button>
      <button class="btn" data-logout="1" style="margin-top:10px;background:#fff;color:#7c3aed;border:1px solid #7c3aed">${t('logout')}</button>`;
 }
+
+/* ============ कार्ड्स को माउस से बाएँ-दाएँ खींचना (लैपटॉप) ============ */
+(function enableDragScroll() {
+  let el = null, startX = 0, startLeft = 0;
+  document.addEventListener('pointerdown', e => {
+    const h = e.target.closest && e.target.closest('.hscroll');
+    if (!h || e.pointerType !== 'mouse') return;
+    el = h; startX = e.clientX; startLeft = h.scrollLeft;
+    h.style.scrollSnapType = 'none';
+    h.style.cursor = 'grabbing';
+  });
+  document.addEventListener('pointermove', e => {
+    if (!el) return;
+    el.scrollLeft = startLeft - (e.clientX - startX);
+  });
+  const end = () => {
+    if (!el) return;
+    el.style.scrollSnapType = '';
+    el.style.cursor = '';
+    el = null;
+  };
+  document.addEventListener('pointerup', end);
+  document.addEventListener('pointercancel', end);
+})();
 
 /* ============ सेवाएँ और उपाय (Remedies / Services) ============ */
 const SERVICES = [
