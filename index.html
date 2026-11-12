@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<meta name="theme-color" content="#141414" />
+<meta name="theme-color" content="#7c3aed" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-title" content="Jyotish Saarthi" />
 <meta name="description" content="Free astrology, birth chart, transits and remedies — no payment needed." />
@@ -13,8 +13,8 @@
 <link rel="apple-touch-icon" href="icon.svg" />
 <style>
   :root {
-    --bg: #141414; --card: #1d1d1f; --card2: #262628; --ink: #f5f5f7; --muted: #8e8e93;
-    --accent: #f08a4b; --line: #2c2c2e;
+    --bg: #f6f4fd; --card: #ffffff; --card2: #f1edfb; --ink: #1e1b2e; --muted: #6f6a85;
+    --accent: #7c3aed; --line: #ebe7f5; --teal: #14b8a6;
   }
   * { box-sizing: border-box; }
   html, body { margin: 0; height: 100%; background: var(--bg); color: var(--ink); font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans Devanagari", "Noto Sans Gurmukhi", sans-serif; -webkit-tap-highlight-color: transparent; }
@@ -30,7 +30,7 @@
   .tag { margin-top: 18px; color: var(--muted); font-size: 14px; letter-spacing: .5px; }
 
   .top { display: flex; align-items: center; justify-content: space-between; padding: 18px 20px 8px; }
-  .avatar { width: 42px; height: 42px; border-radius: 50%; background: linear-gradient(135deg, #f7a36a, #e0703a); display: flex; align-items: center; justify-content: center; font-weight: 700; color: #fff; font-size: 17px; }
+  .avatar { width: 42px; height: 42px; border-radius: 50%; background: linear-gradient(135deg, #a78bfa, #14b8a6); display: flex; align-items: center; justify-content: center; font-weight: 700; color: #fff; font-size: 17px; }
   .top h1 { font-size: 17px; font-weight: 600; margin: 0; }
   .circle-btn { width: 42px; height: 42px; border-radius: 50%; background: var(--card); border: 0; color: var(--ink); display: flex; align-items: center; justify-content: center; }
   .circle-btn svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 1.8; }
@@ -55,12 +55,12 @@
 
   .hscroll { display: flex; gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 6px; scrollbar-width: none; }
   .hscroll::-webkit-scrollbar { display: none; }
-  .hcard { flex: 0 0 82%; scroll-snap-align: start; border-radius: 26px; padding: 20px; min-height: 230px; position: relative; overflow: hidden; background: radial-gradient(circle at 80% 20%, rgba(240,138,75,.55), transparent 55%), linear-gradient(160deg, #2a2a2d, #1b1b1d); border: 1px solid var(--line); }
+  .hcard { flex: 0 0 82%; scroll-snap-align: start; border-radius: 26px; padding: 20px; min-height: 230px; position: relative; overflow: hidden; background: radial-gradient(circle at 80% 20%, rgba(124,58,237,.55), transparent 55%), linear-gradient(160deg, #ffffff, #f3efff); border: 1px solid var(--line); }
   .hcard .kicker { color: var(--accent); font-size: 14px; font-weight: 500; }
   .hcard h3 { font-size: 21px; line-height: 1.3; margin: 10px 0 14px; font-weight: 700; }
   .hcard .meta { color: var(--muted); font-size: 13px; }
-  .hcard .orb { position: absolute; right: -40px; top: -30px; width: 170px; height: 170px; border-radius: 50%; border: 1.5px solid rgba(240,138,75,.5); box-shadow: inset 0 0 40px rgba(240,138,75,.25); }
-  .hcard .orb::after { content: ''; position: absolute; inset: 26px; border-radius: 50%; border: 1px dashed rgba(240,138,75,.45); }
+  .hcard .orb { position: absolute; right: -40px; top: -30px; width: 170px; height: 170px; border-radius: 50%; border: 1.5px solid rgba(124,58,237,.5); box-shadow: inset 0 0 40px rgba(124,58,237,.25); }
+  .hcard .orb::after { content: ''; position: absolute; inset: 26px; border-radius: 50%; border: 1px dashed rgba(124,58,237,.45); }
 
   .rings { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px; }
   .rcard { background: var(--card); border-radius: 22px; padding: 16px 8px; display: flex; flex-direction: column; align-items: center; }
@@ -76,9 +76,9 @@
   .item .body { flex: 1; min-width: 0; }
   .item h4 { margin: 0 0 6px; font-size: 17px; font-weight: 600; }
   .item p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.5; }
-  .learn-body { margin-top: 10px; color: #e5e5ea; font-size: 14px; line-height: 1.6; }
+  .learn-body { margin-top: 10px; color: #1e1b2e; font-size: 14px; line-height: 1.6; }
 
-  .planet { width: 86px; height: 86px; border-radius: 50%; flex: 0 0 auto; box-shadow: inset -10px -10px 22px rgba(0,0,0,.45), 0 0 24px rgba(240,138,75,.15); }
+  .planet { width: 86px; height: 86px; border-radius: 50%; flex: 0 0 auto; box-shadow: inset -10px -10px 22px rgba(0,0,0,.45), 0 0 24px rgba(124,58,237,.15); }
   .planet-moon { background: radial-gradient(circle at 35% 35%, #f0f0f4, #9a9aa3 55%, #3a3a40); }
   .planet-jupiter { background: repeating-linear-gradient(170deg, #f4b48d 0 9px, #d9826a 9px 15px, #f7d2b4 15px 22px); }
   .planet-mars { background: radial-gradient(circle at 32% 30%, #ffb393, #d9542c 60%, #6e1f10); }
@@ -113,7 +113,7 @@
   .chatbar input { flex: 1; border-radius: 999px; }
   .chatbar button { border: 0; border-radius: 999px; background: var(--accent); color: #fff; padding: 0 20px; font-weight: 600; }
 
-  nav { position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%); width: calc(100% - 40px); max-width: 440px; background: #1d1d1f; border-radius: 999px; display: flex; padding: 8px; box-shadow: 0 12px 30px rgba(0,0,0,.5); z-index: 30; }
+  nav { position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%); width: calc(100% - 40px); max-width: 440px; background: #ffffff; border-radius: 999px; display: flex; padding: 8px; box-shadow: 0 12px 30px rgba(0,0,0,.5); z-index: 30; }
   nav button { flex: 1; height: 54px; border: 0; background: transparent; color: var(--ink); border-radius: 999px; display: flex; align-items: center; justify-content: center; }
   nav button svg { width: 24px; height: 24px; stroke: currentColor; fill: none; stroke-width: 1.8; }
   nav button.on { background: var(--accent); color: #fff; }
@@ -121,6 +121,78 @@
   .install { position: fixed; left: 16px; right: 16px; bottom: 96px; max-width: 448px; margin: 0 auto; background: var(--card2); border-radius: 18px; padding: 14px 16px; display: flex; align-items: center; gap: 10px; font-size: 14px; z-index: 40; }
   .install button { margin-left: auto; background: var(--accent); color: #fff; border: 0; border-radius: 999px; padding: 9px 16px; font-weight: 600; }
   .install .x { background: none; color: var(--muted); padding: 4px 8px; }
+
+  /* लॉगिन स्क्रीन: हल्का gradient + सफ़ेद कार्ड */
+  .authWrap { background: linear-gradient(170deg, #fff6d6 0%, #ffd9d2 45%, #e6d4ff 100%); border-radius: 28px; padding: 30px 16px 22px; margin-top: 6px; }
+  .authHero { text-align: center; }
+  .authCard { background: #fff; color: #1c1c1e; border-radius: 22px; padding: 22px 18px; box-shadow: 0 12px 30px rgba(0,0,0,.12); margin-top: 18px; }
+  .authCard input { background: #f4f4f6; color: #1c1c1e; border: 1px solid #1e1b2e; margin-top: 8px; }
+  .authCard input::placeholder { color: #8e8e93; }
+  .aTitle { font-size: 22px; font-weight: 700; color: #1c1c1e; }
+  .aSub { color: #6e6e73; font-size: 14px; margin: 6px 0 14px; }
+  .gbtn { width: 100%; border: 1px solid #d1d1d6; background: #fff; color: #1c1c1e; border-radius: 999px; padding: 14px; font-size: 16px; font-weight: 600; }
+  .aDiv { display: flex; align-items: center; gap: 10px; margin: 16px 0; color: #8e8e93; font-size: 12px; letter-spacing: .5px; }
+  .aDiv span { flex: 1; height: 1px; background: #1e1b2e; }
+  .aNote { font-size: 12px; color: #6e6e73; margin: 10px 0 0; line-height: 1.5; text-align: center; }
+  .qsearch input { margin-bottom: 14px; }
+  .qgrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 6px; }
+  .qtile { background: var(--card); border: 0; border-radius: 18px; padding: 12px 4px; color: var(--ink); font-size: 12px; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .qicon { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; color: #fff; }
+  .tara { display: flex; align-items: center; gap: 14px; background: linear-gradient(120deg, #f0572a 0%, #7c3aed 60%, #f7c948 100%); border-radius: 22px; padding: 16px 18px; margin: 4px 0 14px; cursor: pointer; color: #fff; }
+  .tara .ticon { width: 56px; height: 56px; border-radius: 50%; background: #fff; color: #f0572a; display: flex; align-items: center; justify-content: center; font-size: 26px; flex: 0 0 auto; }
+  .tara .tbadges { display: flex; gap: 6px; margin-bottom: 6px; }
+  .tara .tbadges span { font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 999px; }
+  .tara .tb-new { background: #fff; color: #e0432a; }
+  .tara .tb-free { background: #ffe27a; color: #8a4b00; }
+  .tara h4 { margin: 0 0 4px; font-size: 17px; }
+  .tara p { margin: 0; font-size: 13px; opacity: .95; }
+  .tara .tarrow { margin-left: auto; font-size: 22px; }
+  .hgrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 6px 0 16px; }
+  .hsign { background: var(--card); border: 1px solid transparent; border-radius: 16px; padding: 10px 2px; color: var(--ink); font-size: 11px; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .hsign span:first-child { font-size: 22px; }
+  .hsign.on { border-color: var(--accent); background: #ede7ff; }
+  .hcard { display: flex; gap: 14px; align-items: center; background: linear-gradient(120deg, #7c3aed, #14b8a6); border-radius: 22px; padding: 16px; margin-bottom: 14px; }
+  .hbig { width: 64px; height: 64px; border-radius: 50%; background: linear-gradient(135deg, #7c3aed, #f7c948); display: flex; align-items: center; justify-content: center; font-size: 30px; flex: 0 0 auto; }
+  .hrow2 { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  .htag { background: #f7c948; color: #5a3a00; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 999px; }
+  .hmeta { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 10px; font-size: 12px; color: #1e1b2e; margin-top: 8px; }
+  .hdaily { display: flex; gap: 14px; align-items: center; background: linear-gradient(120deg, #7c3aed, #14b8a6); color: #fff; border-radius: 22px; padding: 16px; margin-bottom: 14px; }
+  .hdaily .muted, .hdaily .hmeta { color: #f3efff; }
+  .hdaily .htag { background: #fde047; color: #4a3300; }
+  .hicon { width: 44px; height: 44px; border-radius: 50%; background: var(--card2); display: flex; align-items: center; justify-content: center; font-size: 20px; flex: 0 0 auto; }
+  .ktabs { display: flex; gap: 22px; overflow-x: auto; border-bottom: 1px solid rgba(255,255,255,.12); margin: 4px -16px 14px; padding: 0 16px; }
+  .ktabs button { background: none; border: 0; color: inherit; opacity: .6; padding: 10px 0; font-weight: 700; font-size: 14px; border-bottom: 3px solid transparent; white-space: nowrap; }
+  .ktabs button.on { opacity: 1; border-color: #7c3aed; }
+  .kpills { display: flex; gap: 8px; overflow-x: auto; margin: 0 0 12px; }
+  .kpills button { border: 0; border-radius: 999px; padding: 7px 14px; background: var(--card); color: inherit; white-space: nowrap; font-size: 13px; }
+  .kpills button.on { background: #f7c948; color: #3a2a00; font-weight: 700; }
+  .krow { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; margin: 6px 0 10px; }
+  .kchart { padding: 14px; }
+  .ksouth { display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(4, 1fr); aspect-ratio: 1; border: 1.6px solid #7c3aed; max-width: 320px; margin: 0 auto; }
+  .kcell { border: 1px solid rgba(124,58,237,.5); display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 10px; text-align: center; padding: 2px; }
+  .kcell small { font-size: 9px; opacity: .8; }
+  .kh { color: #7c3aed; font-size: 11px; font-weight: 700; }
+  .kcell b { font-size: 12px; color: #1e1b2e; }
+  .kcenter { border: 1px solid rgba(124,58,237,.5); display: flex; align-items: center; justify-content: center; font-size: 12px; opacity: .7; }
+  .kas { color: #db2777 !important; }
+  .kcard { padding: 12px 14px; overflow-x: auto; }
+  .ktable { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .ktable th { font-size: 11px; color: #7c3aed; text-align: left; padding: 8px 4px; font-weight: 700; }
+  .ktable td { padding: 9px 4px; border-top: 1px solid rgba(255,255,255,.08); }
+  .kred { color: #7c3aed; font-weight: 700; }
+  .kb { color: #6fa8ff; }
+  .kg { color: #ff6fb5; }
+  .mhead { font-weight: 800; color: #7c3aed; margin-bottom: 6px; }
+  .mtot { font-weight: 800; padding-top: 10px; }
+  .mtag { font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 999px; }
+  .mtag.match { background: #d9f5e3; color: #1b6b3a; }
+  .mtag.partial { background: #fff1b8; color: #7a5a00; }
+  .mtag.low { background: #f3d6d6; color: #8a2a2a; }
+  .mlabel { display: block; font-size: 12px; opacity: .75; margin: 10px 0 4px; }
+  .mfield { width: 100%; box-sizing: border-box; padding: 11px 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,.15); background: var(--card2); color: inherit; font-size: 15px; }
+  .mrow { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+  .mrow select { min-width: 0; }
+  .mcheck { display: flex; gap: 8px; align-items: center; margin: 12px 0; font-size: 14px; }
 </style>
 </head>
 <body>
@@ -128,7 +200,7 @@
 
   <div id="splash">
     <div class="logo">
-      <svg width="60" height="60" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="27" fill="#f08a4b"/><circle cx="41" cy="32" r="19" fill="#ffffff"/></svg>
+      <svg width="60" height="60" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="27" fill="#7c3aed"/><circle cx="41" cy="32" r="19" fill="#ffffff"/></svg>
     </div>
     <div class="tag">Jyotish Saarthi</div>
   </div>
@@ -142,8 +214,25 @@
         <button data-setlang="en">English</button>
         <button data-setlang="hi">हिंदी</button>
         <button data-setlang="pa">ਪੰਜਾਬੀ</button>
+        <button data-setlang="hg">Hinglish</button>
       </div>
-      <div class="card">
+      <div class="authWrap" id="authWrap">
+        <div class="authHero">
+          <img src="icon.svg" width="72" height="72" alt="" style="border-radius:20px;display:block;margin:0 auto" />
+          <div style="font-size:14px;color:#3a3a3c;margin-top:10px" data-i18n="authTag"></div>
+        </div>
+        <div class="authCard" id="loginCard">
+          <div class="aTitle" data-i18n="googleTitle"></div>
+          <p class="aSub" data-i18n="googleSub"></p>
+          <button class="gbtn" id="googleBtn" data-i18n="googleBtn"></button>
+          <div class="aDiv"><span></span><b data-i18n="orLabel"></b><span></span></div>
+          <input id="loginEmail" type="email" data-i18n-ph="emailPh" />
+          <button class="btn" id="loginBtn" style="margin-top:10px" data-i18n="loginBtn"></button>
+          <p id="loginInfo" class="aNote"></p>
+          <p class="aNote" data-i18n="authTerms"></p>
+        </div>
+      </div>
+      <div class="card hidden" id="formCard">
         <label for="name" data-i18n="lblName"></label>
         <input id="name" autocomplete="name" placeholder="RAHUL SHARMA" />
         <label for="dob" data-i18n="lblDob"></label>
@@ -176,14 +265,6 @@
         <button class="btn" id="saveBtn" style="margin-top:18px" data-i18n="start"></button>
         <p class="note" data-i18n="saveNote"></p>
       </div>
-      <div class="card">
-        <div style="font-weight:600;margin-bottom:6px" data-i18n="loginTitle"></div>
-        <p class="muted" style="font-size:14px" data-i18n="loginSub"></p>
-        <input id="loginEmail" type="email" data-i18n-ph="emailPh" style="margin-top:8px" />
-        <button class="btn ghost" id="loginBtn" style="margin-top:12px" data-i18n="loginBtn"></button>
-        <button class="btn" id="googleBtn" style="margin-top:10px" data-i18n="googleBtn"></button>
-        <p id="loginInfo" class="note"></p>
-      </div>
     </main>
   </section>
 
@@ -205,6 +286,9 @@
       <div id="pg-chart" class="hidden"></div>
       <div id="pg-transits" class="hidden"></div>
       <div id="pg-listen" class="hidden"></div>
+      <div id="pg-horo" class="hidden"></div>
+      <div id="pg-match" class="hidden"></div>
+      <div id="pg-astro" class="hidden"></div>
 
       <div id="pg-chat" class="hidden">
         <div class="page-title" style="font-size:24px" data-i18n="chatTitle"></div>
@@ -223,6 +307,7 @@
             <button data-setlang="en">English</button>
             <button data-setlang="hi">हिंदी</button>
             <button data-setlang="pa">ਪੰਜਾਬੀ</button>
+            <button data-setlang="hg">Hinglish</button>
           </div>
         </div>
         <button class="btn ghost" id="resetBtn" data-i18n="reset"></button>
@@ -272,7 +357,7 @@ const L = {
     lblTime: 'Birth time (optional)', timeUnknown: "I don't know the time", am: 'AM (morning)', pm: 'PM (evening/night)',
     lblTz: 'Time zone (UTC)', start: 'Start', saveNote: 'Your details are saved only on your phone.',
     loginTitle: 'Log in (by email)', loginSub: 'To see your details on another phone too.', emailPh: 'Your email',
-    loginBtn: 'Send login link', googleBtn: 'Continue with Google', loginSetup: 'Login setup is pending.', loginSent: 'Login link sent to your email.',
+    loginBtn: 'Send login link', googleBtn: 'Continue with Google', googleTitle: 'Log in', googleSub: 'Log in with your Google account. Your details will be saved to your account and available on other phones too.', qHoro: 'Daily Horoscope', qKundali: 'Kundali', qMatch: 'Matching', qChat: 'Free Chat', searchPh: 'Search topics...', horoTitle: 'Daily Horoscope', horoReady: 'Your daily horoscope is ready', horoSign: 'Select your zodiac sign', horoToday: 'Today', horoYest: 'Yesterday', horoTom: 'Tomorrow', horoColor: 'Lucky color', horoMood: 'Mood', horoNum: 'Lucky number', horoTime: 'Lucky time', taraNew: 'NEW', taraFree: '100% FREE', taraTitle: 'Chat with Tara AI', taraSub: 'Instant astrology answers, anytime, anywhere', qMatchPrompt: 'How compatible am I with my partner, based on our birth details?', authTag: 'Your astrology companion', orLabel: 'OR CONTINUE WITH', authTerms: 'By continuing, you agree to use this app for entertainment and cultural guidance.', loginSetup: 'Login setup is pending.', loginSent: 'Login link sent to your email.',
     loginNeedEmail: 'Please enter your email.', loginFail: 'Could not send email: ',
     langTitle: 'Language', langSuggest: 'Would you like to see the app in {0}?', yes: 'Yes', no: 'No',
     periodToday: 'Today', periodWeek: 'This week', periodYear: 'This year',
@@ -280,7 +365,7 @@ const L = {
     seeAll: 'See all', askAi: 'What should I do today?', learn: 'Learn', templeToday: "Today's temple",
     funNote: 'For entertainment and cultural information only.',
     lblLord: 'Ruling planet', lblColor: 'Lucky color', lblDay: 'Lucky day', lblNak: 'Nakshatra', lblPada: 'Pada',
-    chartTitle: 'Your birth chart', chartSub: 'Sun (orange) and Moon (white) positions are shown on the wheel.',
+    chartTitle: 'Your birth chart', ajOpen: 'Astrologer portal', ajNavTitle: 'Astrologer', ajTitle: 'Join AstroTara', ajSub: 'Create your astrologer account with Gmail.', ajName: 'Full name', ajNamePh: 'Your name', ajGmail: 'Gmail ID', ajContinue: 'Continue', ajHaveAcc: 'Already have an account? Login', ajWelcome: 'Welcome back', ajLoginSub: 'Login with your Gmail to continue your astrology practice.', ajGoogle: 'Continue with Google', ajNew: 'New astrologer? Sign up', ajCustomers: 'Customers called', ajSearch: 'Search customers', ajEmpty: 'No call history yet. Calls will appear here once the call service is connected.', ajLeave: 'Leave astrologer portal', ajInvalid: 'Please enter your name and a valid Gmail ID.', ajNoLogin: 'Login is not available right now.', kdTabBasic: 'Basic', kdTabCharts: 'Charts', kdSubLagna: 'Lagna', kdSubChandra: 'Chandra', kdSubSurya: 'Surya', kdChartWord: 'Chart', kdNorth: 'North Indian', kdSouth: 'South Indian', kdPlanetsTitle: 'Planets', kdSignMode: 'Sign', kdNakMode: 'Nakshatra', kdPlanet: 'Planet', kdSign: 'Sign', kdLord: 'Sign lord', kdDeg: 'Degree', kdHouse: 'House', kdNak: 'Nakshatra', kdPada: 'Pada', pAs: 'Ascendant', pSu: 'Sun', pMo: 'Moon', kdComing: 'Navamsa, KP and Dasha charts can be added later.', matchTitle: 'Matching', matchSub: 'Enter partner details for a 36-guna Ashtakoot match.', matchNeedTime: 'Matching needs your date and time of birth. Add them in your profile.', mfName: 'Partner name', mNamePh: 'Full name', mfDob: 'Partner date of birth', mfTime: 'Partner time of birth (IST)', mfPlace: 'Partner birth place', mPlacePh: 'e.g. Mumbai', mSwapLabel: 'I am the girl', mCalc: 'Get matching result', mNeedAll: 'Please fill name, date and time.', mBasic: 'Basic comparison', mBoy: 'Boy', mGirl: 'Girl', mcName: 'Name', mcDate: 'Date', mcTime: 'Time', mcPlace: 'Place', mcLat: 'Latitude', mcLon: 'Longitude', mGuna: 'Ashtakoot Guna Matching', mCategory: 'Category', mMax: 'Max', mObtained: 'Obtained', mResult: 'Result', mTotal: 'Total score', mMatch: 'Match', mPartial: 'Partial', mLowTag: 'Low', mGreat: 'Excellent match', mGood: 'Good match', mLow: 'Low match. Talk to an expert before deciding.', mEdit: 'Check another match', mNote: 'Calculated from sidereal Moon positions (Lahiri). Some guna tables are simplified, so results may differ slightly from traditional software.', mVarna: 'Varna', mVashya: 'Vashya', mTara: 'Tara', mYoni: 'Yoni', mMaitri: 'Graha Maitri', mGana: 'Gana', mBhakoot: 'Bhakoot', mNadi: 'Nadi', chartSub: 'Sun (orange) and Moon (white) positions are shown on the wheel.',
     chartNameOnly: 'Rashi from name', chartNeedTime: 'Add your date and time of birth for the full chart.',
     completeness: 'Profile completeness', sunIn: 'Sun in {0}', moonRashi: 'Moon sign', mulank: 'Mulank',
     lagna: 'Rising sign (Lagna) {0}', lagnaNeed: 'Lagna needs birth time and a valid place.',
@@ -311,7 +396,7 @@ const L = {
     lblTime: 'जन्म का समय (वैकल्पिक)', timeUnknown: 'समय पता नहीं है', am: 'AM (सुबह)', pm: 'PM (शाम/रात)',
     lblTz: 'समय क्षेत्र (UTC)', start: 'शुरू करें', saveNote: 'आपकी जानकारी केवल आपके फ़ोन में सेव होती है।',
     loginTitle: 'लॉगिन (ईमेल से)', loginSub: 'दूसरे फ़ोन पर भी अपनी जानकारी पाने के लिए।', emailPh: 'आपका ईमेल',
-    loginBtn: 'लॉगिन लिंक भेजें', googleBtn: 'Google से लॉगिन करें', loginSetup: 'लॉगिन सेटअप अभी बाकी है।', loginSent: 'ईमेल पर लॉगिन लिंक भेजा गया है।',
+    loginBtn: 'लॉगिन लिंक भेजें', googleBtn: 'Google से लॉगिन करें', googleTitle: 'लॉगिन करें', googleSub: 'Google account से लॉगिन करें। आपकी जानकारी आपके account में सेव होगी और दूसरे फ़ोन पर भी मिलेगी।', guestBtn: 'बिना लॉगिन के आगे बढ़ें', loginSetup: 'लॉगिन सेटअप अभी बाकी है।', loginSent: 'ईमेल पर लॉगिन लिंक भेजा गया है।',
     loginNeedEmail: 'ईमेल लिखें', loginFail: 'ईमेल नहीं भेजा जा सका: ',
     langTitle: 'भाषा', langSuggest: 'क्या आप ऐप {0} में देखना चाहते हैं?', yes: 'हाँ', no: 'नहीं',
     periodToday: 'आज', periodWeek: 'इस हफ़्ते', periodYear: 'इस साल',
@@ -350,7 +435,7 @@ const L = {
     lblTime: 'ਜਨਮ ਦਾ ਸਮਾਂ (ਵਿਕਲਪਿਕ)', timeUnknown: 'ਸਮਾਂ ਪਤਾ ਨਹੀਂ ਹੈ', am: 'AM (ਸਵੇਰ)', pm: 'PM (ਸ਼ਾਮ/ਰਾਤ)',
     lblTz: 'ਸਮਾਂ ਖੇਤਰ (UTC)', start: 'ਸ਼ੁਰੂ ਕਰੋ', saveNote: 'ਤੁਹਾਡੀ ਜਾਣਕਾਰੀ ਸਿਰਫ਼ ਤੁਹਾਡੇ ਫ਼ੋਨ ਵਿੱਚ ਸੇਵ ਹੁੰਦੀ ਹੈ।',
     loginTitle: 'ਲੌਗਇਨ (ਈਮੇਲ ਨਾਲ)', loginSub: 'ਦੂਜੇ ਫ਼ੋਨ ਤੇ ਵੀ ਆਪਣੀ ਜਾਣਕਾਰੀ ਲੈਣ ਲਈ।', emailPh: 'ਤੁਹਾਡੀ ਈਮੇਲ',
-    loginBtn: 'ਲੌਗਇਨ ਲਿੰਕ ਭੇਜੋ', googleBtn: 'Google ਨਾਲ ਲੌਗਇਨ ਕਰੋ', loginSetup: 'ਲੌਗਇਨ ਸੈੱਟਅੱਪ ਅਜੇ ਬਾਕੀ ਹੈ।', loginSent: 'ਈਮੇਲ ਤੇ ਲੌਗਇਨ ਲਿੰਕ ਭੇਜਿਆ ਗਿਆ ਹੈ।',
+    loginBtn: 'ਲੌਗਇਨ ਲਿੰਕ ਭੇਜੋ', googleBtn: 'Google ਨਾਲ ਲੌਗਇਨ ਕਰੋ', googleTitle: 'ਲੌਗਇਨ ਕਰੋ', googleSub: 'Google account ਨਾਲ ਲੌਗਇਨ ਕਰੋ। ਤੁਹਾਡੀ ਜਾਣਕਾਰੀ ਤੁਹਾਡੇ account ਵਿੱਚ ਸੇਵ ਹੋਵੇਗੀ ਅਤੇ ਹੋਰ ਫ਼ੋਨ ਤੇ ਵੀ ਮਿਲੇਗੀ।', guestBtn: 'ਬਿਨਾਂ ਲੌਗਇਨ ਅੱਗੇ ਵਧੋ', loginSetup: 'ਲੌਗਇਨ ਸੈੱਟਅੱਪ ਅਜੇ ਬਾਕੀ ਹੈ।', loginSent: 'ਈਮੇਲ ਤੇ ਲੌਗਇਨ ਲਿੰਕ ਭੇਜਿਆ ਗਿਆ ਹੈ।',
     loginNeedEmail: 'ਕਿਰਪਾ ਕਰਕੇ ਈਮੇਲ ਲਿਖੋ', loginFail: 'ਈਮੇਲ ਨਹੀਂ ਭੇਜੀ ਜਾ ਸਕੀ: ',
     langTitle: 'ਭਾਸ਼ਾ', langSuggest: 'ਕੀ ਤੁਸੀਂ ਐਪ ਨੂੰ {0} ਵਿੱਚ ਦੇਖਣਾ ਚਾਹੁੰਦੇ ਹੋ?', yes: 'ਹਾਂ', no: 'ਨਹੀਂ',
     periodToday: 'ਅੱਜ', periodWeek: 'ਇਸ ਹਫ਼ਤੇ', periodYear: 'ਇਸ ਸਾਲ',
@@ -381,6 +466,43 @@ const L = {
     alertTime: 'ਜਨਮ ਦਾ ਸਮਾਂ ਚੁਣੋ, ਜਾਂ "ਸਮਾਂ ਪਤਾ ਨਹੀਂ ਹੈ" ਤੇ ਟਿੱਕ ਕਰੋ', saving: 'ਕੁੰਡਲੀ ਬਣ ਰਹੀ ਹੈ...', saved: 'ਸ਼ੁਰੂ ਕਰੋ',
     dash: '-', rashiLabel: 'ਰਾਸ਼ੀ', nameNote: 'ਚੰਦਰ ਰਾਸ਼ੀ, ਨਕਸ਼ਤਰ ਅਤੇ ਲੱਗਨ ਦੇਖਣ ਲਈ ਜਨਮ ਮਿਤੀ ਅਤੇ ਸਮਾਂ ਭਰੋ।',
     noRashi: 'ਨਾਮ ਤੋਂ ਰਾਸ਼ੀ ਨਹੀਂ ਲੱਭ ਸਕੀ।'
+  },
+  hg: {
+    welcomeTitle: 'Swagat hai', welcomeSub: 'Google se login karein, phir apni details bharein.',
+    qHoro: 'Daily Horoscope', qKundali: 'Kundali', qMatch: 'Matching', qChat: 'Free Chat', searchPh: 'Topics search karein...', horoTitle: 'Daily Horoscope', horoReady: 'Aaj ka rashifal taiyaar hai', horoSign: 'Apni rashi chunein', horoToday: 'Aaj', horoYest: 'Beeta kal', horoTom: 'Aane wala kal', horoColor: 'Shubh rang', horoMood: 'Mood', horoNum: 'Shubh ank', horoTime: 'Shubh samay', taraNew: 'NEW', taraFree: '100% FREE', taraTitle: 'Tara AI se baat karein', taraSub: 'Turant jyotish jawab, kabhi bhi, kahin bhi', qMatchPrompt: 'Hamare birth details ke hisaab se mera aur mere partner ka matching kaisa hai?', googleTitle: 'Login karein', googleSub: 'Google account se login karein. Aapki details account mein save hongi aur dusre phone par bhi milengi.', googleBtn: 'Google se login karein', guestBtn: 'Bina login ke aage badhein',
+    lblName: 'Poora naam (English letters mein, jaise RAHUL)', lblDob: 'Janm tithi (optional)',
+    lblPlace: 'Janm sthan (shahar, rajya, desh)', placePh: 'jaise: Abohar, Ludhiana',
+    lblTime: 'Janm ka samay (optional)', timeUnknown: 'Samay pata nahi hai', am: 'AM (subah)', pm: 'PM (shaam/raat)',
+    lblTz: 'Time zone (UTC)', start: 'Shuru karein', saveNote: 'Aapki details aapke account mein save hongi.',
+    loginTitle: 'Email se login', loginSub: 'Dusre phone par bhi details dekhne ke liye.', emailPh: 'Aapka email', loginBtn: 'Login link bhejein',
+    loginSetup: 'Login setup abhi baaki hai.', loginSent: 'Email par login link bhej diya gaya hai.', loginNeedEmail: 'Kripya email likhein.', loginFail: 'Email nahi bhej paaye: ',
+    langTitle: 'Bhasha', langSuggest: 'Kya aap app {0} mein dekhna chahte hain?', yes: 'Haan', no: 'Nahi',
+    periodToday: 'Aaj', periodWeek: 'Is hafte', periodYear: 'Is saal', yourDay: 'Aapka {0}',
+    general: 'Aam din', career: 'Career', love: 'Pyaar', friendship: 'Dosti', work: 'Kaam',
+    seeAll: 'Sab dekhein', askAi: 'Aaj kya karun?', learn: 'Seekhein', templeToday: 'Aaj ka mandir',
+    funNote: 'Ye sirf manoranjan aur sanskritik jaankari ke liye hai.',
+    lblLord: 'Swami grah', lblColor: 'Shubh rang', lblDay: 'Shubh din', lblNak: 'Nakshatra', lblPada: 'Charan',
+    chartTitle: 'Aapki kundali', kdTabBasic: 'Basic', kdTabCharts: 'Chart', kdSubLagna: 'Lagna', kdSubChandra: 'Chandra', kdSubSurya: 'Surya', kdChartWord: 'Chart', kdNorth: 'North Indian', kdSouth: 'South Indian', kdPlanetsTitle: 'Graha', kdSignMode: 'Rashi', kdNakMode: 'Nakshatra', kdPlanet: 'Graha', kdSign: 'Rashi', kdLord: 'Rashi swami', kdDeg: 'Ansh', kdHouse: 'Bhav', kdNak: 'Nakshatra', kdPada: 'Charan', pAs: 'Lagna', pSu: 'Surya', pMo: 'Chandra', kdComing: 'Navamsa, KP aur Dasha charts baad mein jod sakte hain.', matchTitle: 'Milan', matchSub: '36 guna Ashtakoot milan ke liye partner ki details daalein.', matchNeedTime: 'Milan ke liye aapki janm tithi aur samay chahiye. Profile mein daalein.', mfName: 'Partner ka naam', mNamePh: 'Poora naam', mfDob: 'Partner ki janm tithi', mfTime: 'Partner ka janm samay (IST)', mfPlace: 'Partner ka janm sthan', mPlacePh: 'jaise: Mumbai', mSwapLabel: 'Main ladki hoon', mCalc: 'Milan result dekhein', mNeedAll: 'Naam, tithi aur samay bharein.', mBasic: 'Basic comparison', mBoy: 'Ladka', mGirl: 'Ladki', mcName: 'Naam', mcDate: 'Tithi', mcTime: 'Samay', mcPlace: 'Sthan', mcLat: 'Latitude', mcLon: 'Longitude', mGuna: 'Ashtakoot Guna Milan', mCategory: 'Shreni', mMax: 'Max', mObtained: 'Mile', mResult: 'Result', mTotal: 'Total score', mMatch: 'Match', mPartial: 'Partial', mLowTag: 'Low', mGreat: 'Bahut achha milan', mGood: 'Achha milan', mLow: 'Kam milan. Faisla lene se pehle kisi jankar se baat karein.', mEdit: 'Doosra milan dekhein', mNote: 'Lahiri ayanamsa par sidereal Moon se ganana. Kuch guna tables saral hain, isliye result paaramparik software se thoda alag ho sakta hai.', mVarna: 'Varna', mVashya: 'Vashya', mTara: 'Tara', mYoni: 'Yoni', mMaitri: 'Graha Maitri', mGana: 'Gana', mBhakoot: 'Bhakoot', mNadi: 'Nadi', chartSub: 'Surya (narangi) aur Chandra (safed) ki sthiti is chakra par dikhai gayi hai.',
+    chartNameOnly: 'Naam se rashi', chartNeedTime: 'Poori kundali ke liye janm tithi aur samay daalein.',
+    completeness: 'Profile poora hone ka', sunIn: 'Surya {0} mein', moonRashi: 'Chandra rashi', mulank: 'Mulank',
+    lagna: 'Lagna {0}', lagnaNeed: 'Lagna ke liye janm samay aur sahi sthan chahiye.', understand: 'Samjhein',
+    chartNote: 'Ganana khagolik sutron par aadharit hai; paramparagat panchang se chhote antar ho sakte hain.',
+    transitTitle: 'Transit', transitSub: 'Aaj chandrama {0} mein hai, jo aapki chandra rashi se {1}ve bhav mein hai.',
+    transitNeed: 'Aaj ka chandra transit dekhne ke liye janm tithi aur samay daalein.',
+    areaGood: 'Anukool samay hai. {0} se judey kaamon mein aage badh sakte hain.', areaCaution: 'Savdhan rahein. {0} ke maamlon mein jaldbaazi se bachein.', areaNormal: 'Samanya samay hai. {0} ke maamlon mein dheere-dheere aage badhein.',
+    transitNote: 'Ye sanket sirf chandrama par aadharit aam margdarshan hai.',
+    listenTitle: 'Sleep stories', listenSub: 'Grahon ki kalpanik yatrayein, dheere-dheere suniye.', speak: 'Suniye', stop: 'Rokein',
+    speakNote: 'Awaaz aapke phone ki text-to-speech se chalti hai.', noVoice: 'Is browser mein awaaz ki suvidha nahi hai.',
+    chatTitle: 'AI se poochhein', chatSub: 'Apna sawal likhein, jaise "Mere liye naukri badalne ka sahi samay kab hai?"',
+    chatPh: 'Sawal likhein...', send: 'Bhejein', chatDisclaimer: 'Sawal bhejte samay rashi aur janm vivaran AI seva ko bheje jaate hain.',
+    chatWait: 'Soch raha hoon...', chatFail: 'Abhi jawab nahi mil paaya, thodi der baad koshish karein.',
+    chatNotReady: 'AI chat jald available hogi. Aapka rashifal, ank aur upay upar ke tabs mein poori tarah dikh rahe hain.',
+    profileTitle: 'Profile', reset: 'Profile badlein / reset karein', resetConfirm: 'Kya aap profile hata kar nayi details daalna chahte hain?',
+    pName: 'Naam', pDob: 'Janm tithi', pPlace: 'Janm sthan', pTime: 'Janm samay', notKnown: 'Pata nahi',
+    disclaimer: 'Swasthya, kanooni ya aarthik faislon ke liye sambandhit expert se salah lein.',
+    install: 'App ko phone mein jodein', installBtn: 'Jodein', alertName: 'Kripya naam likhein',
+    alertTime: 'Janm ka samay chunein, ya "Samay pata nahi hai" par tick karein', saving: 'Kundali ban rahi hai...', saved: 'Shuru karein',
+    dash: '-', rashiLabel: 'Rashi', nameNote: 'Chandra rashi, nakshatra aur lagna dekhne ke liye janm tithi aur samay daalein.', noRashi: 'Naam se rashi nahi nikal saki.'
   }
 };
 
@@ -581,6 +703,16 @@ CONTENT.hi = {
   weekdayHi: HI_DATA.weekdays
 };
 // अंग्रेज़ी/पंजाबी के pool के कुंजी: index के आधार पर (0..4)
+// Hinglish: नाम और शब्द रोमन में; लंबे विवरण अभी अंग्रेज़ी में दिखते हैं
+CONTENT.hg = Object.assign({}, CONTENT.en, {
+  rashi: ['Mesh','Vrishabh','Mithun','Kark','Simha','Kanya','Tula','Vrishchik','Dhanu','Makar','Kumbh','Meen'],
+  planet: { 'सूर्य':'Surya','चंद्र':'Chandra','मंगल':'Mangal','बुध':'Budh','गुरु':'Guru','शुक्र':'Shukra','शनि':'Shani','राहु':'Rahu','केतु':'Ketu' },
+  color: { 'लाल':'Laal','हरा':'Hara','सफ़ेद':'Safed','नारंगी':'Narangi','गुलाबी':'Gulabi','पीला':'Peela','नीला':'Neela' },
+  weekdays: ['Somvar','Mangalvar','Budhvar','Guruvar','Shukravar','Shanivar','Ravivar'],
+  areas: ['Kaam','Dosti','Pyaar'],
+  nak: ['Ashwini','Bharani','Krittika','Rohini','Mrigashira','Ardra','Punarvasu','Pushya','Ashlesha','Magha','Purva Phalguni','Uttara Phalguni','Hasta','Chitra','Swati','Vishakha','Anuradha','Jyeshtha','Mula','Purva Ashadha','Uttara Ashadha','Shravana','Dhanishta','Shatabhisha','Purva Bhadrapada','Uttara Bhadrapada','Revati'],
+});
+
 const POOL_KEYS = ['general', 'career', 'love', 'health', 'money'];
 const HI_POOL_LIST = [HI_DATA.pool['सामान्य दिन'], HI_DATA.pool['करियर'], HI_DATA.pool['प्रेम व परिवार'], HI_DATA.pool['स्वास्थ्य'], HI_DATA.pool['धन']];
 const EN_POOL_LIST = [CONTENT.en.pool['General day'], CONTENT.en.pool['Career'], CONTENT.en.pool['Love & family'], CONTENT.en.pool['Health'], CONTENT.en.pool['Money']];
@@ -622,7 +754,7 @@ const STATE_LANG = {
   'Bihar': 'hi', 'Madhya Pradesh': 'hi', 'Himachal Pradesh': 'hi', 'Uttarakhand': 'hi', 'Jharkhand': 'hi', 'Chhattisgarh': 'hi', 'Chandigarh': 'pa'
 };
 function suggestedLangFor(state) { return STATE_LANG[state] || null; }
-const LANG_NAME = { en: 'English', hi: 'हिंदी', pa: 'ਪੰਜਾਬੀ' };
+const LANG_NAME = { en: 'English', hi: 'हिंदी', pa: 'ਪੰਜਾਬੀ', hg: 'Hinglish' };
 
 function applyStaticTranslations() {
   document.documentElement.lang = lang;
@@ -929,13 +1061,17 @@ function initLogin() {
 async function onSession(session) {
   if (!session || !sb) return;
   $('loginInfo').textContent = session.user.email;
+  $('authWrap').classList.add('hidden');
+  if (profile) { enterApp(); return; }
   const { data } = await sb.from('profiles').select('data').eq('id', session.user.id).maybeSingle();
-  if (!profile && data && data.data) {
+  if (data && data.data) {
     profile = { ...data.data, dob: data.data.dob ? new Date(data.data.dob) : null };
     saveProfile(profile);
     lang = profile.lang || 'en';
     enterApp();
+    return;
   }
+  $('formCard').classList.remove('hidden');
 }
 async function syncProfile() {
   if (!sb || !profile) return;
@@ -975,8 +1111,8 @@ function ring(pct, label) {
   const r = 30, Cc = 2 * Math.PI * r, off = Cc * (1 - pct / 100);
   return `<div class="rcard">
     <svg width="78" height="78" viewBox="0 0 78 78" aria-label="${label} ${pct}%">
-      <circle cx="39" cy="39" r="${r}" stroke="#2c2c2e" stroke-width="7" fill="none"/>
-      <circle cx="39" cy="39" r="${r}" stroke="#f08a4b" stroke-width="7" fill="none" stroke-linecap="round"
+      <circle cx="39" cy="39" r="${r}" stroke="#ebe7f5" stroke-width="7" fill="none"/>
+      <circle cx="39" cy="39" r="${r}" stroke="#7c3aed" stroke-width="7" fill="none" stroke-linecap="round"
         stroke-dasharray="${Cc.toFixed(1)}" stroke-dashoffset="${off.toFixed(1)}" transform="rotate(-90 39 39)"/>
       <text x="39" y="44" text-anchor="middle" fill="#f5f5f7" font-size="15" font-weight="700">${pct}%</text>
     </svg>
@@ -987,28 +1123,28 @@ function ring(pct, label) {
 function wheelSvg(size, markers = []) {
   const c = size / 2, R = size / 2 - 8;
   let s = `<svg viewBox="0 0 ${size} ${size}" width="${size}" height="${size}">`;
-  s += `<circle cx="${c}" cy="${c}" r="${R}" fill="none" stroke="#f08a4b" stroke-width="1.6" opacity=".8"/>`;
-  s += `<circle cx="${c}" cy="${c}" r="${R * 0.74}" fill="none" stroke="#f08a4b" stroke-width="1" opacity=".5"/>`;
-  s += `<circle cx="${c}" cy="${c}" r="${R * 0.44}" fill="none" stroke="#f08a4b" stroke-width="1" opacity=".35"/>`;
+  s += `<circle cx="${c}" cy="${c}" r="${R}" fill="none" stroke="#7c3aed" stroke-width="1.6" opacity=".8"/>`;
+  s += `<circle cx="${c}" cy="${c}" r="${R * 0.74}" fill="none" stroke="#7c3aed" stroke-width="1" opacity=".5"/>`;
+  s += `<circle cx="${c}" cy="${c}" r="${R * 0.44}" fill="none" stroke="#7c3aed" stroke-width="1" opacity=".35"/>`;
   for (let i = 0; i < 12; i++) {
     const a = (i * 30 - 90) * Math.PI / 180;
     const x1 = c + R * 0.44 * Math.cos(a), y1 = c + R * 0.44 * Math.sin(a);
     const x2 = c + R * Math.cos(a), y2 = c + R * Math.sin(a);
-    s += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#f08a4b" stroke-width="1" opacity=".55"/>`;
+    s += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#7c3aed" stroke-width="1" opacity=".55"/>`;
     const am = (i * 30 + 15 - 90) * Math.PI / 180;
     const tx = c + R * 0.88 * Math.cos(am), ty = c + R * 0.88 * Math.sin(am);
-    s += `<text x="${tx}" y="${ty + 4}" text-anchor="middle" fill="#f08a4b" font-size="${size > 220 ? 11 : 9}" font-family="sans-serif">${esc(rashiName(i))}</text>`;
+    s += `<text x="${tx}" y="${ty + 4}" text-anchor="middle" fill="#7c3aed" font-size="${size > 220 ? 11 : 9}" font-family="sans-serif">${esc(rashiName(i))}</text>`;
   }
   for (const m of markers) {
     const a = (m.lon - 90) * Math.PI / 180;
     const rr = R * (m.r || 0.6);
-    s += `<circle cx="${c + rr * Math.cos(a)}" cy="${c + rr * Math.sin(a)}" r="${m.size || 6}" fill="${m.color || '#f08a4b'}" stroke="#141414" stroke-width="1.5"/>`;
+    s += `<circle cx="${c + rr * Math.cos(a)}" cy="${c + rr * Math.sin(a)}" r="${m.size || 6}" fill="${m.color || '#7c3aed'}" stroke="#141414" stroke-width="1.5"/>`;
   }
   return s + '</svg>';
 }
 
 /* ============ पेज और नेविगेशन ============ */
-const PAGES = ['home', 'chart', 'transits', 'listen', 'chat', 'profile'];
+const PAGES = ['home', 'chart', 'transits', 'listen', 'horo', 'match', 'astro', 'chat', 'profile'];
 let currentPage = 'home';
 let period = 'today';
 
@@ -1021,7 +1157,7 @@ function showPg(name) {
   PAGES.forEach(p => $('pg-' + p).classList.toggle('hidden', p !== name));
   document.querySelectorAll('nav button').forEach(b => b.classList.toggle('on', b.dataset.pg === name));
   $('chatBar').classList.toggle('hidden', name !== 'chat');
-  const titles = { chart: t('chartTitle'), transits: t('transitTitle'), listen: t('listenTitle'), chat: t('chatTitle'), profile: t('profileTitle') };
+  const titles = { chart: t('chartTitle'), transits: t('transitTitle'), listen: t('listenTitle'), horo: t('horoTitle'), match: t('matchTitle'), astro: t('ajNavTitle'), chat: t('chatTitle'), profile: t('profileTitle') };
   $('hGreet').textContent = titles[name] ? titles[name] : (profile ? (lang === 'pa' ? `ਸਤਿ ਸ੍ਰੀ ਅਕਾਲ, ${profile.name}` : lang === 'hi' ? `नमस्ते, ${profile.name}` : `Hello, ${profile.name}`) : '');
   renderPage(name);
   window.scrollTo(0, 0);
@@ -1033,6 +1169,9 @@ function renderPage(name) {
   if (name === 'chart') renderChart();
   if (name === 'transits') renderTransits();
   if (name === 'listen') renderListen();
+  if (name === 'horo') renderHoro();
+  if (name === 'match') renderMatch();
+  if (name === 'astro') renderAstro();
   if (name === 'profile') renderProfile();
   renderLangBanner();
 }
@@ -1073,7 +1212,9 @@ function renderHome() {
      </div>` : nameNote;
 
   $('pg-home').innerHTML =
-    `<div class="page-title" style="font-size:24px;margin-top:6px">${r ? r.name : t('dash')}</div>
+    `<div class="qsearch"><input id="homeSearch" type="search" placeholder="${t('searchPh')}" /></div>
+     <div class="qgrid">${[['horo','☾','#ede9fe','qHoro'],['kundali','◎','#e0f2fe','qKundali'],['match','♡','#fce7f3','qMatch'],['chat','✦','#fef9c3','qChat']].map(([k, ic, bg, lk]) => `<button class="qtile" data-quick="${k}" data-label="${esc(t(lk))}"><span class="qicon" style="background:${bg}">${ic}</span><span>${esc(t(lk))}</span></button>`).join('')}</div>
+     <div class="page-title" style="font-size:24px;margin-top:6px">${r ? r.name : t('dash')}</div>
      ${sideBlock}
      <div class="seg">
        <button data-period="today" class="${period === 'today' ? 'on' : ''}">${t('periodToday')}</button>
@@ -1098,7 +1239,15 @@ function renderHome() {
        ${ring(friend, t('friendship'))}
        ${ring(work, t('work'))}
      </div>
-     <button class="btn" id="openChat" style="margin-bottom:6px">${t('askAi')}</button>
+     <div class="tara" id="openChat" role="button">
+       <div class="ticon">✦</div>
+       <div>
+         <div class="tbadges"><span class="tb-new">${t('taraNew')}</span><span class="tb-free">${t('taraFree')}</span></div>
+         <h4>${t('taraTitle')}</h4>
+         <p>${t('taraSub')}</p>
+       </div>
+       <div class="tarrow">›</div>
+     </div>
 
      <div class="section-h"><span>${t('learn')}</span></div>
      ${C().learn.map((l, i) => `
@@ -1115,7 +1264,105 @@ function renderHome() {
 }
 const ICON_ARROW = '<svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
 
-/* ---------- कुंडली ---------- */
+/* ---------- कुंडली (Kundli) ---------- */
+let kTab = 'charts', kSub = 'lagna', kStyle = 'north', kMode = 'sign';
+const K_SUB_KEY = { lagna: 'kdSubLagna', chandra: 'kdSubChandra', surya: 'kdSubSurya' };
+const K_CENTERS = [[150, 50], [75, 25], [25, 75], [50, 150], [25, 225], [75, 275], [150, 250], [225, 275], [275, 225], [250, 150], [275, 75], [225, 25]];
+const K_SOUTH_POS = [[0, 1], [0, 2], [0, 3], [1, 3], [2, 3], [3, 3], [3, 2], [3, 1], [3, 0], [2, 0], [1, 0], [0, 0]];
+
+function dmsStr(deg) {
+  const total = Math.round(deg * 3600);
+  const d = Math.floor(total / 3600), m = Math.floor((total % 3600) / 60), s = total % 60;
+  return [d, m, s].map(v => String(v).padStart(2, '0')).join(':');
+}
+function nakOfLon(lon) {
+  const span = 360 / 27;
+  return { idx: Math.floor(lon / span) % 27, pada: Math.floor((lon % span) / (span / 4)) + 1 };
+}
+function kRows(c) {
+  return [
+    { key: 'pAs', code: 'As', sign: c.lagna ? c.lagna.index : null, deg: c.lagna ? c.lagna.degree : null },
+    { key: 'pSu', code: 'Su', sign: c.sun.index, deg: c.sun.degree },
+    { key: 'pMo', code: 'Mo', sign: c.moon.index, deg: c.moon.degree },
+  ];
+}
+function kBase(c) {
+  if (kSub === 'chandra') return c.moon.index;
+  if (kSub === 'surya') return c.sun.index;
+  return c.lagna ? c.lagna.index : c.moon.index;
+}
+function kNorthSvg(base, rows) {
+  let s = `<svg viewBox="0 0 300 300" width="100%" style="max-width:320px;display:block;margin:0 auto">`;
+  s += `<rect x="0" y="0" width="300" height="300" fill="none" stroke="#7c3aed" stroke-width="1.6"/>`;
+  s += `<path d="M0 0L300 300M300 0L0 300M150 0L300 150L150 300L0 150Z" fill="none" stroke="#7c3aed" stroke-width="1.4" opacity=".7"/>`;
+  for (let h = 1; h <= 12; h++) {
+    const [x, y] = K_CENTERS[h - 1];
+    const sign = (base + h - 1) % 12;
+    const labels = rows.filter(r => r.sign === sign).map(r => r.code).join(', ');
+    s += `<text x="${x}" y="${y - 14}" text-anchor="middle" font-size="10" fill="#7c3aed" opacity=".8">${h}</text>`;
+    if (labels) s += `<text x="${x}" y="${y + 6}" text-anchor="middle" font-size="13" font-weight="700" fill="${labels.includes('As') ? '#db2777' : '#1e1b2e'}">${labels}</text>`;
+  }
+  return s + '</svg>';
+}
+function kSouthHtml(base, rows) {
+  let cells = '';
+  for (let sg = 0; sg < 12; sg++) {
+    const [r, cl] = K_SOUTH_POS[sg];
+    const h = ((sg - base + 12) % 12) + 1;
+    const labels = rows.filter(x => x.sign === sg).map(x => x.code).join(', ');
+    cells += `<div class="kcell" style="grid-row:${r + 1};grid-column:${cl + 1}"><small>${esc(rashiName(sg))}</small><span class="kh">${h}</span><b class="${labels.includes('As') ? 'kas' : ''}">${labels}</b></div>`;
+  }
+  return `<div class="ksouth">${cells}<div class="kcenter" style="grid-row:2/4;grid-column:2/4">${esc(t('kdSouth'))}</div></div>`;
+}
+function kTable(c, rows) {
+  const lagBase = c.lagna ? c.lagna.index : c.moon.index;
+  const head = kMode === 'nak'
+    ? [t('kdPlanet'), t('kdNak'), t('kdPada'), t('kdDeg'), t('kdHouse')]
+    : [t('kdPlanet'), t('kdSign'), t('kdLord'), t('kdDeg'), t('kdHouse')];
+  const body = rows.map(r => {
+    if (r.sign === null) return `<tr><td>${t(r.key)}</td><td colspan="4" class="muted">${t('dash')}</td></tr>`;
+    const lon = r.sign * 30 + r.deg;
+    const house = ((r.sign - lagBase + 12) % 12) + 1;
+    let mid;
+    if (kMode === 'nak') {
+      const n = nakOfLon(lon);
+      mid = `<td>${esc(C().nak[n.idx])}</td><td>${n.pada}</td>`;
+    } else {
+      mid = `<td>${esc(rashiName(r.sign))}</td><td>${esc(lordName(RASHIS[r.sign].lord))}</td>`;
+    }
+    return `<tr><td>${t(r.key)}</td>${mid}<td>${dmsStr(r.deg)}</td><td class="kred">${house}</td></tr>`;
+  }).join('');
+  return `<table class="ktable"><thead><tr>${head.map(h => `<th>${esc(h)}</th>`).join('')}</tr></thead><tbody>${body}</tbody></table>`;
+}
+function kBasicHtml(c) {
+  const mulank = numbersOf().m;
+  const nak = C().nak[c.nakshatra.index] || c.nakshatra.name;
+  const markers = [
+    { lon: c.sun.index * 30 + c.sun.degree, color: '#7c3aed', size: 7, r: 0.6 },
+    { lon: c.moon.index * 30 + c.moon.degree, color: '#14b8a6', size: 5, r: 0.6 },
+  ];
+  return `<div class="page-sub">${t('chartSub')}</div>
+     <div class="card wheel">${wheelSvg(300, markers)}</div>
+     <div class="card"><div class="prow"><span>${t('completeness')}</span><span>${completeness()}%</span></div><div class="pbar"><i style="width:${completeness()}%"></i></div></div>
+     <div class="card"><div class="section-h" style="margin:0 0 8px"><span>${t('sunIn', rashiName(c.sun.index))}</span></div><p>${C().sun[c.sun.index]}</p><p class="muted" style="font-size:13px">${c.sun.degree}°</p></div>
+     <div class="card"><div class="row"><b>${t('moonRashi')}</b><span>${rashiName(c.moon.index)} (${c.moon.degree}°)</span></div><div class="row"><b>${t('lblNak')}</b><span>${nak}, ${t('lblPada')} ${c.nakshatra.pada}</span></div><div class="row"><b>${t('mulank')}</b><span>${mulank}</span></div><p style="margin-top:10px">${C().traits[mulank - 1]}</p></div>
+     <div class="card"><div class="section-h" style="margin:0 0 8px"><span>${t('lagna', c.lagna ? rashiName(c.lagna.index) : t('dash'))}</span></div><p>${c.lagna ? C().lagna[c.lagna.index] : t('lagnaNeed')}</p>${c.lagna ? `<p class="muted" style="font-size:13px">${c.lagna.degree}°</p>` : ''}</div>
+     <p class="note">${t('chartNote')}</p>`;
+}
+function kChartsHtml(c) {
+  const rows = kRows(c);
+  const base = kBase(c);
+  const pill = (attr, val, label, cur) => `<button ${attr}="${val}" class="${cur === val ? 'on' : ''}">${esc(label)}</button>`;
+  return `<div class="kpills">${['lagna', 'chandra', 'surya'].map(k => pill('data-ksub', k, t(K_SUB_KEY[k]), kSub)).join('')}</div>
+    <div class="krow"><b>${esc(t(K_SUB_KEY[kSub]))} ${esc(t('kdChartWord'))}</b>
+      <div class="kpills">${pill('data-kstyle', 'north', t('kdNorth'), kStyle)}${pill('data-kstyle', 'south', t('kdSouth'), kStyle)}</div></div>
+    ${kSub === 'lagna' && !c.lagna ? `<p class="muted">${t('lagnaNeed')}</p>` : ''}
+    <div class="card kchart">${kStyle === 'south' ? kSouthHtml(base, rows) : kNorthSvg(base, rows)}</div>
+    <div class="krow"><b>${esc(t('kdPlanetsTitle'))}</b>
+      <div class="kpills">${pill('data-kmode', 'sign', t('kdSignMode'), kMode)}${pill('data-kmode', 'nak', t('kdNakMode'), kMode)}</div></div>
+    <div class="card kcard">${kTable(c, rows)}</div>
+    <p class="note">${t('kdComing')}</p>`;
+}
 function renderChart() {
   const c = profile.chart;
   if (!c || c.nameBased || !c.sun) {
@@ -1128,42 +1375,174 @@ function renderChart() {
          <div class="pbar"><i style="width:${completeness()}%"></i></div></div>`;
     return;
   }
-  const sunLon = c.sun.index * 30 + c.sun.degree;
-  const moonLon = c.moon.index * 30 + c.moon.degree;
-  const markers = [{ lon: sunLon, color: '#f08a4b', size: 7, r: 0.6 }, { lon: moonLon, color: '#ffffff', size: 5, r: 0.6 }];
-  const mulank = numbersOf().m;
-  const nak = C().nak[c.nakshatra.index] || c.nakshatra.name;
-
-  $('pg-chart').innerHTML =
-    `<div class="page-title">${t('chartTitle')}</div>
-     <div class="page-sub">${t('chartSub')}</div>
-     <div class="card wheel">${wheelSvg(300, markers)}</div>
-
-     <div class="card">
-       <div class="prow"><span>${t('completeness')}</span><span>${completeness()}%</span></div>
-       <div class="pbar"><i style="width:${completeness()}%"></i></div>
-     </div>
-
-     <div class="card">
-       <div class="section-h" style="margin:0 0 8px"><span>${t('sunIn', rashiName(c.sun.index))}</span></div>
-       <p>${C().sun[c.sun.index]}</p>
-       <p class="muted" style="font-size:13px">${c.sun.degree}°</p>
-     </div>
-
-     <div class="card">
-       <div class="row"><b>${t('moonRashi')}</b><span>${rashiName(c.moon.index)} (${c.moon.degree}°)</span></div>
-       <div class="row"><b>${t('lblNak')}</b><span>${nak}, ${t('lblPada')} ${c.nakshatra.pada}</span></div>
-       <div class="row"><b>${t('mulank')}</b><span>${mulank}</span></div>
-       <p style="margin-top:10px">${C().traits[mulank - 1]}</p>
-     </div>
-
-     <div class="card">
-       <div class="section-h" style="margin:0 0 8px"><span>${t('lagna', c.lagna ? rashiName(c.lagna.index) : t('dash'))}</span></div>
-       <p>${c.lagna ? C().lagna[c.lagna.index] : t('lagnaNeed')}</p>
-       ${c.lagna ? `<p class="muted" style="font-size:13px">${c.lagna.degree}°</p>` : ''}
-     </div>
-     <p class="note">${t('chartNote')}</p>`;
+  const tabs = `<div class="ktabs">
+    <button data-ktab="basic" class="${kTab === 'basic' ? 'on' : ''}">${t('kdTabBasic')}</button>
+    <button data-ktab="charts" class="${kTab === 'charts' ? 'on' : ''}">${t('kdTabCharts')}</button></div>`;
+  $('pg-chart').innerHTML = `<div class="page-title">${t('chartTitle')}</div>${tabs}${kTab === 'basic' ? kBasicHtml(c) : kChartsHtml(c)}`;
 }
+$('pg-chart').addEventListener('click', e => {
+  if (!profile) return;
+  const tab = e.target.closest('[data-ktab]');
+  if (tab) { kTab = tab.dataset.ktab; renderChart(); return; }
+  const sub = e.target.closest('[data-ksub]');
+  if (sub) { kSub = sub.dataset.ksub; renderChart(); return; }
+  const st = e.target.closest('[data-kstyle]');
+  if (st) { kStyle = st.dataset.kstyle; renderChart(); return; }
+  const md = e.target.closest('[data-kmode]');
+  if (md) { kMode = md.dataset.kmode; renderChart(); }
+});
+
+/* ---------- मिलान (Ashtakoot, 36 गुण) ---------- */
+const MATCH_DEVA = [0, 4, 6, 7, 12, 14, 16, 21, 26];
+const MATCH_MANU = [1, 3, 5, 10, 11, 19, 20, 24, 25];
+const NAK_GANA = Array.from({ length: 27 }, (_, i) => MATCH_DEVA.includes(i) ? 'D' : MATCH_MANU.includes(i) ? 'M' : 'R');
+const NAK_YONI = ['Horse', 'Elephant', 'Goat', 'Serpent', 'Serpent', 'Dog', 'Cat', 'Goat', 'Cat', 'Rat', 'Rat', 'Cow', 'Buffalo', 'Tiger', 'Buffalo', 'Tiger', 'Deer', 'Deer', 'Dog', 'Monkey', 'Mongoose', 'Monkey', 'Lion', 'Horse', 'Lion', 'Cow', 'Elephant'];
+const YONI_ENEMY = new Set(['Buffalo|Horse', 'Elephant|Lion', 'Goat|Monkey', 'Mongoose|Serpent', 'Deer|Dog', 'Cat|Rat', 'Cow|Tiger']);
+const NADI_OF = Array.from({ length: 27 }, (_, i) => [0, 5, 6, 11, 12, 17, 18, 23, 24].includes(i) ? 0 : [1, 4, 7, 10, 13, 16, 19, 22, 25].includes(i) ? 1 : 2);
+const VARNA_OF = [2, 1, 0, 3, 2, 1, 0, 3, 2, 1, 0, 3];
+const VASHYA_OF = ['C', 'C', 'M', 'J', 'V', 'M', 'M', 'K', 'M', 'J', 'M', 'J'];
+const VASHYA_PTS = { CM: 1, CJ: 0.5, JM: 0.5 };
+const BHAKOOT_BAD = [2, 5, 6, 8, 9, 12];
+const LORD_OF = ['Mars', 'Venus', 'Mercury', 'Moon', 'Sun', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn', 'Saturn', 'Jupiter'];
+const LORD_FRIEND = { Sun: ['Moon', 'Mars', 'Jupiter'], Moon: ['Sun', 'Mercury'], Mars: ['Sun', 'Moon', 'Jupiter'], Mercury: ['Sun', 'Venus'], Jupiter: ['Sun', 'Moon', 'Mars'], Venus: ['Mercury', 'Saturn'], Saturn: ['Mercury', 'Venus'] };
+const LORD_ENEMY = { Sun: ['Venus', 'Saturn'], Moon: [], Mars: ['Mercury'], Mercury: ['Moon'], Jupiter: ['Mercury', 'Venus'], Venus: ['Sun', 'Moon'], Saturn: ['Sun', 'Moon', 'Mars'] };
+function lordRel(a, b) {
+  if (a === b || LORD_FRIEND[a].includes(b)) return 2.5;
+  if (LORD_ENEMY[a].includes(b)) return 0;
+  return 1.25;
+}
+function ashtakoot(b, g) {
+  // b = लड़का, g = लड़की; दोनों के { moon: राशि index, nak: नक्षत्र index }
+  const taraOk = n => { const r = n % 9; return r !== 0 && r !== 3 && r !== 5 && r !== 7; };
+  const ya = NAK_YONI[b.nak], yg = NAK_YONI[g.nak];
+  const yoniScore = ya === yg ? 4 : YONI_ENEMY.has([ya, yg].sort().join('|')) ? 0 : 2;
+  const ganaScore = NAK_GANA[b.nak] === NAK_GANA[g.nak] ? 6 : [NAK_GANA[b.nak], NAK_GANA[g.nak]].sort().join('') === 'DM' ? 5 : 0;
+  const vashyaScore = VASHYA_OF[b.moon] === VASHYA_OF[g.moon] ? 2 : (VASHYA_PTS[[VASHYA_OF[b.moon], VASHYA_OF[g.moon]].sort().join('')] || 0);
+  const maitriScore = lordRel(LORD_OF[b.moon], LORD_OF[g.moon]) + lordRel(LORD_OF[g.moon], LORD_OF[b.moon]);
+  const bhakootScore = BHAKOOT_BAD.includes(((g.moon - b.moon + 12) % 12) + 1) ? 0 : 7;
+  const nadiScore = NADI_OF[b.nak] === NADI_OF[g.nak] ? 0 : 8;
+  const varnaScore = VARNA_OF[b.moon] >= VARNA_OF[g.moon] ? 1 : 0;
+  const taraScore = (taraOk(((g.nak - b.nak + 27) % 27) + 1) ? 1.5 : 0) + (taraOk(((b.nak - g.nak + 27) % 27) + 1) ? 1.5 : 0);
+  return [
+    { key: 'mVarna', max: 1, score: varnaScore },
+    { key: 'mVashya', max: 2, score: vashyaScore },
+    { key: 'mTara', max: 3, score: taraScore },
+    { key: 'mYoni', max: 4, score: yoniScore },
+    { key: 'mMaitri', max: 5, score: maitriScore },
+    { key: 'mGana', max: 6, score: ganaScore },
+    { key: 'mBhakoot', max: 7, score: bhakootScore },
+    { key: 'mNadi', max: 8, score: nadiScore },
+  ];
+}
+
+let matchResult = null;
+
+function matchFormHtml() {
+  const hh = Array.from({ length: 12 }, (_, i) => `<option value="${i + 1}">${i + 1}</option>`).join('');
+  const mm = Array.from({ length: 60 }, (_, i) => `<option value="${i}">${String(i).padStart(2, '0')}</option>`).join('');
+  return `<div class="page-title">${t('matchTitle')}</div>
+   <div class="page-sub">${t('matchSub')}</div>
+   <div class="card">
+     <label class="mlabel">${t('mfName')}</label>
+     <input id="mName" class="mfield" type="text" placeholder="${esc(t('mNamePh'))}" />
+     <label class="mlabel">${t('mfDob')}</label>
+     <input id="mDob" class="mfield" type="date" />
+     <label class="mlabel">${t('mfTime')}</label>
+     <div class="mrow">
+       <select id="mHh" class="mfield"><option value="">—</option>${hh}</select>
+       <select id="mMm" class="mfield"><option value="">—</option>${mm}</select>
+       <select id="mAp" class="mfield"><option value="AM">AM</option><option value="PM">PM</option></select>
+     </div>
+     <label class="mlabel">${t('mfPlace')}</label>
+     <input id="mPlace" class="mfield" type="text" placeholder="${esc(t('mPlacePh'))}" />
+     <label class="mcheck"><input id="mSwap" type="checkbox" /> ${t('mSwapLabel')}</label>
+     <button class="btn" data-mact="calc">${t('mCalc')}</button>
+   </div>`;
+}
+function matchResultHtml(r) {
+  const total = r.rows.reduce((s, x) => s + x.score, 0);
+  const verdict = total >= 25 ? t('mGreat') : total >= 18 ? t('mGood') : t('mLow');
+  const sc = v => Number.isInteger(v) ? String(v) : v.toFixed(1);
+  const cmp = [
+    [t('mcName'), r.boy.name, r.girl.name],
+    [t('mcDate'), r.boy.date, r.girl.date],
+    [t('mcTime'), r.boy.time, r.girl.time],
+    [t('mcPlace'), r.boy.place, r.girl.place],
+    [t('mcLat'), r.boy.lat, r.girl.lat],
+    [t('mcLon'), r.boy.lon, r.girl.lon],
+  ];
+  const rowsHtml = r.rows.map(x => {
+    const tag = x.score >= x.max ? ['match', t('mMatch')] : x.score >= x.max / 2 ? ['partial', t('mPartial')] : ['low', t('mLowTag')];
+    return `<tr><td>${esc(t(x.key))}</td><td>${x.max}</td><td class="kred">${sc(x.score)}</td><td><span class="mtag ${tag[0]}">${tag[1]}</span></td></tr>`;
+  }).join('');
+  return `<div class="page-title">${t('matchTitle')}</div>
+   <div class="card kcard">
+     <div class="mhead">${t('mBasic')}</div>
+     <table class="ktable"><thead><tr><th></th><th class="kb">${t('mBoy')}</th><th class="kg">${t('mGirl')}</th></tr></thead>
+     <tbody>${cmp.map(([l, b, g]) => `<tr><td>${esc(l)}</td><td class="kb">${esc(b)}</td><td class="kg">${esc(g)}</td></tr>`).join('')}</tbody></table>
+   </div>
+   <div class="card kcard">
+     <div class="mhead">${t('mGuna')}</div>
+     <table class="ktable"><thead><tr><th>${t('mCategory')}</th><th>${t('mMax')}</th><th>${t('mObtained')}</th><th>${t('mResult')}</th></tr></thead>
+     <tbody>${rowsHtml}</tbody>
+     <tfoot><tr><td colspan="2" class="mtot">${t('mTotal')}</td><td colspan="2" class="mtot"><b class="kred">${sc(total)} / 36</b></td></tr></tfoot></table>
+     <p class="muted" style="margin-top:10px">${verdict}</p>
+   </div>
+   <div class="kpills"><button data-mact="edit">${t('mEdit')}</button></div>
+   <p class="note">${t('mNote')}</p>`;
+}
+function renderMatch() {
+  if (!profile) return;
+  const c = profile.chart;
+  if (!c || c.nameBased || !c.moon || !c.nakshatra) {
+    $('pg-match').innerHTML = `<div class="page-title">${t('matchTitle')}</div><p class="muted">${t('matchNeedTime')}</p>`;
+    return;
+  }
+  $('pg-match').innerHTML = matchResult ? matchResultHtml(matchResult) : matchFormHtml();
+}
+const fmtDate = d => d.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+async function matchCalc() {
+  const name = $('mName').value.trim();
+  const dobVal = $('mDob').value;
+  const hh = $('mHh').value, mm = $('mMm').value, ap = $('mAp').value;
+  const place = $('mPlace').value.trim();
+  if (!name || !dobVal || !hh || mm === '') { alert(t('mNeedAll')); return; }
+  const [y, mo, da] = dobVal.split('-').map(Number);
+  const h24 = (Number(hh) % 12) + (ap === 'PM' ? 12 : 0);
+  const pc = Astro.chart({ year: y, month: mo, day: da, hour: h24, minute: Number(mm), utcOffsetHours: 5.5 });
+  const coords = await geocode(place);
+  const youDob = profile.dob ? new Date(profile.dob) : null;
+  const you = {
+    name: profile.name,
+    date: youDob ? fmtDate(youDob) : '—',
+    time: profile.birthTime ? `${profile.birthTime.hh}:${profile.birthTime.mm} ${profile.birthTime.ap}` : '—',
+    place: profile.place || '—',
+    lat: profile.placeCoords ? profile.placeCoords.lat.toFixed(2) : '—',
+    lon: profile.placeCoords ? profile.placeCoords.lon.toFixed(2) : '—',
+  };
+  const partner = {
+    name,
+    date: fmtDate(new Date(y, mo - 1, da)),
+    time: `${String(hh).padStart(2, '0')}:${String(mm).padStart(2, '0')} ${ap}`,
+    place: place || '—',
+    lat: coords ? coords.lat.toFixed(2) : '—',
+    lon: coords ? coords.lon.toFixed(2) : '—',
+  };
+  const youRec = { moon: profile.chart.moon.index, nak: profile.chart.nakshatra.index };
+  const partnerRec = { moon: pc.moon.index, nak: pc.nakshatra.index };
+  const youIsBoy = !$('mSwap').checked;
+  matchResult = {
+    boy: youIsBoy ? you : partner,
+    girl: youIsBoy ? partner : you,
+    rows: youIsBoy ? ashtakoot(youRec, partnerRec) : ashtakoot(partnerRec, youRec),
+  };
+  renderMatch();
+}
+$('pg-match').addEventListener('click', e => {
+  if (!profile) return;
+  if (e.target.closest('[data-mact="calc"]')) { matchCalc(); return; }
+  if (e.target.closest('[data-mact="edit"]')) { matchResult = null; renderMatch(); }
+});
 
 function completeness() {
   let n = 0;
@@ -1185,15 +1564,15 @@ function renderTransits() {
   }
   const c = profile.chart;
   const markers = [
-    { lon: tr.tMoon, color: '#ffffff', size: 8, r: 0.6 },
-    { lon: c.moon.index * 30 + 15, color: '#f08a4b', size: 5, r: 0.6 },
+    { lon: tr.tMoon, color: '#14b8a6', size: 8, r: 0.6 },
+    { lon: c.moon.index * 30 + 15, color: '#7c3aed', size: 5, r: 0.6 },
   ];
   const cards = [0, 1, 2].map(i => `
     <div class="item" style="flex-direction:column;align-items:stretch">
       <div style="display:flex;justify-content:space-between;align-items:center">
         <h4 style="margin:0">${C().areas[i]}</h4><span class="orange" style="font-weight:700">${areaScore(i)}%</span>
       </div>
-      <p style="margin-top:8px;color:#e5e5ea">${areaText(i)}</p>
+      <p style="margin-top:8px;color:#1e1b2e">${areaText(i)}</p>
     </div>`).join('');
 
   $('pg-transits').innerHTML =
@@ -1224,6 +1603,67 @@ function renderListen() {
        </div>`).join('')}
      <p class="note">${ttsOk ? t('speakNote') : t('noVoice')}</p>`;
 }
+const SIGN_EMO = ['🐏','🐂','👯','🦀','🦁','👧','⚖️','🦂','🏹','🐐','🏺','🐟'];
+let horoSign = null;
+let horoOffset = 0;
+function horoFor(sign, offset) {
+  const d = new Date();
+  d.setDate(d.getDate() + offset);
+  const base = d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate();
+  let s = (base * 31 + sign * 17 + 7) >>> 0;
+  const rnd = () => { s = (Math.imul(s, 1103515245) + 12345) >>> 0; return s; };
+  const list = POOL_LIST[lang] || EN_POOL_LIST;
+  const labels = POOL_LABEL[lang] || POOL_LABEL.en;
+  const icons = ['🌞', '💼', '💞', '🌿', '💰'];
+  const cats = POOL_KEYS.map((k, i) => ({ icon: icons[i], label: labels[i], pct: 50 + (rnd() % 46), text: list[i][rnd() % list[i].length] }));
+  const hour = 1 + (rnd() % 12);
+  const min = rnd() % 60;
+  const time = `${String(hour).padStart(2, '0')}:${String(min).padStart(2, '0')} ${rnd() % 2 ? 'AM' : 'PM'}`;
+  const mood = ['😊', '😌', '🤔', '😎', '🙂'][rnd() % 5];
+  return { day: d, cats, lucky: 1 + (rnd() % 9), time, mood };
+}
+function renderHoro() {
+  if (horoSign === null) horoSign = profile && profile.chart && profile.chart.moon ? profile.chart.moon.index : 0;
+  const data = horoFor(horoSign, horoOffset);
+  const locale = lang === 'en' ? 'en-IN' : 'hi-IN';
+  const dateStr = data.day.toLocaleDateString(locale, { weekday: 'long', day: 'numeric', month: 'short', year: 'numeric' });
+  const offs = [[-1, t('horoYest')], [0, t('horoToday')], [1, t('horoTom')]];
+  $('pg-horo').innerHTML =
+    `<div class="page-title" style="font-size:24px;margin-top:6px">${t('horoTitle')}</div>
+     <div class="page-sub">${dateStr}</div>
+     <div class="section-h" style="margin-top:4px"><span>${t('horoSign')}</span></div>
+     <div class="hgrid">${RASHIS.map((_, i) => `<button class="hsign${i === horoSign ? ' on' : ''}" data-sign="${i}"><span>${SIGN_EMO[i]}</span><span>${rashiName(i)}</span></button>`).join('')}</div>
+     <div class="hdaily">
+       <div class="hbig">${SIGN_EMO[horoSign]}</div>
+       <div style="flex:1;min-width:0">
+         <div class="hrow2"><b>${t('horoReady')}</b><span class="htag">${offs.find(o => o[0] === horoOffset)[1]}</span></div>
+         <div class="muted" style="font-size:13px">${rashiName(horoSign)}</div>
+         <div class="hmeta">
+           <span>${t('horoColor')}: ${colorName(RASHIS[horoSign].color)}</span>
+           <span>${t('horoMood')}: ${data.mood}</span>
+           <span>${t('horoNum')}: ${data.lucky}</span>
+           <span>${t('horoTime')}: ${data.time}</span>
+         </div>
+       </div>
+     </div>
+     <div class="seg">${offs.map(([o, l]) => `<button data-hoff="${o}" class="${o === horoOffset ? 'on' : ''}">${l}</button>`).join('')}</div>
+     ${data.cats.map(c => `
+       <div class="item" style="align-items:flex-start">
+         <div class="hicon">${c.icon}</div>
+         <div class="body">
+           <div class="hrow2"><h4>${esc(c.label)}</h4><b class="orange">${c.pct}%</b></div>
+           <p>${esc(c.text)}</p>
+         </div>
+       </div>`).join('')}
+     <p class="note">${t('funNote')}</p>`;
+}
+$('pg-horo').addEventListener('click', e => {
+  const s = e.target.closest('[data-sign]');
+  if (s) { horoSign = Number(s.dataset.sign); renderHoro(); return; }
+  const o = e.target.closest('[data-hoff]');
+  if (o) { horoOffset = Number(o.dataset.hoff); renderHoro(); }
+});
+
 function speakIdx(i) {
   if (!('speechSynthesis' in window)) return;
   speechSynthesis.cancel();
@@ -1241,8 +1681,71 @@ function renderProfile() {
     `<div class="row"><b>${t('pName')}</b><span>${esc(profile.name)}</span></div>
      <div class="row"><b>${t('pDob')}</b><span>${d ? `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}` : t('dash')}</span></div>
      <div class="row"><b>${t('pPlace')}</b><span>${esc(profile.place || t('dash'))}</span></div>
-     <div class="row"><b>${t('pTime')}</b><span>${tm}</span></div>`;
+     <div class="row"><b>${t('pTime')}</b><span>${tm}</span></div>
+     <button class="btn" data-astro-open="1" style="margin-top:14px">${t('ajOpen')}</button>`;
 }
+
+/* ============ Astrologer portal (Gmail आधारित) ============ */
+let astroView = null; // null = अपने-आप तय, 'join' या 'login'
+function renderAstro() {
+  if (!profile) return;
+  const a = profile.astro;
+  const view = astroView || (a && a.joined ? 'customers' : 'join');
+  $('pg-astro').innerHTML = view === 'join' ? astroJoinHtml() : view === 'login' ? astroLoginHtml() : astroCustomersHtml(a);
+}
+function astroJoinHtml() {
+  return `<div class="page-title" style="text-align:center">${t('ajTitle')}</div>
+   <div class="page-sub" style="text-align:center">${t('ajSub')}</div>
+   <div class="card">
+     <label class="mlabel">${t('ajName')}</label>
+     <input id="ajName" class="mfield" type="text" placeholder="${esc(t('ajNamePh'))}" value="${esc(profile.name || '')}" />
+     <label class="mlabel">${t('ajGmail')}</label>
+     <input id="ajGmail" class="mfield" type="email" placeholder="name@gmail.com" />
+     <button class="btn" data-aj="submit" style="margin-top:14px">${t('ajContinue')} →</button>
+     <p class="note" style="text-align:center"><button class="alink" data-aj="login">${t('ajHaveAcc')}</button></p>
+   </div>`;
+}
+function astroLoginHtml() {
+  return `<div class="page-title" style="text-align:center">${t('ajWelcome')}</div>
+   <div class="page-sub" style="text-align:center">${t('ajLoginSub')}</div>
+   <div class="card">
+     <button class="btn" data-aj="google">${t('ajGoogle')}</button>
+     <p class="note" style="text-align:center"><button class="alink" data-aj="signup">${t('ajNew')}</button></p>
+   </div>`;
+}
+function astroCustomersHtml(a) {
+  return `<div class="page-title">${t('ajCustomers')}</div>
+   <div class="page-sub">${esc(a.name)} · ${esc(a.email)}</div>
+   <div class="qsearch"><input id="ajSearch" type="search" placeholder="${esc(t('ajSearch'))}" /></div>
+   <div class="card"><p class="muted">${t('ajEmpty')}</p></div>
+   <div class="kpills"><button data-aj="leave">${t('ajLeave')}</button></div>`;
+}
+$('pg-astro').addEventListener('click', async e => {
+  if (!profile) return;
+  const b = e.target.closest('[data-aj]');
+  if (!b) return;
+  const act = b.dataset.aj;
+  if (act === 'submit') {
+    const name = $('ajName').value.trim();
+    const email = $('ajGmail').value.trim();
+    if (!name || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { alert(t('ajInvalid')); return; }
+    profile.astro = { name, email, joined: true };
+    saveProfile(profile); syncProfile();
+    astroView = null; renderAstro();
+  } else if (act === 'login') { astroView = 'login'; renderAstro(); }
+  else if (act === 'signup') { astroView = 'join'; renderAstro(); }
+  else if (act === 'google') {
+    if (!sb) { alert(t('ajNoLogin')); return; }
+    const { error } = await sb.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: location.href.split('#')[0] } });
+    if (error) alert(error.message);
+  } else if (act === 'leave') {
+    profile.astro = null; saveProfile(profile);
+    astroView = null; renderAstro();
+  }
+});
+$('pg-profile').addEventListener('click', e => {
+  if (e.target.closest('[data-astro-open]')) { astroView = null; showPg('astro'); }
+});
 
 /* ============ शुरुआत ============ */
 function enterApp() {
@@ -1302,7 +1805,23 @@ $('langBanner').addEventListener('click', e => {
   if (no) { profile.langAsked = true; saveProfile(profile); renderLangBanner(); }
 });
 
+$('pg-home').addEventListener('input', e => {
+  if (e.target.id !== 'homeSearch') return;
+  const q = e.target.value.trim().toLowerCase();
+  document.querySelectorAll('#pg-home .qtile').forEach(el => {
+    el.style.display = el.dataset.label.toLowerCase().includes(q) ? '' : 'none';
+  });
+});
 $('pg-home').addEventListener('click', e => {
+  const quick = e.target.closest('[data-quick]');
+  if (quick) {
+    const k = quick.dataset.quick;
+    if (k === 'horo') showPg('horo');
+    else if (k === 'kundali') showPg('chart');
+    else if (k === 'chat') showPg('chat');
+    else if (k === 'match') showPg('match');
+    return;
+  }
   const p = e.target.closest('[data-period]');
   if (p) { period = p.dataset.period; renderHome(); return; }
   if (e.target.closest('#openChat')) { showPg('chat'); return; }
@@ -1323,8 +1842,7 @@ $('resetBtn').addEventListener('click', () => {
   if (!confirm(t('resetConfirm'))) return;
   clearProfile();
   profile = null;
-  ['name', 'dob', 'place'].forEach(id => $(id).value = '');
-  showScreen('scrAuth');
+  location.reload();
 });
 
 $('chatSend').addEventListener('click', sendChat);
@@ -1361,7 +1879,7 @@ setTimeout(() => {
   $('splash').classList.add('gone');
   setTimeout(() => {
     $('splash').style.display = 'none';
-    if (profile) enterApp(); else showScreen('scrAuth');
+    if (profile && !sb) enterApp(); else showScreen('scrAuth');
   }, 400);
 }, 1500);
 </script>

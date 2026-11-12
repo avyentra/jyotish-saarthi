@@ -1,5 +1,5 @@
 // Network-first: हमेशा नया कोड लाने की कोशिश; इंटरनेट न होने पर cache से खोलता है।
-const CACHE = 'jyotish-v4';
+const CACHE = 'jyotish-v6';
 const SHELL = ['./', './index.html', './manifest.webmanifest', './icon.svg', './js/astro.js'];
 
 self.addEventListener('install', e => {

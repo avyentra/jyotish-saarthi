@@ -30,7 +30,7 @@
 
 ## AI चैट चालू करना (वैकल्पिक)
 - API key कभी HTML में न डालें, वह सार्वजनिक हो जाएगी।
-- `worker/chat-worker.js` को Cloudflare Worker के रूप में deploy करें और `ANTHROPIC_API_KEY` को Secret में रखें।
+- `worker/chat-worker.js` को Cloudflare Worker के रूप में deploy करें, KV namespace `LIMITS` को binding के रूप में जोड़ें, और `GROQ_API_KEY` को Secret में रखें (मुफ़्त चैट, प्रति IP दिन में 5 सवाल)।
 - मिले URL को `index.html` में `CONFIG.chatEndpoint` में लिखें, फिर commit और push करें।
 - चैट में सवाल भेजते समय राशि और जन्म-विवरण AI सेवा को भेजे जाते हैं। Privacy policy में यह लिखें।
 

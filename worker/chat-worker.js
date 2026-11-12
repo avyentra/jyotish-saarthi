@@ -33,7 +33,7 @@ export default {
 
     const question = String(body.question || '').slice(0, 800);
     const ctx = body.context || {};
-    const lang = ['en', 'hi', 'pa'].includes(ctx.language) ? ctx.language : 'en';
+    const lang = ['en', 'hi', 'pa', 'hg'].includes(ctx.language) ? ctx.language : 'en';
     if (!question) return json({ answer: '' }, cors);
 
     // रोज़ की सीमा (KV)
@@ -41,10 +41,10 @@ export default {
     const ip = request.headers.get('cf-connecting-ip') || 'unknown';
     const key = `${day}:${ip}`;
     const used = Number(await env.LIMITS.get(key)) || 0;
-    if (used >= DAILY_LIMIT) return json({ answer: LIMIT_MSG[lang], limited: true }, cors);
+    if (used >= DAILY_LIMIT) return json({ answer: LIMIT_MSG[lang] || LIMIT_MSG.en, limited: true }, cors);
     await env.LIMITS.put(key, String(used + 1), { expirationTtl: 60 * 60 * 26 });
 
-    const langName = { en: 'English', hi: 'Hindi (देवनागरी)', pa: 'Punjabi (Gurmukhi)' }[lang];
+    const langName = { en: 'English', hi: 'Hindi (देवनागरी)', pa: 'Punjabi (Gurmukhi)', hg: 'Hinglish (Hindi written in English letters, Roman script)' }[lang];
     const system =
       `You are a friendly Vedic astrology assistant. Reply in ${langName}, in simple short language. ` +
       'Present astrology as entertainment and cultural guidance. Do not make certain predictions. ' +
