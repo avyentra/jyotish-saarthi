@@ -1028,6 +1028,53 @@ function chatContext() {
     mulank: numbersOf().m, bhagyank: numbersOf().b,
   };
 }
+/* ---- चैट: सवाल में दी गई जन्म तिथि वाले व्यक्ति के लिए गणना ---- */
+function parseDobFromText(q) {
+  const m = q.match(/(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{4})/);
+  if (!m) return null;
+  const d = new Date(+m[3], +m[2] - 1, +m[1]);
+  if (d.getFullYear() !== +m[3] || d.getMonth() !== +m[2] - 1 || d.getDate() !== +m[1]) return null;
+  return d;
+}
+function parseTimeFromText(q) {
+  const m = q.match(/\b(\d{1,2}):(\d{2})\s*(AM|PM)?/i);
+  if (!m) return null;
+  let h = +m[1];
+  const mi = +m[2];
+  if (m[3]) h = (h % 12) + (/pm/i.test(m[3]) ? 12 : 0);
+  if (h > 23 || mi > 59) return null;
+  return { hour: h, minute: mi };
+}
+function chartForPerson(d, tm) {
+  const cands = tm ? [[tm.hour, tm.minute]] : [[0, 0], [12, 0], [23, 59]];
+  const uniq = a => [...new Set(a)];
+  const moons = [], suns = [], wests = [];
+  for (const [h, mi] of cands) {
+    const c = Astro.chart({ year: d.getFullYear(), month: d.getMonth() + 1, day: d.getDate(),
+      hour: h, minute: mi, utcOffsetHours: 5.5, lat: null, lon: null });
+    moons.push(vedicLabel(c.moon.index));
+    suns.push(vedicLabel(c.sun.index));
+    wests.push(WESTERN_EN[westernSunIdx(c)]);
+  }
+  const pad = n => String(n).padStart(2, '0');
+  return {
+    mode: 'other',
+    dob: `${pad(d.getDate())}/${pad(d.getMonth() + 1)}/${d.getFullYear()}`,
+    birthTime: tm ? `${pad(tm.hour)}:${pad(tm.minute)}` : 'not given',
+    rashi: uniq(moons).join(' / '),
+    surya_vedic: uniq(suns).join(' / '),
+    surya_western: uniq(wests).join(' / '),
+    mulank: mulankOf(d),
+    bhagyank: bhagyankOf(d),
+    note: tm ? '' : 'Birth time not given. The Moon may change rashi during this day, so all possible Chandra rashis are listed.',
+  };
+}
+function chatContextFor(question) {
+  const d = parseDobFromText(question);
+  if (!d) return { mode: 'self', ...chatContext() };
+  try { return chartForPerson(d, parseTimeFromText(question)); }
+  catch (e) { return { mode: 'self', ...chatContext() }; }
+}
 async function askAI(question) {
   if (!CONFIG.chatEndpoint) return t('chatNotReady');
   let token = '';
@@ -1039,7 +1086,7 @@ async function askAI(question) {
   const res = await fetch(CONFIG.chatEndpoint, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
-    body: JSON.stringify({ question, context: chatContext() }),
+    body: JSON.stringify({ question, context: { ...chatContextFor(question), language: lang } }),
   });
   const data = await res.json().catch(() => ({}));
   if (!res.ok) return data.answer || t('chatLogin');
