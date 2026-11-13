@@ -290,6 +290,7 @@
           <option value="9">Japan (UTC+9)</option>
         </select>
         <button class="btn" id="saveBtn" style="margin-top:18px" data-i18n="start"></button>
+        <button class="btn" id="cancelEdit" style="display:none;margin-top:10px;background:#fff;color:#7c3aed;border:1px solid #7c3aed">रद्द करें</button>
         <p class="note" data-i18n="saveNote"></p>
       </div>
     </main>
@@ -1867,7 +1868,8 @@ function renderProfile() {
      <div class="row"><b>${t('pDob')}</b><span>${d ? `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}` : t('dash')}</span></div>
      <div class="row"><b>${t('pPlace')}</b><span>${esc(profile.place || t('dash'))}</span></div>
      <div class="row"><b>${t('pTime')}</b><span>${tm}</span></div>
-     <button class="btn" data-astro-open="1" style="margin-top:14px">${t('ajOpen')}</button>
+     <button class="btn" data-edit-profile="1" style="margin-top:14px">प्रोफ़ाइल संपादित करें</button>
+     <button class="btn" data-astro-open="1" style="margin-top:10px">${t('ajOpen')}</button>
      <button class="btn" data-logout="1" style="margin-top:10px;background:#fff;color:#7c3aed;border:1px solid #7c3aed">${t('logout')}</button>`;
 }
 
@@ -1999,7 +2001,42 @@ $('pg-astro').addEventListener('click', async e => {
     astroView = null; renderAstro();
   }
 });
+/* ============ प्रोफ़ाइल संपादन: मौजूदा जानकारी फ़ॉर्म में भरकर खोलें ============ */
+let editMode = false;
+function openEditProfile() {
+  if (!profile) return;
+  editMode = true;
+  $('name').value = profile.name || '';
+  const d = profile.dob;
+  $('dob').value = d ? `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}` : '';
+  $('place').value = profile.place || '';
+  selectedCoords = profile.placeCoords || null;
+  selectedState = profile.placeState || null;
+  if (profile.birthTime) {
+    $('timeUnknown').checked = false;
+    $('hh').value = profile.birthTime.hh;
+    $('mm').value = String(Number(profile.birthTime.mm));
+    $('ap').value = profile.birthTime.ap;
+  } else {
+    $('timeUnknown').checked = true;
+  }
+  $('timeUnknown').dispatchEvent(new Event('change'));
+  $('tz').value = String(profile.tz ?? 5.5);
+  $('cancelEdit').style.display = '';
+  $('loginCard').classList.add('hidden');
+  $('formCard').classList.remove('hidden');
+  showScreen('scrAuth');
+  window.scrollTo(0, 0);
+}
+function closeEditProfile() {
+  editMode = false;
+  $('cancelEdit').style.display = 'none';
+  $('formCard').classList.add('hidden');
+}
+$('cancelEdit').addEventListener('click', () => { closeEditProfile(); enterApp(); });
+
 $('pg-profile').addEventListener('click', e => {
+  if (e.target.closest('[data-edit-profile]')) { openEditProfile(); return; }
   if (e.target.closest('[data-astro-open]')) { astroView = null; showPg('astro'); return; }
   if (e.target.closest('[data-logout]')) doLogout();
 });
@@ -2031,6 +2068,7 @@ $('saveBtn').addEventListener('click', async () => {
     birthTime = { hh: $('hh').value, mm: String(minute).padStart(2, '0'), ap: $('ap').value };
   }
   profile = {
+    ...(editMode && profile ? profile : {}),
     name,
     dob: dobVal ? new Date(y, mo - 1, da, hour24, minute) : null,
     place: $('place').value.trim(),
@@ -2039,7 +2077,7 @@ $('saveBtn').addEventListener('click', async () => {
     birthTime,
     tz: Number($('tz').value),
     lang,
-    langAsked: false,
+    langAsked: editMode && profile ? profile.langAsked : false,
   };
   $('saveBtn').disabled = true;
   $('saveBtn').textContent = t('saving');
@@ -2050,6 +2088,7 @@ $('saveBtn').addEventListener('click', async () => {
   $('saveBtn').textContent = t('start');
   saveProfile(profile);
   syncProfile();
+  if (editMode) closeEditProfile();
   enterApp();
 });
 
