@@ -788,7 +788,8 @@ function applyStaticTranslations() {
 const digitSum = n => String(Math.abs(n)).split('').reduce((s, c) => s + Number(c), 0);
 const reduce1 = n => { let x = Math.abs(n); while (x > 9) x = digitSum(x); return x; };
 const mulankOf = d => reduce1(d.getDate());
-const bhagyankOf = d => reduce1(digitSum(d.getDate()) + digitSum(d.getMonth() + 1) + digitSum(d.getFullYear()));
+const reduceKeepMaster = n => { let x = Math.abs(n); while (x > 9 && x !== 11 && x !== 22 && x !== 33) x = digitSum(x); return x; };
+const bhagyankOf = d => reduceKeepMaster(digitSum(d.getDate()) + digitSum(d.getMonth() + 1) + digitSum(d.getFullYear()));
 function nameNumber(name) {
   let s = 0;
   for (const ch of name.toUpperCase()) s += CHALDEAN[ch] || 0;
@@ -1325,6 +1326,13 @@ function renderHome() {
 }
 const ICON_ARROW = '<svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
 
+const VEDIC_HI = ['मेष','वृषभ','मिथुन','कर्क','सिंह','कन्या','तुला','वृश्चिक','धनु','मकर','कुंभ','मीन'];
+const WESTERN_EN = ['Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scorpio','Sagittarius','Capricorn','Aquarius','Pisces'];
+function vedicLabel(i) { return `${VEDIC_HI[i]} (${WESTERN_EN[i]})`; }
+function westernSunIdx(c) {
+  const trop = (c.sun.index * 30 + c.sun.degree + (c.ayanamsa ?? 24.1)) % 360;
+  return Math.floor(trop / 30);
+}
 /* ---------- कुंडली (Kundli) ---------- */
 let kTab = 'charts', kSub = 'lagna', kStyle = 'north', kMode = 'sign';
 const K_SUB_KEY = { lagna: 'kdSubLagna', chandra: 'kdSubChandra', surya: 'kdSubSurya' };
@@ -1396,7 +1404,9 @@ function kTable(c, rows) {
   return `<table class="ktable"><thead><tr>${head.map(h => `<th>${esc(h)}</th>`).join('')}</tr></thead><tbody>${body}</tbody></table>`;
 }
 function kBasicHtml(c) {
-  const mulank = numbersOf().m;
+  const nums = numbersOf();
+  const mulank = nums.m;
+  const bhagyank = nums.b;
   const nak = C().nak[c.nakshatra.index] || c.nakshatra.name;
   const markers = [
     { lon: c.sun.index * 30 + c.sun.degree, color: '#7c3aed', size: 7, r: 0.6 },
@@ -1405,8 +1415,8 @@ function kBasicHtml(c) {
   return `<div class="page-sub">${t('chartSub')}</div>
      <div class="card wheel">${wheelSvg(300, markers)}</div>
      <div class="card"><div class="prow"><span>${t('completeness')}</span><span>${completeness()}%</span></div><div class="pbar"><i style="width:${completeness()}%"></i></div></div>
-     <div class="card"><div class="section-h" style="margin:0 0 8px"><span>${t('sunIn', rashiName(c.sun.index))}</span></div><p>${C().sun[c.sun.index]}</p><p class="muted" style="font-size:13px">${c.sun.degree}°</p></div>
-     <div class="card"><div class="row"><b>${t('moonRashi')}</b><span>${rashiName(c.moon.index)} (${c.moon.degree}°)</span></div><div class="row"><b>${t('lblNak')}</b><span>${nak}, ${t('lblPada')} ${c.nakshatra.pada}</span></div><div class="row"><b>${t('mulank')}</b><span>${mulank}</span></div><p style="margin-top:10px">${C().traits[mulank - 1]}</p></div>
+     <div class="card"><div class="row"><b>Surya rashi (Vedic)</b><span>${vedicLabel(c.sun.index)}</span></div><div class="row"><b>Surya rashi (Western)</b><span>${WESTERN_EN[westernSunIdx(c)]}</span></div></div>
+     <div class="card"><div class="row"><b>Chandra rashi</b><span>${vedicLabel(c.moon.index)}</span></div><div class="row"><b>${t('lblNak')}</b><span>${nak}, ${t('lblPada')} ${c.nakshatra.pada}</span></div><div class="row"><b>${t('mulank')}</b><span>${mulank}</span></div><div class="row"><b>Bhagyank</b><span>${bhagyank}</span></div><p style="margin-top:10px">${C().traits[mulank - 1]}</p>${!profile.birthTime ? '<p class="muted" style="font-size:13px;margin-top:8px">जन्म समय नहीं है, इसलिए चंद्र राशि अनुमानित है। दिन के बीच बदल सकती है।</p>' : ''}</div>
      <div class="card"><div class="section-h" style="margin:0 0 8px"><span>${t('lagna', c.lagna ? rashiName(c.lagna.index) : t('dash'))}</span></div><p>${c.lagna ? C().lagna[c.lagna.index] : t('lagnaNeed')}</p>${c.lagna ? `<p class="muted" style="font-size:13px">${c.lagna.degree}°</p>` : ''}</div>
      <p class="note">${t('chartNote')}</p>`;
 }
