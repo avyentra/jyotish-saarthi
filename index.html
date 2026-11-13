@@ -32,6 +32,7 @@
   .top { display: flex; align-items: center; justify-content: space-between; padding: 18px 20px 16px; background: linear-gradient(120deg, #7c3aed, #14b8a6); color: #fff; border-radius: 0 0 28px 28px; }
   .avatar { width: 42px; height: 42px; border-radius: 50%; background: linear-gradient(135deg, #a78bfa, #14b8a6); display: flex; align-items: center; justify-content: center; font-weight: 700; color: #fff; font-size: 17px; }
   .top h1 { font-size: 17px; font-weight: 600; margin: 0; color: #fff; }
+  .headback { border: 0; color: #fff; font-size: 20px; cursor: pointer; }
   .top .circle-btn { background: rgba(255,255,255,.22); color: #fff; }
   .circle-btn { width: 42px; height: 42px; border-radius: 50%; background: var(--card); border: 0; color: var(--ink); display: flex; align-items: center; justify-content: center; }
   .circle-btn svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 1.8; }
@@ -208,6 +209,11 @@
 
 /* आज का गोचर कार्ड */
 .gupay { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); }
+.gsum { cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; margin: 0; }
+.gsum::-webkit-details-marker { display: none; }
+.gsum::after { content: '▾'; color: var(--accent); font-size: 16px; transition: transform .2s; }
+details[open] > .gsum::after { transform: rotate(180deg); }
+.gupay[open] > .gsum { margin-bottom: 4px; }
 .gul { margin: 6px 0 4px; padding-left: 18px; font-size: 14px; line-height: 1.7; }
 .gochar { padding: 0; overflow: hidden; }
 .gbox-top { background: linear-gradient(120deg, #7c3aed, #14b8a6); color: #fff; padding: 14px; }
@@ -303,6 +309,7 @@
     <div class="top">
       <div style="display:flex;align-items:center;gap:12px">
         <div class="avatar" id="avatar">?</div>
+        <button class="avatar headback hidden" id="headBack" aria-label="back">←</button>
         <h1 id="hGreet"></h1>
       </div>
       <button class="circle-btn" id="btnProfile" aria-label="profile">
@@ -1275,7 +1282,9 @@ function showPg(name, fromBack = false) {
   $('chatBar').classList.toggle('hidden', name !== 'chat');
   const titles = { chart: t('chartTitle'), transits: t('transitTitle'), listen: t('listenTitle'), horo: t('horoTitle'), match: t('matchTitle'), astro: t('ajNavTitle'), remedies: t('remTitle'), service: serviceTitle(), chat: t('chatTitle'), profile: t('profileTitle') };
   $('hGreet').textContent = titles[name] ? titles[name] : (profile ? (lang === 'pa' ? `ਸਤਿ ਸ੍ਰੀ ਅਕਾਲ, ${profile.name}` : lang === 'hi' ? `नमस्ते, ${profile.name}` : `Hello, ${profile.name}`) : '');
-  $('backBar').classList.toggle('hidden', name === 'home');
+  $('backBar').classList.add('hidden');
+  $('avatar').classList.toggle('hidden', name !== 'home');
+  $('headBack').classList.toggle('hidden', name === 'home');
   $('backTitle').textContent = titles[name] || '';
   renderPage(name);
   window.scrollTo(0, 0);
@@ -1284,6 +1293,7 @@ function goBack() {
   const prev = navStack.pop() || 'home';
   showPg(prev, true);
 }
+$('headBack').addEventListener('click', () => $('backBtn').click());
 $('backBtn').addEventListener('click', () => {
   if (navStack.length) history.back(); else showPg('home', true);
 });
@@ -1520,13 +1530,13 @@ function gocharHtml() {
         <button data-gfb="no" class="gbtn">नहीं</button>
       </div>
       <div class="muted gfb" id="gfbMsg">${yes || no ? `धन्यवाद! अब तक: हाँ ${yes}, नहीं ${no}` : ''}</div>
-      <div class="gupay">
-        <div class="gq">इस हफ़्ते के उपाय</div>
+      <details class="gupay">
+        <summary class="gq gsum">इस हफ़्ते के उपाय</summary>
         <p class="muted gnote">परंपरा के अनुसार (यह विश्वास पर आधारित है, वैज्ञानिक प्रमाण नहीं):</p>
         <ul class="gul">${GOCHAR_UPAY[g.moon].map(u => `<li>${esc(u)}</li>`).join('')}</ul>
         <p class="muted gnote">कितने दिन करें, इसका कोई तय नियम नहीं है। किसी अनुभवी ज्योतिषी से सलाह लें।</p>
         <button class="gbtn" data-goto="remedies">ज्योतिषी सलाह और Remedies देखें</button>
-      </div>
+      </details>
     </div>
   </div>`;
 }
