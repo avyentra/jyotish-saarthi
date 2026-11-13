@@ -44,6 +44,7 @@
   .phead-s { font-size: 12px; color: var(--muted); margin-top: 2px; line-height: 1.5; }
   .page-sub { color: var(--muted); font-size: 14px; text-align: center; line-height: 1.5; padding: 0 12px; margin-bottom: 16px; }
   main { padding: 6px 20px 20px; }
+  main > [id^="pg-"]:not(.hidden) { padding-top: 16px; }
 
   .card { background: var(--card); border-radius: 22px; padding: 18px; margin-bottom: 14px; }
   .section-h { display: flex; justify-content: space-between; align-items: center; margin: 22px 0 12px; font-size: 17px; font-weight: 600; }
@@ -144,7 +145,8 @@
   .qsearch input { margin-bottom: 14px; }
   .qgrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 6px; }
   .qtile { background: var(--card); border: 0; border-radius: 18px; padding: 12px 4px; color: var(--ink); font-size: 12px; display: flex; flex-direction: column; align-items: center; gap: 8px; }
-  .qicon { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; color: #fff; }
+  .qicon { width: 46px; height: 46px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+  .qicon svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
   .tara { display: flex; align-items: center; gap: 14px; background: linear-gradient(120deg, #7c3aed 0%, #14b8a6 100%); border-radius: 22px; padding: 16px 18px; margin: 4px 0 14px; cursor: pointer; color: #fff; }
   .tara .ticon { width: 56px; height: 56px; border-radius: 50%; background: #fff; color: #f0572a; display: flex; align-items: center; justify-content: center; font-size: 26px; flex: 0 0 auto; }
   .tara .tbadges { display: flex; gap: 6px; margin-bottom: 6px; }
@@ -210,7 +212,9 @@
   .mfield { width: 100%; box-sizing: border-box; padding: 11px 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,.15); background: var(--card2); color: inherit; font-size: 15px; }
   .mrow { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
   .mrow select { min-width: 0; }
-  .mcheck { display: flex; gap: 8px; align-items: center; margin: 12px 0; font-size: 14px; }
+  .mcheck { display: flex; gap: 10px; align-items: center; margin: 12px 0; font-size: 14px; color: var(--ink); line-height: 1.4; }
+  .mcheck input[type="checkbox"] { width: 18px; height: 18px; margin: 0; padding: 0; flex: 0 0 18px; accent-color: var(--accent); }
+  .card > .phead { background: transparent; border: 0; border-bottom: 1px solid var(--line); border-radius: 0; padding: 0 0 12px; margin: 0 0 14px; }
 
 /* आज का गोचर कार्ड */
 .gupay { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); }
@@ -1356,8 +1360,12 @@ function renderHome() {
 
   $('pg-home').innerHTML =
     `<div class="qsearch"><input id="homeSearch" type="search" placeholder="${t('searchPh')}" /></div>
-     <div class="qgrid">${[['horo','☾','#ede9fe','qHoro'],['kundali','◎','#e0f2fe','qKundali'],['match','♡','#fce7f3','qMatch'],['chat','✦','#fef9c3','qChat']].map(([k, ic, bg, lk]) => `<button class="qtile" data-quick="${k}" data-label="${esc(t(lk))}"><span class="qicon" style="background:${bg}">${ic}</span><span>${esc(t(lk))}</span></button>`).join('')}</div>
-     ${pageHead(`${r ? r.name : t('dash')}`, ``)}
+     <div class="qgrid">${[
+  ['horo', '<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>', '#ede9fe', '#7c3aed', 'qHoro'],
+  ['kundali', '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.5"/><path d="M12 3v5.5M12 15.5V21M3 12h5.5M15.5 12H21"/>', '#ccfbf1', '#0f766e', 'qKundali'],
+  ['match', '<path d="M12 20.5s-7.5-4.6-7.5-10A4.3 4.3 0 0 1 12 7.6a4.3 4.3 0 0 1 7.5 2.9c0 5.4-7.5 10-7.5 10z"/>', '#fce7f3', '#db2777', 'qMatch'],
+  ['chat', '<path d="M12 3.5l1.9 5.1 5.1 1.9-5.1 1.9L12 17.5l-1.9-5.1-5.1-1.9 5.1-1.9z"/><path d="M19 16.5v3M17.5 18h3"/>', '#fef3c7', '#b45309', 'qChat']].map(([k, ic, bg, fg, lk]) => `<button class="qtile" data-quick="${k}" data-label="${esc(t(lk))}"><span class="qicon" style="background:${bg};color:${fg}"><svg viewBox="0 0 24 24" aria-hidden="true">${ic}</svg></span><span>${esc(t(lk))}</span></button>`).join('')}</div>
+     ${pageHead(`${r ? r.name : t('dash')}`, ``, true)}
      ${sideBlock}
      <div class="seg">
        <button data-period="today" class="${period === 'today' ? 'on' : ''}">${t('periodToday')}</button>
@@ -1415,8 +1423,10 @@ function westernSunIdx(c) {
   return Math.floor(trop / 30);
 }
 /* ---- पेज का शीर्षक: आइकन वाला कार्ड (पूरे ऐप में एक जैसा) ---- */
-function pageHead(title, sub) {
-  return `<div class="phead"><span class="phead-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/></svg></span><div><div class="phead-t">${title}</div>${sub ? `<div class="phead-s">${sub}</div>` : ''}</div></div>`;
+function pageHead(title, sub, keepTitle = false) {
+  const shownTitle = keepTitle ? title : '';   // header already shows the page title
+  if (!shownTitle && !sub) return '';
+  return `<div class="phead"><span class="phead-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/></svg></span><div>${shownTitle ? `<div class="phead-t">${shownTitle}</div>` : ''}${sub ? `<div class="phead-s">${sub}</div>` : ''}</div></div>`;
 }
 /* ---------- कुंडली (Kundli) ---------- */
 let kTab = 'charts', kSub = 'lagna', kStyle = 'north', kMode = 'sign';
@@ -1669,8 +1679,7 @@ let matchResult = null;
 function matchFormHtml() {
   const hh = Array.from({ length: 12 }, (_, i) => `<option value="${i + 1}">${i + 1}</option>`).join('');
   const mm = Array.from({ length: 60 }, (_, i) => `<option value="${i}">${String(i).padStart(2, '0')}</option>`).join('');
-  return `${pageHead(`${t('matchTitle')}`, `${t('matchSub')}`)}
-   <div class="card">
+  return `<div class="card">${pageHead('', `${t('matchSub')}`)}
      <label class="mlabel">${t('mfName')}</label>
      <input id="mName" class="mfield" type="text" placeholder="${esc(t('mNamePh'))}" />
      <label class="mlabel">${t('mfDob')}</label>
