@@ -220,8 +220,8 @@
 .gupay { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); }
 .gsum { cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; margin: 0; }
 .gsum::-webkit-details-marker { display: none; }
-.gsum::after { content: '▾'; color: var(--accent); font-size: 16px; transition: transform .2s; }
-details[open] > .gsum::after { transform: rotate(180deg); }
+.gsum::after { content: ''; width: 11px; height: 11px; border-right: 2.5px solid var(--accent); border-bottom: 2.5px solid var(--accent); transform: rotate(45deg); margin: 0 6px 4px 0; flex-shrink: 0; transition: transform .2s; }
+details[open] > .gsum::after { transform: rotate(225deg); margin: 4px 6px 0 0; }
 .gupay[open] > .gsum { margin-bottom: 4px; }
 .gul { margin: 6px 0 4px; padding-left: 18px; font-size: 14px; line-height: 1.7; }
 .gochar { padding: 0; overflow: hidden; }
