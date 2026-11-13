@@ -37,6 +37,11 @@
   .circle-btn { width: 42px; height: 42px; border-radius: 50%; background: var(--card); border: 0; color: var(--ink); display: flex; align-items: center; justify-content: center; }
   .circle-btn svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 1.8; }
   .page-title { font-size: 28px; font-weight: 700; text-align: center; margin: 14px 0 4px; }
+  .phead { display: flex; gap: 12px; align-items: center; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; margin: 10px 0 16px; }
+  .phead-ic { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #a78bfa, #14b8a6); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .phead-ic svg { width: 20px; height: 20px; fill: #fff; }
+  .phead-t { font-size: 17px; font-weight: 600; color: var(--ink); }
+  .phead-s { font-size: 12px; color: var(--muted); margin-top: 2px; line-height: 1.5; }
   .page-sub { color: var(--muted); font-size: 14px; text-align: center; line-height: 1.5; padding: 0 12px; margin-bottom: 16px; }
   main { padding: 6px 20px 20px; }
 
@@ -1352,7 +1357,7 @@ function renderHome() {
   $('pg-home').innerHTML =
     `<div class="qsearch"><input id="homeSearch" type="search" placeholder="${t('searchPh')}" /></div>
      <div class="qgrid">${[['horo','☾','#ede9fe','qHoro'],['kundali','◎','#e0f2fe','qKundali'],['match','♡','#fce7f3','qMatch'],['chat','✦','#fef9c3','qChat']].map(([k, ic, bg, lk]) => `<button class="qtile" data-quick="${k}" data-label="${esc(t(lk))}"><span class="qicon" style="background:${bg}">${ic}</span><span>${esc(t(lk))}</span></button>`).join('')}</div>
-     <div class="page-title" style="font-size:24px;margin-top:6px">${r ? r.name : t('dash')}</div>
+     ${pageHead(`${r ? r.name : t('dash')}`, ``)}
      ${sideBlock}
      <div class="seg">
        <button data-period="today" class="${period === 'today' ? 'on' : ''}">${t('periodToday')}</button>
@@ -1408,6 +1413,10 @@ function vedicLabel(i) { return `${VEDIC_HI[i]} (${WESTERN_EN[i]})`; }
 function westernSunIdx(c) {
   const trop = (c.sun.index * 30 + c.sun.degree + (c.ayanamsa ?? 24.1)) % 360;
   return Math.floor(trop / 30);
+}
+/* ---- पेज का शीर्षक: आइकन वाला कार्ड (पूरे ऐप में एक जैसा) ---- */
+function pageHead(title, sub) {
+  return `<div class="phead"><span class="phead-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/></svg></span><div><div class="phead-t">${title}</div>${sub ? `<div class="phead-s">${sub}</div>` : ''}</div></div>`;
 }
 /* ---------- कुंडली (Kundli) ---------- */
 let kTab = 'charts', kSub = 'lagna', kStyle = 'north', kMode = 'sign';
@@ -1577,8 +1586,7 @@ function renderChart() {
   if (!c || c.nameBased || !c.sun) {
     const r = rashiOfProfile();
     $('pg-chart').innerHTML =
-      `<div class="page-title">${t('chartTitle')}</div>
-       <div class="page-sub">${t('chartNeedTime')}</div>
+      `${pageHead(`${t('chartTitle')}`, `${t('chartNeedTime')}`)}
        ${r ? `<div class="card"><div class="muted" style="font-size:14px">${t('chartNameOnly')}</div><p style="font-size:18px;font-weight:600">${r.name} · ${r.lord}</p></div>` : `<p class="muted">${t('noRashi')}</p>`}
        <div class="card"><div class="prow"><span>${t('completeness')}</span><span>${completeness()}%</span></div>
          <div class="pbar"><i style="width:${completeness()}%"></i></div></div>`;
@@ -1587,7 +1595,7 @@ function renderChart() {
   const tabs = `<div class="ktabs">
     <button data-ktab="basic" class="${kTab === 'basic' ? 'on' : ''}">${t('kdTabBasic')}</button>
     <button data-ktab="charts" class="${kTab === 'charts' ? 'on' : ''}">${t('kdTabCharts')}</button></div>`;
-  $('pg-chart').innerHTML = `<div class="page-title">${t('chartTitle')}</div>${tabs}${kTab === 'basic' ? kBasicHtml(c) : kChartsHtml(c)}`;
+  $('pg-chart').innerHTML = `${pageHead(`${t('chartTitle')}`, ``)}${tabs}${kTab === 'basic' ? kBasicHtml(c) : kChartsHtml(c)}`;
 }
 $('pg-chart').addEventListener('click', e => {
   if (!profile) return;
@@ -1661,8 +1669,7 @@ let matchResult = null;
 function matchFormHtml() {
   const hh = Array.from({ length: 12 }, (_, i) => `<option value="${i + 1}">${i + 1}</option>`).join('');
   const mm = Array.from({ length: 60 }, (_, i) => `<option value="${i}">${String(i).padStart(2, '0')}</option>`).join('');
-  return `<div class="page-title">${t('matchTitle')}</div>
-   <div class="page-sub">${t('matchSub')}</div>
+  return `${pageHead(`${t('matchTitle')}`, `${t('matchSub')}`)}
    <div class="card">
      <label class="mlabel">${t('mfName')}</label>
      <input id="mName" class="mfield" type="text" placeholder="${esc(t('mNamePh'))}" />
@@ -1696,7 +1703,7 @@ function matchResultHtml(r) {
     const tag = x.score >= x.max ? ['match', t('mMatch')] : x.score >= x.max / 2 ? ['partial', t('mPartial')] : ['low', t('mLowTag')];
     return `<tr><td>${esc(t(x.key))}</td><td>${x.max}</td><td class="kred">${sc(x.score)}</td><td><span class="mtag ${tag[0]}">${tag[1]}</span></td></tr>`;
   }).join('');
-  return `<div class="page-title">${t('matchTitle')}</div>
+  return `${pageHead(`${t('matchTitle')}`, ``)}
    <div class="card kcard">
      <div class="mhead">${t('mBasic')}</div>
      <table class="ktable"><thead><tr><th></th><th class="kb">${t('mBoy')}</th><th class="kg">${t('mGirl')}</th></tr></thead>
@@ -1716,7 +1723,7 @@ function renderMatch() {
   if (!profile) return;
   const c = profile.chart;
   if (!c || c.nameBased || !c.moon || !c.nakshatra) {
-    $('pg-match').innerHTML = `<div class="page-title">${t('matchTitle')}</div><p class="muted">${t('matchNeedTime')}</p>`;
+    $('pg-match').innerHTML = `${pageHead(`${t('matchTitle')}`, ``)}<p class="muted">${t('matchNeedTime')}</p>`;
     return;
   }
   $('pg-match').innerHTML = matchResult ? matchResultHtml(matchResult) : matchFormHtml();
@@ -1779,8 +1786,7 @@ function renderTransits() {
   const tr = transitInfo();
   if (!tr) {
     $('pg-transits').innerHTML =
-      `<div class="page-title">${t('transitTitle')}</div>
-       <div class="page-sub">${t('transitNeed')}</div>`;
+      `${pageHead(`${t('transitTitle')}`, `${t('transitNeed')}`)}`;
     return;
   }
   const c = profile.chart;
@@ -1797,8 +1803,7 @@ function renderTransits() {
     </div>`).join('');
 
   $('pg-transits').innerHTML =
-    `<div class="page-title">${t('transitTitle')}</div>
-     <div class="page-sub">${t('transitSub', rashiName(tr.tIdx), tr.house)}</div>
+    `${pageHead(`${t('transitTitle')}`, `${t('transitSub', rashiName(tr.tIdx), tr.house)}`)}
      <div class="card wheel">${wheelSvg(260, markers)}</div>
      ${cards}
      <p class="note">${t('transitNote')}</p>`;
@@ -1808,8 +1813,7 @@ function renderTransits() {
 function renderListen() {
   const ttsOk = 'speechSynthesis' in window;
   $('pg-listen').innerHTML =
-    `<div class="page-title">${t('listenTitle')}</div>
-     <div class="page-sub">${t('listenSub')}</div>
+    `${pageHead(`${t('listenTitle')}`, `${t('listenSub')}`)}
      ${C().listen.map((item, i) => `
        <div class="item">
          <div class="body">
@@ -1850,8 +1854,7 @@ function renderHoro() {
   const dateStr = data.day.toLocaleDateString(locale, { weekday: 'long', day: 'numeric', month: 'short', year: 'numeric' });
   const offs = [[-1, t('horoYest')], [0, t('horoToday')], [1, t('horoTom')]];
   $('pg-horo').innerHTML =
-    `<div class="page-title" style="font-size:24px;margin-top:6px">${t('horoTitle')}</div>
-     <div class="page-sub">${dateStr}</div>
+    `${pageHead(`${t('horoTitle')}`, `${dateStr}`)}
      <div class="section-h" style="margin-top:4px"><span>${t('horoSign')}</span></div>
      <div class="hgrid">${RASHIS.map((_, i) => `<button class="hsign${i === horoSign ? ' on' : ''}" data-sign="${i}"><span>${SIGN_EMO[i]}</span><span>${rashiName(i)}</span></button>`).join('')}</div>
      <div class="hdaily">
@@ -1941,8 +1944,7 @@ const SERVICES = [
 ];
 function renderRemedies() {
   $('pg-remedies').innerHTML = `
-   <div class="page-title" style="font-size:24px;margin-top:6px">${t('remTitle')}</div>
-   <div class="page-sub">${t('remSub')}</div>
+   ${pageHead(`${t('remTitle')}`, `${t('remSub')}`)}
    <div class="qsearch"><input id="remSearch" type="search" placeholder="${esc(t('remSearch'))}" /></div>
    <div class="section-h"><span>${t('remPopular')}</span></div>
    ${SERVICES.map(s => `<button class="svc" data-svc="${s.id}"><span class="svcicon">${s.icon}</span><span class="svcbody"><b>${esc(s.name)}</b><small>${esc(s.desc)}</small></span><span class="svcarrow">›</span></button>`).join('')}
@@ -1954,7 +1956,7 @@ function renderService() {
   $('pg-service').innerHTML = `
    <div class="svcdetail">
      <div class="svcicon big">${sv.icon}</div>
-     <div class="page-title" style="font-size:24px">${esc(sv.name)}</div>
+     ${pageHead(`${esc(sv.name)}`, ``)}
      <p class="muted" style="text-align:center">${esc(sv.desc)}</p>
    </div>
    <div class="card"><div class="row"><b>${t('svcStatus')}</b><span>${t('svcSoon')}</span></div></div>
@@ -1987,8 +1989,7 @@ function renderAstro() {
   $('pg-astro').innerHTML = view === 'join' ? astroJoinHtml() : view === 'login' ? astroLoginHtml() : astroCustomersHtml(a);
 }
 function astroJoinHtml() {
-  return `<div class="page-title" style="text-align:center">${t('ajTitle')}</div>
-   <div class="page-sub" style="text-align:center">${t('ajSub')}</div>
+  return `${pageHead(`${t('ajTitle')}`, `${t('ajSub')}`)}
    <div class="card">
      <label class="mlabel">${t('ajName')}</label>
      <input id="ajName" class="mfield" type="text" placeholder="${esc(t('ajNamePh'))}" value="${esc(profile.name || '')}" />
@@ -1999,16 +2000,14 @@ function astroJoinHtml() {
    </div>`;
 }
 function astroLoginHtml() {
-  return `<div class="page-title" style="text-align:center">${t('ajWelcome')}</div>
-   <div class="page-sub" style="text-align:center">${t('ajLoginSub')}</div>
+  return `${pageHead(`${t('ajWelcome')}`, `${t('ajLoginSub')}`)}
    <div class="card">
      <button class="btn" data-aj="google">${t('ajGoogle')}</button>
      <p class="note" style="text-align:center"><button class="alink" data-aj="signup">${t('ajNew')}</button></p>
    </div>`;
 }
 function astroCustomersHtml(a) {
-  return `<div class="page-title">${t('ajCustomers')}</div>
-   <div class="page-sub">${esc(a.name)} · ${esc(a.email)}</div>
+  return `${pageHead(`${t('ajCustomers')}`, `${esc(a.name)} · ${esc(a.email)}`)}
    <div class="qsearch"><input id="ajSearch" type="search" placeholder="${esc(t('ajSearch'))}" /></div>
    <div class="card"><p class="muted">${t('ajEmpty')}</p></div>
    <div class="kpills"><button data-aj="leave">${t('ajLeave')}</button></div>`;
