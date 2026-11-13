@@ -207,6 +207,8 @@
   .mcheck { display: flex; gap: 8px; align-items: center; margin: 12px 0; font-size: 14px; }
 
 /* आज का गोचर कार्ड */
+.gupay { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); }
+.gul { margin: 6px 0 4px; padding-left: 18px; font-size: 14px; line-height: 1.7; }
 .gochar { padding: 0; overflow: hidden; }
 .gbox-top { background: linear-gradient(120deg, #7c3aed, #14b8a6); color: #fff; padding: 14px; }
 .gbox-l { font-size: 13px; opacity: .9; }
@@ -290,7 +292,7 @@
           <option value="9">Japan (UTC+9)</option>
         </select>
         <button class="btn" id="saveBtn" style="margin-top:18px" data-i18n="start"></button>
-        <button class="btn" id="cancelEdit" style="display:none;margin-top:10px;background:#fff;color:#7c3aed;border:1px solid #7c3aed">रद्द करें</button>
+        <button class="btn" id="cancelEdit" style="display:none;margin-top:10px;background:#fff;color:#7c3aed;border:1px solid #7c3aed">Cancel</button>
         <p class="note" data-i18n="saveNote"></p>
       </div>
     </main>
@@ -1273,7 +1275,7 @@ function showPg(name, fromBack = false) {
   $('chatBar').classList.toggle('hidden', name !== 'chat');
   const titles = { chart: t('chartTitle'), transits: t('transitTitle'), listen: t('listenTitle'), horo: t('horoTitle'), match: t('matchTitle'), astro: t('ajNavTitle'), remedies: t('remTitle'), service: serviceTitle(), chat: t('chatTitle'), profile: t('profileTitle') };
   $('hGreet').textContent = titles[name] ? titles[name] : (profile ? (lang === 'pa' ? `ਸਤਿ ਸ੍ਰੀ ਅਕਾਲ, ${profile.name}` : lang === 'hi' ? `नमस्ते, ${profile.name}` : `Hello, ${profile.name}`) : '');
-  $('backBar').classList.toggle('hidden', TAB_PAGES.includes(name));
+  $('backBar').classList.toggle('hidden', TAB_PAGES.includes(name) && name !== 'chart');
   $('backTitle').textContent = titles[name] || '';
   renderPage(name);
   window.scrollTo(0, 0);
@@ -1474,6 +1476,20 @@ const GOCHAR_HINT = [
   'संबंधों और सुंदरता के विषय में मन लगेगा।', 'गहराई से सोचने और धैर्य रखने का समय।', 'यात्रा, सीख और विचारों का विस्तार।',
   'लक्ष्य और ज़िम्मेदारियों पर ध्यान दें।', 'नए विचार और मित्रों से जुड़ाव।', 'कल्पना और आत्मचिंतन का समय।',
 ];
+const GOCHAR_UPAY = [
+  ['मंगलवार को हनुमान चालीसा का पाठ', 'श्रद्धा अनुसार चने या गुड़ का दान'],
+  ['शुक्रवार को लक्ष्मी माता की पूजा', 'श्रद्धा अनुसार सफ़ेद वस्तुओं का दान'],
+  ['बुधवार को गणेश जी की पूजा', 'श्रद्धा अनुसार हरे मूंग का दान'],
+  ['सोमवार को शिव जी को जल अर्पण', 'श्रद्धा अनुसार चावल या दूध का दान'],
+  ['रविवार को सूर्य को जल अर्पण', 'श्रद्धा अनुसार गेहूं का दान'],
+  ['बुधवार को तुलसी को जल अर्पण', 'श्रद्धा अनुसार हरी सब्ज़ी का दान'],
+  ['शुक्रवार को सफ़ेद फूलों से पूजा', 'श्रद्धा अनुसार चीनी या मिश्री का दान'],
+  ['मंगलवार को हनुमान जी के दर्शन', 'श्रद्धा अनुसार लाल मसूर का दान'],
+  ['गुरुवार को विष्णु जी की पूजा', 'श्रद्धा अनुसार चने की दाल का दान'],
+  ['शनिवार को पीपल पर जल अर्पण', 'श्रद्धा अनुसार तिल या सरसों के तेल का दान'],
+  ['शनिवार को शनि मंदिर में दीपक', 'श्रद्धा अनुसार काली उड़द का दान'],
+  ['गुरुवार को गुरु का पाठ', 'श्रद्धा अनुसार पीली वस्तुओं का दान'],
+];
 function gocharNow() {
   const dNow = Astro.daysSince2000(Date.now());
   const ay = Astro.lahiriAyanamsa(dNow);
@@ -1504,6 +1520,13 @@ function gocharHtml() {
         <button data-gfb="no" class="gbtn">नहीं</button>
       </div>
       <div class="muted gfb" id="gfbMsg">${yes || no ? `धन्यवाद! अब तक: हाँ ${yes}, नहीं ${no}` : ''}</div>
+      <div class="gupay">
+        <div class="gq">इस हफ़्ते के उपाय</div>
+        <p class="muted gnote">परंपरा के अनुसार (यह विश्वास पर आधारित है, वैज्ञानिक प्रमाण नहीं):</p>
+        <ul class="gul">${GOCHAR_UPAY[g.moon].map(u => `<li>${esc(u)}</li>`).join('')}</ul>
+        <p class="muted gnote">कितने दिन करें, इसका कोई तय नियम नहीं है। किसी अनुभवी ज्योतिषी से सलाह लें।</p>
+        <button class="gbtn" data-goto="remedies">ज्योतिषी सलाह और Remedies देखें</button>
+      </div>
     </div>
   </div>`;
 }
@@ -1566,6 +1589,8 @@ $('pg-chart').addEventListener('click', e => {
   if (st) { kStyle = st.dataset.kstyle; renderChart(); return; }
   const md = e.target.closest('[data-kmode]');
   if (md) { kMode = md.dataset.kmode; renderChart(); }
+  const goto = e.target.closest('[data-goto]');
+  if (goto) { showPg(goto.dataset.goto); return; }
   const gfb = e.target.closest('[data-gfb]');
   if (gfb) {
     let fb = {};
@@ -1868,7 +1893,7 @@ function renderProfile() {
      <div class="row"><b>${t('pDob')}</b><span>${d ? `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}` : t('dash')}</span></div>
      <div class="row"><b>${t('pPlace')}</b><span>${esc(profile.place || t('dash'))}</span></div>
      <div class="row"><b>${t('pTime')}</b><span>${tm}</span></div>
-     <button class="btn" data-edit-profile="1" style="margin-top:14px">प्रोफ़ाइल संपादित करें</button>
+     <button class="btn" data-edit-profile="1" style="margin-top:14px">Edit profile</button>
      <button class="btn" data-astro-open="1" style="margin-top:10px">${t('ajOpen')}</button>
      <button class="btn" data-logout="1" style="margin-top:10px;background:#fff;color:#7c3aed;border:1px solid #7c3aed">${t('logout')}</button>`;
 }
@@ -2023,6 +2048,7 @@ function openEditProfile() {
   $('timeUnknown').dispatchEvent(new Event('change'));
   $('tz').value = String(profile.tz ?? 5.5);
   $('cancelEdit').style.display = '';
+  $('saveBtn').textContent = 'Save';
   $('loginCard').classList.add('hidden');
   $('formCard').classList.remove('hidden');
   showScreen('scrAuth');
@@ -2031,6 +2057,7 @@ function openEditProfile() {
 function closeEditProfile() {
   editMode = false;
   $('cancelEdit').style.display = 'none';
+  $('saveBtn').textContent = t('start');
   $('formCard').classList.add('hidden');
 }
 $('cancelEdit').addEventListener('click', () => { closeEditProfile(); enterApp(); });
