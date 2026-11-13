@@ -1275,7 +1275,7 @@ function showPg(name, fromBack = false) {
   $('chatBar').classList.toggle('hidden', name !== 'chat');
   const titles = { chart: t('chartTitle'), transits: t('transitTitle'), listen: t('listenTitle'), horo: t('horoTitle'), match: t('matchTitle'), astro: t('ajNavTitle'), remedies: t('remTitle'), service: serviceTitle(), chat: t('chatTitle'), profile: t('profileTitle') };
   $('hGreet').textContent = titles[name] ? titles[name] : (profile ? (lang === 'pa' ? `ਸਤਿ ਸ੍ਰੀ ਅਕਾਲ, ${profile.name}` : lang === 'hi' ? `नमस्ते, ${profile.name}` : `Hello, ${profile.name}`) : '');
-  $('backBar').classList.toggle('hidden', TAB_PAGES.includes(name) && name !== 'chart');
+  $('backBar').classList.toggle('hidden', name === 'home');
   $('backTitle').textContent = titles[name] || '';
   renderPage(name);
   window.scrollTo(0, 0);
