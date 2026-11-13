@@ -1919,14 +1919,40 @@ $('pg-horo').addEventListener('click', e => {
   if (o) { horoOffset = Number(o.dataset.hoff); renderHoro(); }
 });
 
+/* ---- Sleep stories की आवाज़: सबसे अच्छी उपलब्ध voice चुनें, धीमी और रुक-रुक कर बोलें ---- */
+const VOICE_LANG = { hi: 'hi-IN', hg: 'hi-IN', pa: 'pa-IN', en: 'en-IN' };
+function pickVoice(code) {
+  const voices = speechSynthesis.getVoices() || [];
+  const base = code.split('-')[0];
+  const score = v => {
+    let sc = 0;
+    if (v.lang === code) sc += 4; else if (v.lang.startsWith(base)) sc += 2;
+    // Chrome/Android/iOS की "natural" voices आम तौर पर बेहतर लगती हैं
+    if (/natural|neural|premium|enhanced|google/i.test(v.name)) sc += 3;
+    if (!v.localService) sc += 1;
+    return sc;
+  };
+  return voices.filter(v => v.lang.startsWith(base)).sort((a, b) => score(b) - score(a))[0] || null;
+}
+// लंबे वाक्यों को छोटे टुकड़ों में बाँटें, ताकि हर टुकड़े के बीच थोड़ा रुकना सुनाई दे
+function storyChunks(text) {
+  return text.split(/(?<=[।.?!])\s+/).map(x => x.trim()).filter(Boolean);
+}
 function speakIdx(i) {
   if (!('speechSynthesis' in window)) return;
   speechSynthesis.cancel();
-  const u = new SpeechSynthesisUtterance(listenItems()[i].sub);
-  u.lang = lang === 'pa' ? 'pa-IN' : (lang === 'hi' || lang === 'hg') ? 'hi-IN' : 'en-IN';
-  u.rate = 0.9;
-  speechSynthesis.speak(u);
+  const code = VOICE_LANG[lang] || 'en-IN';
+  const voice = pickVoice(code);
+  storyChunks(listenItems()[i].sub).forEach(chunk => {
+    const u = new SpeechSynthesisUtterance(chunk);
+    u.lang = code;
+    if (voice) u.voice = voice;
+    u.rate = 0.82;     // धीमी, शांत गति
+    u.pitch = 1.0;
+    speechSynthesis.speak(u);
+  });
 }
+if ('speechSynthesis' in window) speechSynthesis.onvoiceschanged = () => {};
 
 /* ---------- प्रोफ़ाइल ---------- */
 function renderProfile() {
