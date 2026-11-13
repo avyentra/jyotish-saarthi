@@ -1,6 +1,7 @@
 // Cloudflare Worker: AI चैट के लिए सुरक्षित प्रॉक्सी (Groq, free tier)।
 // API key Cloudflare में Secret के रूप में GROQ_API_KEY है।
 // Bindings: KV namespace "LIMITS" (variable name) → chat-limits
+// Variables: SUPABASE_URL, SUPABASE_ANON_KEY (login check के लिए; anon/publishable key सार्वजनिक है)
 const ALLOWED_ORIGIN = 'https://avyentra.github.io';
 const MODEL = 'openai/gpt-oss-20b';
 const DAILY_LIMIT = 20;
@@ -9,6 +10,12 @@ const LIMIT_MSG = {
   en: 'Today’s free questions are over. Please try again tomorrow. Your reading and numbers are still visible in the tabs.',
   hi: 'आज के मुफ़्त सवाल खत्म हो गए हैं। कल फिर कोशिश करें। आपके राशिफल और अंक टैब में अभी भी दिख रहे हैं।',
   pa: 'ਅੱਜ ਦੇ ਮੁਫ਼ਤ ਸਵਾਲ ਖ਼ਤਮ ਹੋ ਗਏ ਹਨ। ਕੱਲ੍ਹ ਫਿਰ ਕੋਸ਼ਿਸ਼ ਕਰੋ। ਤੁਹਾਡਾ ਰਾਸ਼ੀਫਲ ਅਤੇ ਅੰਕ ਟੈਬਾਂ ਵਿੱਚ ਅਜੇ ਵੀ ਦਿਖ ਰਹੇ ਹਨ।',
+};
+
+const LOGIN_MSG = {
+  en: 'Please log in with your Google account to use the chat.',
+  hi: 'चैट इस्तेमाल करने के लिए Google से लॉगिन करें।',
+  pa: 'ਚੈਟ ਵਰਤਣ ਲਈ Google ਨਾਲ ਲੌਗਇਨ ਕਰੋ।',
 };
 
 const json = (obj, cors, status = 200) =>
@@ -20,7 +27,7 @@ export default {
     const cors = {
       'Access-Control-Allow-Origin': ALLOWED_ORIGIN,
       'Access-Control-Allow-Methods': 'POST, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
     };
 
     if (request.method === 'OPTIONS') return new Response(null, { headers: cors });
@@ -36,10 +43,21 @@ export default {
     const lang = ['en', 'hi', 'pa', 'hg'].includes(ctx.language) ? ctx.language : 'en';
     if (!question) return json({ answer: '' }, cors);
 
-    // रोज़ की सीमा (KV)
+    // लॉगिन जाँच: Supabase का access token लेकर user ID निकालें
+    const token = (request.headers.get('Authorization') || '').replace(/^Bearer\s+/i, '');
+    if (!token) return json({ answer: LOGIN_MSG[lang] || LOGIN_MSG.en, limited: true }, cors, 401);
+    let userId = null;
+    try {
+      const r = await fetch(`${env.SUPABASE_URL}/auth/v1/user`, {
+        headers: { apikey: env.SUPABASE_ANON_KEY, Authorization: `Bearer ${token}` },
+      });
+      if (r.ok) userId = (await r.json()).id || null;
+    } catch {}
+    if (!userId) return json({ answer: LOGIN_MSG[lang] || LOGIN_MSG.en, limited: true }, cors, 401);
+
+    // रोज़ की सीमा: हर login ID के लिए अलग
     const day = new Date().toISOString().slice(0, 10);
-    const ip = request.headers.get('cf-connecting-ip') || 'unknown';
-    const key = `${day}:${ip}`;
+    const key = `${day}:u:${userId}`;
     const used = Number(await env.LIMITS.get(key)) || 0;
     if (used >= DAILY_LIMIT) return json({ answer: LIMIT_MSG[lang] || LIMIT_MSG.en, limited: true }, cors);
     await env.LIMITS.put(key, String(used + 1), { expirationTtl: 60 * 60 * 26 });
