@@ -1819,11 +1819,30 @@ function renderTransits() {
 }
 
 /* ---------- सुनें ---------- */
+/* ---- Sleep stories: हर भाषा का टेक्स्ट ---- */
+const LISTEN_I18N = {
+  hi: [
+    { title: 'चंद्र की यात्रा', sub: 'चंद्रमा मन पर राज करता है। शांत रात में चाँदनी के नीचे बैठने की कल्पना करें। धीरे-धीरे साँस लें और मन को शांत होने दें। सोमवार को ध्यान करना मन की स्थिरता के लिए लाभकारी माना जाता है।' },
+    { title: 'गुरु की यात्रा', sub: 'बृहस्पति ज्ञान और विस्तार का ग्रह है। कल्पना करें कि आप एक पुरानी लाइब्रेरी में हैं, जहाँ हर किताब कुछ सिखाती है। किसी गुरु का सम्मान करें और कुछ नया सीखने का संकल्प लें।' },
+    { title: 'मंगल की यात्रा', sub: 'मंगल ऊर्जा और साहस का ग्रह है। सुबह की पहली धूप में लंबी सैर की कल्पना करें। अपनी ऊर्जा को सही दिशा दें, गुस्सा कम करें, और अपनी मेहनत सही काम में लगाएँ।' },
+  ],
+  hg: [
+    { title: 'Chandra ki yatra', sub: 'Chandrama man par raj karta hai. Ek shaant raat mein chandni ke neeche baithne ki kalpana karein. Dheere-dheere saans lein aur man ko shaant hone dein. Somvar ko dhyan karna man ki sthirta ke liye laabhkari maana jata hai.' },
+    { title: 'Guru ki yatra', sub: 'Brihaspati gyan aur vistaar ka grah hai. Kalpana karein ki aap ek purani library mein hain, jahan har kitaab kuch sikhati hai. Kisi guru ka samman karein aur kuch naya seekhne ka sankalp lein.' },
+    { title: 'Mangal ki yatra', sub: 'Mangal urja aur saahas ka grah hai. Subah ki pehli dhoop mein lambi sair ki kalpana karein. Apni urja ko sahi disha dein, gussa kam karein, aur apni mehnat sahi kaam mein lagayein.' },
+  ],
+  pa: [
+    { title: 'ਚੰਦਰਮਾ ਦੀ ਯਾਤਰਾ', sub: 'ਚੰਦਰਮਾ ਮਨ ਉੱਤੇ ਰਾਜ ਕਰਦਾ ਹੈ। ਇੱਕ ਸ਼ਾਂਤ ਰਾਤ ਵਿੱਚ ਚਾਨਣੀ ਹੇਠਾਂ ਬੈਠਣ ਦੀ ਕਲਪਨਾ ਕਰੋ। ਹੌਲੀ-ਹੌਲੀ ਸਾਹ ਲਵੋ ਅਤੇ ਮਨ ਨੂੰ ਸ਼ਾਂਤ ਹੋਣ ਦਿਓ। ਸੋਮਵਾਰ ਨੂੰ ਧਿਆਨ ਕਰਨਾ ਮਨ ਦੀ ਸਥਿਰਤਾ ਲਈ ਲਾਭਦਾਇਕ ਮੰਨਿਆ ਜਾਂਦਾ ਹੈ।' },
+    { title: 'ਗੁਰੂ ਦੀ ਯਾਤਰਾ', sub: 'ਬ੍ਰਿਹਸਪਤੀ ਗਿਆਨ ਅਤੇ ਵਿਸਤਾਰ ਦਾ ਗ੍ਰਹਿ ਹੈ। ਕਲਪਨਾ ਕਰੋ ਕਿ ਤੁਸੀਂ ਇੱਕ ਪੁਰਾਣੀ ਲਾਇਬ੍ਰੇਰੀ ਵਿੱਚ ਹੋ, ਜਿੱਥੇ ਹਰ ਕਿਤਾਬ ਕੁਝ ਸਿਖਾਉਂਦੀ ਹੈ। ਕਿਸੇ ਅਧਿਆਪਕ ਦਾ ਸਤਿਕਾਰ ਕਰੋ ਅਤੇ ਕੁਝ ਨਵਾਂ ਸਿੱਖਣ ਦਾ ਇਰਾਦਾ ਕਰੋ।' },
+    { title: 'ਮੰਗਲ ਦੀ ਯਾਤਰਾ', sub: 'ਮੰਗਲ ਊਰਜਾ ਅਤੇ ਹਿੰਮਤ ਦਾ ਗ੍ਰਹਿ ਹੈ। ਸਵੇਰ ਦੀ ਪਹਿਲੀ ਧੁੱਪ ਵਿੱਚ ਲੰਬੀ ਸੈਰ ਦੀ ਕਲਪਨਾ ਕਰੋ। ਆਪਣੀ ਊਰਜਾ ਨੂੰ ਸਹੀ ਦਿਸ਼ਾ ਦਿਓ, ਗੁੱਸਾ ਘਟਾਓ, ਅਤੇ ਆਪਣੀ ਮਿਹਨਤ ਸਹੀ ਕੰਮ ਵਿੱਚ ਲਾਓ।' },
+  ],
+};
+function listenItems() { return LISTEN_I18N[lang] || C().listen; }
 function renderListen() {
   const ttsOk = 'speechSynthesis' in window;
   $('pg-listen').innerHTML =
     `${pageHead(`${t('listenTitle')}`, `${t('listenSub')}`)}
-     ${C().listen.map((item, i) => `
+     ${listenItems().map((item, i) => `
        <div class="item">
          <div class="body">
            <h4>${esc(item.title)}</h4>
@@ -1900,8 +1919,8 @@ $('pg-horo').addEventListener('click', e => {
 function speakIdx(i) {
   if (!('speechSynthesis' in window)) return;
   speechSynthesis.cancel();
-  const u = new SpeechSynthesisUtterance(C().listen[i].sub);
-  u.lang = lang === 'hi' ? 'hi-IN' : lang === 'pa' ? 'pa-IN' : 'en-IN';
+  const u = new SpeechSynthesisUtterance(listenItems()[i].sub);
+  u.lang = lang === 'pa' ? 'pa-IN' : (lang === 'hi' || lang === 'hg') ? 'hi-IN' : 'en-IN';
   u.rate = 0.9;
   speechSynthesis.speak(u);
 }
