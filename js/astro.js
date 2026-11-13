@@ -118,7 +118,50 @@ const Astro = (() => {
     return out;
   }
 
-  return { chart, sunLongitude, moonLongitude, lahiriAyanamsa, daysSince2000, RASHI_NAMES, NAKSHATRA_NAMES };
+
+  /* ग्रह: गुरु (Jupiter) और शनि (Saturn)।
+   * स्रोत: JPL "Keplerian Elements for Approximate Positions" (E. M. Standish), 1800–2050 के लिए।
+   * सटीकता: लगभग कुछ arcminute। J2000 से of-date तक precession भी जोड़ा गया है।
+   * d = 2000-01-00 UT से दिन (sunLongitude / moonLongitude की तरह)।
+   */
+  const EL = {
+    earth: { a: [1.00000261, 0.00000562], e: [0.01671123, -0.00004392], I: [-0.00001531, -0.01294668],
+             L: [100.46457166, 35999.37244981], peri: [102.93768193, 0.32327364], node: [0, 0] },
+    jupiter: { a: [5.20288700, -0.00011607], e: [0.04838624, -0.00013253], I: [1.30439695, -0.00183714],
+               L: [34.39644051, 3034.74612775], peri: [14.72847983, 0.21252668], node: [100.47390909, 0.20469106] },
+    saturn: { a: [9.53667594, -0.00125060], e: [0.05386179, -0.00050991], I: [2.48599187, 0.00193609],
+              L: [49.95424423, 1222.49362201], peri: [92.59887831, -0.41897216], node: [113.66242448, -0.28867794] },
+  };
+  // हेलियोसेंट्रिक रेक्टेंगुलर कोऑर्डिनेट (J2000 इक्लिप्टिक), AU में
+  function helioXYZ(el, T) {
+    const v_ = k => el[k][0] + el[k][1] * T;
+    const a = v_('a'), e = v_('e'), I = v_('I') * RAD;
+    const L = v_('L'), peri = v_('peri'), node = v_('node') * RAD;
+    const w = (peri - v_('node')) * RAD;
+    let M = ((L - peri) % 360 + 540) % 360 - 180;
+    M *= RAD;
+    let E = M + e * Math.sin(M);
+    for (let i = 0; i < 8; i++) E -= (E - e * Math.sin(E) - M) / (1 - e * Math.cos(E));
+    const xv = a * (Math.cos(E) - e), yv = a * Math.sqrt(1 - e * e) * Math.sin(E);
+    const v = Math.atan2(yv, xv), r = Math.hypot(xv, yv);
+    const u = v + w;
+    return {
+      x: r * (Math.cos(node) * Math.cos(u) - Math.sin(node) * Math.sin(u) * Math.cos(I)),
+      y: r * (Math.sin(node) * Math.cos(u) + Math.cos(node) * Math.sin(u) * Math.cos(I)),
+    };
+  }
+  // ग्रह का sidereal (Lahiri) भोगांश, 0–360°। name = 'jupiter' | 'saturn'
+  function planetSidereal(d, name) {
+    const JD = d + 2451543.5;
+    const T = (JD - 2451545.0) / 36525;
+    const P = helioXYZ(EL[name], T), Ea = helioXYZ(EL.earth, T);
+    const lonJ2000 = Math.atan2(P.y - Ea.y, P.x - Ea.x) * DEG;
+    const precession = 1.396971 * T + 0.000308 * T * T;   // J2000 से of-date तक
+    const tropical = norm(lonJ2000 + precession);
+    return norm(tropical - lahiriAyanamsa(d));
+  }
+
+  return { chart, sunLongitude, moonLongitude, lahiriAyanamsa, daysSince2000, planetSidereal, RASHI_NAMES, NAKSHATRA_NAMES };
 })();
 
 if (typeof module !== 'undefined' && module.exports) module.exports = Astro;
