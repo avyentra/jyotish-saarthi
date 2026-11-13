@@ -79,6 +79,9 @@
   .btn.small { width: auto; padding: 9px 18px; font-size: 14px; }
   .arrow-btn { width: 38px; height: 38px; border-radius: 50%; background: var(--accent); border: 0; color: #fff; display: flex; align-items: center; justify-content: center; flex: 0 0 auto; }
   .arrow-btn svg { width: 18px; height: 18px; stroke: #fff; fill: none; stroke-width: 2.2; }
+  .play-btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: 999px; border: 0; background: var(--accent); color: #fff; font-size: 14px; font-weight: 600; }
+  .play-btn svg { width: 14px; height: 14px; stroke: #fff; fill: none; stroke-width: 2.4; }
+  .play-btn:disabled { opacity: .5; }
 
   .item { background: var(--card); border-radius: 22px; padding: 18px; margin-bottom: 12px; display: flex; gap: 14px; align-items: center; }
   .item .body { flex: 1; min-width: 0; }
@@ -1848,7 +1851,7 @@ function renderListen() {
            <h4>${esc(item.title)}</h4>
            <p>${esc(item.sub)}</p>
            <div style="margin-top:12px;display:flex;gap:8px;align-items:center">
-             <button class="arrow-btn" data-speak="${i}" aria-label="${t('speak')}" ${ttsOk ? '' : 'disabled'}>${ICON_ARROW}</button>
+             <button class="play-btn" data-speak="${i}" aria-label="${t('speak')}" ${ttsOk ? '' : 'disabled'}>${ICON_ARROW}<span>${t('speak')}</span></button>
              <button class="btn small ghost" data-stop="1" style="padding:7px 14px">${t('stop')}</button>
            </div>
          </div>
